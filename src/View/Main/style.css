@@ -1,0 +1,45 @@
+* {
+	padding: 0;
+	margin: 0;
+}
+
+.header, .footer{
+	height: 78px;
+	background: #f1f0f0;
+	box-shadow: 1px 1px 1px 1px #ecebeb;
+}
+
+.header,.content{
+	margin-bottom: 3%;
+}
+
+.footer{
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 10;
+	box-shadow: 2px 0 0 2px #ecebeb;
+}
+
+.goods-item {
+	display: flex;
+	position: relative;
+	flex-direction: column;
+	margin: 3% 3% ;
+	width: 370px;
+	height: 500px;
+	background: #fff;
+	box-shadow: 3px 3px rgba(0, 0, 0, 0.1);
+	border-radius: 20px;
+}
+
+.detail-list {
+	display: flex;
+	flex-direction: column;
+	margin: 2% 5% 2% 5%;
+	background: #fff;
+	box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+	border-radius: 20px;
+	font-size: 28px;
+}

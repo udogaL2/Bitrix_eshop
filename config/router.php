@@ -9,7 +9,7 @@ return array (
 	 array (
 		'path' => '/product/:id',
 		'method' => 'GET',
-		'action' => [new App\Src\Controller\GoodController(), 'detailedGoodAction'],
+		'action' => [new App\Src\Controller\GoodController(), 'getDetailedGoodAction'],
 	),
 	 // array(
 		//  'path' => '/order/',

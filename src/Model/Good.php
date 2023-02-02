@@ -14,6 +14,7 @@ class Good
 	 */
 	private int $id;
 	private string $name;
+	private string $description;
 	private float $price;
 	private array $tags;
 	private array $imgLinks;
@@ -22,6 +23,7 @@ class Good
 		int $id,
 		string $name,
 		float $price,
+		string $description = "No description",
 		array $tags = [],
 		array $imgLinks = []
 	)
@@ -29,6 +31,7 @@ class Good
 		$this->id = $id;
 		$this->name = $name;
 		$this->price = $price;
+		$this->description = $description;
 		$this->tags = $tags;
 		$this->imgLinks = $imgLinks;
 	}
@@ -69,6 +72,14 @@ class Good
 	public function getImgLinks(): array
 	{
 		return $this->imgLinks;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getDescription(): string
+	{
+		return $this->description;
 	}
 
 }

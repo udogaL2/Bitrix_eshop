@@ -6,7 +6,7 @@ use App\Config\Config;
 
 abstract class BaseController
 {
-	public function view(string $path, array $args) : string
+	public function view(string $path, array $args = []) : string
 	{
 		if (preg_match('#^[0-9A-Za-z-_/]+$#', $path))
 		{
@@ -14,6 +14,8 @@ abstract class BaseController
 		}
 
 		$path = Config::ROOT . "/src/View/$path.php";
+
+		extract($args, EXTR_OVERWRITE);
 
 		ob_start();
 		require $path;

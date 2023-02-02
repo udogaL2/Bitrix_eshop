@@ -11,6 +11,11 @@ return array (
 		'method' => 'GET',
 		'action' => [new App\Src\Controller\GoodController(), 'getDetailedGoodAction'],
 	),
+	 array(
+		'path' => '/not_found/',
+		'method' => 'GET',
+		'action' => [new App\Src\Controller\GoodController(), 'getDetailedGoodAction'],
+	 ),
 	 // array(
 		//  'path' => '/order/',
 		//  'method' => 'GET',

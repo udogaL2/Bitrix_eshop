@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model;
+namespace App\Src\Model;
 
 /*
  * Класс для хранения информации о товаре.
@@ -28,12 +28,12 @@ class Good
 	public function __construct(
 		string $name,
 		float  $price,
-		string $shortDesc,
-		string $fullDesc,
 		string $dateUpdate,
-		int    $numberOfOrders=0,
+		string $shortDesc = "No description",
+		string $fullDesc = "No description",
+		int    $numberOfOrders = 0,
 		bool   $isActive = true,
-		int    $id = null
+		int    $id = 0
 	)
 	{
 		$this->id = $id;

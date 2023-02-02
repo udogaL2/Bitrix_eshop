@@ -21,9 +21,7 @@ class Application
 		}
 		else
 		{
-			http_response_code(404);
-			echo 'page not found';
-			exit;
+			$router->notFound();
 		}
 	}
 

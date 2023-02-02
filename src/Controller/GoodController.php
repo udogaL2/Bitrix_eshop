@@ -9,7 +9,7 @@ class GoodController extends BaseController
 	public function getDetailedGoodAction($id)
 	{
 		// product example
-		$good = new Good($id, 'myProduct', 45, "No description", ['home', 'tech']);
+		$good = new Good($id, 45, date('Y-m-d'));
 		//
 
 		echo $this->view('Main/index.html', [

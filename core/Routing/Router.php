@@ -75,6 +75,16 @@ class Router
 		return false;
 	}
 
+	public function notFound() : string
+	{
+		http_response_code(404);
+		$host = 'http://'.$_SERVER['HTTP_HOST'].'/';
+		header('HTTP/1.1 404 Not Found');
+		header("Status: 404 Not Found");
+		header('Location:'.$host.'not_found/');
+		exit;
+	}
+
 	// public function saveRoutes() : void
 	// {
 	// 	file_put_contents($this->config, 'return ' . var_export($this->routes, true) . ';');

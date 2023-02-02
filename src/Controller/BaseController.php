@@ -21,6 +21,11 @@ abstract class BaseController
 		require $path;
 		return ob_get_clean();
 	}
+
+	public function notFoundAction() : void
+	{
+		echo $this->view('service/404.html');
+	}
 }
 
 class PathException extends \Exception

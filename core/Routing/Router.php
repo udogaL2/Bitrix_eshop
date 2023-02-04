@@ -16,7 +16,7 @@ class Router
 		{
 			throw new \Exception('no config file by path: ' . $this->config);
 		}
-		foreach (require $this->config as $route)
+		foreach (require_once $this->config as $route)
 		{
 			$this->add($route['method'], $route['path'], $route['action']);
 		}

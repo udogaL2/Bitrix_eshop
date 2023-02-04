@@ -23,11 +23,10 @@
 
 namespace App\Core\Database\Service;
 
-// перенести в потом index.php
 use Exception;
 use mysqli;
+use App\Config\Config;
 
-require_once "src\Services\configuration_service.php";
 
 class DB_session
 {
@@ -40,10 +39,10 @@ class DB_session
 			return;
 		}
 
-		$db_host = option('DB_HOST');
-		$username = option('DB_USERNAME');
-		$password = option('DB_PASSWORD');
-		$db_name = option('DB_NAME');
+		$db_host = Config::DB_HOST;
+		$username = Config::DB_USERNAME;
+		$password = Config::DB_PASSWORD;
+		$db_name = Config::DB_NAME;
 
 		self::$connection = mysqli_init();
 

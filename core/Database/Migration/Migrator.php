@@ -3,12 +3,13 @@
 namespace App\Core\Database\Migration;
 
 use App\Core\Database\Service\DB_session;
+use App\Config\Config;
 use Exception;
 
 class Migrator
 {
 	// todo(что-то сделать с этими путями до файлов)
-	protected static string $path_to_migration_folder = __DIR__ . "/../../../src/Migration/";
+	protected static string $path_to_migration_folder = Config::ROOT . "/src/Migration/";
 
 	public static function migrate(): void
 	{

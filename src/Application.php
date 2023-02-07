@@ -2,12 +2,20 @@
 
 namespace App;
 
+use App\Config\Config;
+use App\Core\Database\Migration\Migrator;
+
 require_once __DIR__ . '/../config/Config.php';
+require_once __DIR__ . '/../core/Database/Migration/Migrator.php';
+require_once __DIR__ . '/../core/Database/Service/DB_session.php';
 
 class Application
 {
 	public static function run(): void
 	{
+		if (Config::IS_DEV_ENVIRONMENT)
+			Migrator::migrate();
+
 		self::autoload();
 
 		$router = new \App\Core\Routing\Router();

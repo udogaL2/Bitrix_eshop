@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model;
+namespace App\Src\Model;
 
 /*
  * Класс для хранения информации о теге.

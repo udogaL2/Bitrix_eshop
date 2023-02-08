@@ -16,6 +16,11 @@ return array (
 		 'method' => 'GET',
 		 'action' => [new App\Src\Controller\IndexController(), 'notFoundAction'],
 	 ),
+    array (
+        'path' => '/fatal',
+        'method' => 'GET',
+        'action' => [new App\Src\Controller\IndexController(), 'internalErrorAction'],
+    ),
 	 // array(
 		//  'path' => '/order/',
 		//  'method' => 'GET',

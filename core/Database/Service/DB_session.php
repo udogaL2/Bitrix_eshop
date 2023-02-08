@@ -23,6 +23,7 @@
 
 namespace App\Core\Database\Service;
 
+use App\Core\Routing\Router;
 use Exception;
 use mysqli;
 use App\Config\Config;
@@ -68,17 +69,24 @@ class DB_session
 		}
 
 	}
-
-	public static function request_db(
+    public static function request_db(
 		string $query,
 		string $row_of_types = '',
 		array  $vars = [],
-		bool   $is_multi_query = false,
-	): \mysqli_result|bool
+		bool   $is_multi_query = false
+	) : ?\mysqli_result
 	{
 		if (self::$connection === null)
 		{
-			self::create_db_connection();
+            try
+            {
+                self::create_db_connection();
+            }
+            catch (Exception $e)
+            {
+                (new Router)->fatalError();
+            }
+
 		}
 
 		if ($row_of_types)
@@ -109,7 +117,7 @@ class DB_session
 			}
 		}
 
-		return $result;
+		return !is_bool($result) ? $result : null;
 	}
 
 	public static function clear_buffer(): void

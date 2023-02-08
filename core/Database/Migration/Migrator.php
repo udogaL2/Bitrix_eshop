@@ -28,8 +28,12 @@ class Migrator
 			$last_migration_or_bool = DB_session::request_db(
 				"select NAME from migration order by ID desc limit 1"
 			);
-
-			$last_migration = $last_migration_or_bool ? mysqli_fetch_row($last_migration_or_bool)[0] : null;
+            $last_migration = mysqli_fetch_row($last_migration_or_bool);
+            if (!is_array($last_migration))
+            {
+                throw new Exception('cannot get info about last migration');
+            }
+			$last_migration = count($last_migration) > 0 ? $last_migration[0] : null;
 		}
 		catch (Exception $e)
 		{
@@ -59,7 +63,7 @@ class Migrator
 		foreach ($unfulfilled_migrations as $unfulfilled_migration)
 		{
 			$sql_request = file_get_contents(self::$path_to_migration_folder . $unfulfilled_migration);
-			$request_res = DB_session::request_db($sql_request, is_multi_query: substr_count($sql_request, ";") > 1);
+			$request_res = DB_session::request_db($sql_request, substr_count($sql_request, ";") > 1);
 
 			if (!$request_res)
 			{

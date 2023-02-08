@@ -86,6 +86,15 @@ class Router
 		header('Location:' . $host . '/404/');
 	}
 
+    public function fatalError() : void
+    {
+        http_response_code(503);
+        $host = 'http://'.$_SERVER['HTTP_HOST'];
+        header('HTTP/1.1 503 Service Unavailable');
+        header('Status: 503 Service Unavailable');
+        header('Location:' . $host . '/fatal/');
+    }
+
 	// public function saveRoutes() : void
 	// {
 	// 	file_put_contents($this->config, 'return ' . var_export($this->routes, true) . ';');

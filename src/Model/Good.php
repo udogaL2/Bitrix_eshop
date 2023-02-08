@@ -6,6 +6,9 @@ namespace App\Src\Model;
  * Класс для хранения информации о товаре.
  * Имеет конструктор; getter для всех параметров; setter для всего, за исключением $id
  */
+
+use App\Src\Model\Tag;
+
 class Good
 {
 	private int $id;
@@ -13,8 +16,15 @@ class Good
 	private float $price;
 	private string $shortDesc;
 	private string $fullDesc;
-	private string $dateUpdate;
-	private int $numberOfOrders;
+
+    /** @var Tag[] $tags */
+    private array $tags;
+
+    /** @var Image[] $images  */
+    private array $images;
+    private \DateTime $timeCreate;
+	private \DateTime $timeUpdate;
+	private string $article;
 	private bool $isActive;
 
 	/*
@@ -28,12 +38,15 @@ class Good
 	public function __construct(
 		string $name,
 		float  $price,
-		string $dateUpdate,
-		string $shortDesc = "No description",
-		string $fullDesc = "No description",
-		int    $numberOfOrders = 0,
+        string $article,
+        string $shortDesc = "No description",
+        string $fullDesc = "No description",
+        array $tags = [],
+        int    $id = 0,
+		\DateTime $timeUpdate = null,
+        \DateTime $timeCreate = null,
 		bool   $isActive = true,
-		int    $id = 0
+        array $images = []
 	)
 	{
 		$this->id = $id;
@@ -41,8 +54,11 @@ class Good
 		$this->price = $price;
 		$this->shortDesc = $shortDesc;
 		$this->fullDesc = $fullDesc;
-		$this->dateUpdate = $dateUpdate;
-		$this->numberOfOrders = $numberOfOrders;
+        $this->tags = $tags;
+        $this->images = $images;
+		$this->timeCreate = $timeCreate ?? new \DateTime();
+        $this->timeUpdate = $timeUpdate ?? new \DateTime();
+        $this->article = $article;
 		$this->isActive = $isActive;
 	}
 
@@ -71,16 +87,6 @@ class Good
 		return $this->fullDesc;
 	}
 
-	public function getDateUpdate(): string
-	{
-		return $this->dateUpdate;
-	}
-
-	public function getNumberOfOrders(): int
-	{
-		return $this->numberOfOrders;
-	}
-
 	public function isActive(): bool
 	{
 		return $this->isActive;
@@ -106,18 +112,46 @@ class Good
 		$this->fullDesc = $fullDesc;
 	}
 
-	public function setDateUpdate(string $dateUpdate): void
-	{
-		$this->dateUpdate = $dateUpdate;
-	}
-
-	public function setNumberOfOrders(int $numberOfOrders): void
-	{
-		$this->numberOfOrders = $numberOfOrders;
-	}
-
 	public function setIsActive(bool $isActive): void
 	{
 		$this->isActive = $isActive;
 	}
+
+    public function getTimeCreate(): \DateTime
+    {
+        return $this->timeCreate;
+    }
+
+    public function getTimeUpdate(): \DateTime
+    {
+        return $this->timeUpdate;
+    }
+
+    public function setTimeUpdate(\DateTime $timeUpdate): void
+    {
+        $this->timeUpdate = $timeUpdate;
+    }
+
+    public function getArticle(): int
+    {
+        return $this->article;
+    }
+
+    /** @return Tag[] */
+    public function getTags(): array
+    {
+        return $this->tags;
+    }
+
+    /** @param Tag[] $tags */
+    public function setTags(array $tags): void
+    {
+        $this->tags = $tags;
+    }
+
+    /** @return Image[] */
+    public function getImages(): array
+    {
+        return $this->images;
+    }
 }

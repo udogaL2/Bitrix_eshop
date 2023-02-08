@@ -22,7 +22,7 @@ class GoodController extends BaseController
         }
         catch (\Exception $e)
         {
-            //Logger::addError($e)
+            //Logger::addError($e->getLine() . ', ' . $e->getMessage());
             $this->notFoundAction();
             return;
         }

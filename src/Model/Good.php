@@ -13,7 +13,7 @@ class Good
 	private float $price;
 	private string $shortDesc;
 	private string $fullDesc;
-	private string $dateUpdate;
+	private \DateTime $dateUpdate;
 	private int $numberOfOrders;
 	private bool $isActive;
 
@@ -28,7 +28,7 @@ class Good
 	public function __construct(
 		string $name,
 		float  $price,
-		string $dateUpdate,
+		\DateTime $dateUpdate,
 		string $shortDesc = "No description",
 		string $fullDesc = "No description",
 		int    $numberOfOrders = 0,
@@ -71,7 +71,7 @@ class Good
 		return $this->fullDesc;
 	}
 
-	public function getDateUpdate(): string
+	public function getDateUpdate(): \DateTime
 	{
 		return $this->dateUpdate;
 	}
@@ -106,7 +106,7 @@ class Good
 		$this->fullDesc = $fullDesc;
 	}
 
-	public function setDateUpdate(string $dateUpdate): void
+	public function setDateUpdate(\DateTime $dateUpdate): void
 	{
 		$this->dateUpdate = $dateUpdate;
 	}

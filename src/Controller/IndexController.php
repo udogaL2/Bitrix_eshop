@@ -18,7 +18,7 @@ class IndexController extends BaseController
         try
         {
             echo $this->view('Main/index.html', [
-                'content' => $this->view('Good/index.html', [
+                'content' => $this->view('Good/good.html', [
                     'goods' => $goods,
                 ]),
             ]);

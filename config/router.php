@@ -21,11 +21,16 @@ return array (
         'method' => 'GET',
         'action' => [new App\Src\Controller\IndexController(), 'internalErrorAction'],
     ),
-	 // array(
-		//  'path' => '/order/',
-		//  'method' => 'GET',
-		//  'action' => [new App\Src\Controller\OrderController(), 'createOrderAction'],
-	 // ),
+    array(
+        'path' => '/order',
+        'method' => 'GET',
+        'action' => [new App\Src\Controller\OrderController(), 'viewOrderPageAction'],
+    ),
+//    array(
+//        'path' => '/order/',
+//        'method' => 'GET',
+//        'action' => [new App\Src\Controller\OrderController(), 'createOrderAction'],
+//    ),
 	 // 21232f297a57a5a743894a0e4a801fc3 - md5 hash of 'admin'
 	 // array (
 		//  'path' => '/21232f297a57a5a743894a0e4a801fc3',

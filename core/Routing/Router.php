@@ -16,7 +16,7 @@ class Router
 		{
 			throw new \Exception('no config file by path: ' . $this->config);
 		}
-		foreach (require_once $this->config as $route)
+		foreach (require $this->config as $route)
 		{
 			$this->add($route['method'], $route['path'], $route['action']);
 		}
@@ -85,6 +85,15 @@ class Router
 		header("Status: 404 Not Found");
 		header('Location:' . $host . '/404/');
 	}
+
+    public function fatalError() : void
+    {
+        http_response_code(503);
+        $host = 'http://'.$_SERVER['HTTP_HOST'];
+        header('HTTP/1.1 503 Service Unavailable');
+        header('Status: 503 Service Unavailable');
+        header('Location:' . $host . '/fatal/');
+    }
 
 	// public function saveRoutes() : void
 	// {

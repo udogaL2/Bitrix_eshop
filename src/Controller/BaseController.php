@@ -26,6 +26,11 @@ abstract class BaseController
 	{
 		echo $this->view('service/404.html');
 	}
+
+    public function internalErrorAction() : void
+    {
+        echo $this->view('service/fatal.html');
+    }
 }
 
 class PathException extends \Exception

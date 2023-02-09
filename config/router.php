@@ -2,11 +2,16 @@
 
 return array (
 	 array (
-		'path' => '/',
-		'method' => 'GET',
-		'action' => [new App\Src\Controller\IndexController(), 'viewGoodByPage'],
-	),
+		 'path' => '/',
+		 'method' => 'GET',
+		 'action' => [new App\Src\Controller\IndexController(), 'viewGoodByPage'],
+	 ),
 	 array (
+		 'path' => '/:page',
+		 'method' => 'GET',
+		 'action' => [new App\Src\Controller\IndexController(), 'viewGoodByPage'],
+	 ),
+		 array (
 		'path' => '/product/:id',
 		'method' => 'GET',
 		'action' => [new App\Src\Controller\GoodController(), 'getDetailedGoodAction'],

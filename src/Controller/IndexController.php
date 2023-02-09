@@ -26,7 +26,7 @@ class IndexController extends BaseController
 			]);
 		}
 		catch (Exception $e)
-        {
+		{
 			$this->notFoundAction();
 		}
 	}
@@ -39,39 +39,39 @@ class IndexController extends BaseController
 	{
 		$goods = null;
 
-			if ($page < 0)
-			{
-				return null;
-			}
+		if ($page < 0)
+		{
+			return null;
+		}
 
-			$countGoodsOnPage = Config::COUNT_GOODS_ON_PAGE;
-			$offsetByPage = ($page - 1) * $countGoodsOnPage;
+		$countGoodsOnPage = Config::COUNT_GOODS_ON_PAGE;
+		$offsetByPage = ($page - 1) * $countGoodsOnPage;
 
-			$goodsQuery = DB_session::request_db(
-				"SELECT * FROM good LIMIT $countGoodsOnPage OFFSET $offsetByPage;",
+		$goodsQuery = DB_session::request_db(
+			"SELECT * FROM good LIMIT $countGoodsOnPage OFFSET $offsetByPage;",
+		);
+
+		if ($goodsQuery===null)
+		{
+			return null;
+		}
+
+		while ($good = mysqli_fetch_assoc($goodsQuery))
+		{
+			$goods[] = new Good(
+				$good["NAME"],
+				$good["PRICE"],
+				$good["GOOD_CODE"],
+				$good["SHORT_DISC"],
+				$good["FULL_DISC"],
+				$good["ID"],
+				new \DateTime($good["DATE_UPDATE"]),
+				new \DateTime($good["DATE_CREATE"]),
+				$good["IS_ACTIVE"]
+			//TODO получение картинок и тегов из БД
 			);
+		}
 
-			if ($goodsQuery===null)
-			{
-				return null;
-			}
-
-			while ($good = mysqli_fetch_assoc($goodsQuery))
-			{
-				$goods[] = new Good(
-					$good["NAME"],
-					$good["PRICE"],
-					$good["GOOD_CODE"],
-					$good["SHORT_DISC"],
-					$good["FULL_DISC"],
-					$good["ID"],
-					new \DateTime($good["DATE_UPDATE"]),
-					new \DateTime($good["DATE_CREATE"]),
-					$good["IS_ACTIVE"]
-				//TODO получение картинок и тегов из БД
-				);
-			}
-
-			return $goods;
+		return $goods;
 	}
 }

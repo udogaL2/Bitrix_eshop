@@ -4,13 +4,14 @@ namespace App\Src\Controller;
 
 use App\Core\Database\Service\DB_session;
 use App\Src\Model\Good;
+use App\Src\Model\Image;
 use App\Src\Model\Tag;
 use App\Config\Config;
 use Exception;
 
 class IndexController extends BaseController
 {
-	public function viewGoodByPage(int $page=1): void
+	public function viewGoodByPage(int $page = 1): void
 	{
 		try
 		{
@@ -36,7 +37,7 @@ class IndexController extends BaseController
 	 * @return ?Good[]
 	 * @throws Exception
 	 */
-	private function getGoodsByPage(int $page=1): ?array
+	private function getGoodsByPage(int $page = 1): ?array
 	{
 		$goods = null;
 
@@ -49,18 +50,18 @@ class IndexController extends BaseController
 		$offsetByPage = ($page - 1) * $countGoodsOnPage;
 
 		$goodsQuery = DB_session::request_db(
-			"SELECT good.*,  group_concat(tag.NAME SEPARATOR ', ') as TAGS_NAME,
-                     group_concat(tag.ID SEPARATOR ', ') as TAGS_ID FROM good
-					   INNER JOIN tag
-					   INNER JOIN good_tag gt on gt.GOOD_ID=good.ID && gt.TAG_ID=tag.ID
-					   GROUP BY good.ID
-					   LIMIT $countGoodsOnPage OFFSET $offsetByPage;",
-		);
+			"SELECT basic.*, group_concat(image.ID SEPARATOR ', ') as IMAGE FROM image,
+				(SELECT good.*,  group_concat(tag.NAME SEPARATOR ', ') as TAGS_NAME,
+                 group_concat(tag.ID SEPARATOR ', ') as TAGS_ID FROM good
+				INNER JOIN tag
+				INNER JOIN good_tag gt on gt.GOOD_ID=good.ID && gt.TAG_ID=tag.ID
 
-		if ($goodsQuery===null)
-		{
-			return null;
-		}
+				GROUP BY good.ID
+				LIMIT $countGoodsOnPage OFFSET $offsetByPage) as basic
+				INNER JOIN good_image gi on basic.ID = gi.GOOD_ID
+				WHERE image.ID=gi.IMAGE_ID
+				GROUP BY basic.ID;",
+		);
 
 		while ($good = mysqli_fetch_assoc($goodsQuery))
 		{
@@ -68,15 +69,15 @@ class IndexController extends BaseController
 				$good["NAME"],
 				$good["PRICE"],
 				$good["GOOD_CODE"],
-				$good["SHORT_DISC"],
-				$good["FULL_DISC"],
+				$good["SHORT_DESC"],
+				$good["FULL_DESC"],
 				$good["ID"],
 				new \DateTime($good["DATE_UPDATE"]),
 				new \DateTime($good["DATE_CREATE"]),
 				$good["IS_ACTIVE"],
+				//TODO запрос в базу данных получает ID изображения для каждого товара. Преобразовать.
 				(array)null,
 				$this->collectToTags($good["TAGS_NAME"], $good["TAGS_ID"])
-			//TODO получение картинок
 			);
 		}
 
@@ -88,15 +89,33 @@ class IndexController extends BaseController
 	 */
 	private function collectToTags(string $nameTags, string $idTags): array
 	{
-		$tagsName=explode(', ', $nameTags);
-		$tagsId=explode(', ', $idTags);
+		$tagsName = explode(', ', $nameTags);
+		$tagsId = explode(', ', $idTags);
 
-		$tags=[];
-		foreach ($tagsName as $key => $name){
+		$tags = [];
+		foreach ($tagsName as $key => $name)
+		{
 			$tag = new Tag($name, $tagsId[$key]);
-			$tags[]=$tag;
+			$tags[] = $tag;
 		}
 
 		return $tags;
+	}
+
+	private function getImageById(int $id): ?Image
+	{
+
+			$imageQuery = DB_session::request_db(
+				'SELECT * FROM image WHERE image.ID=?', 'i', [$id]
+			);
+
+			$image = mysqli_fetch_assoc($imageQuery);
+			if ($image === null)
+			{
+				return null;
+			}
+
+			//TODO Разобраться с тем, как создать Image, что за поле $name?
+		return new Image();
 	}
 }

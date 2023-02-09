@@ -10,6 +10,6 @@ class Config
 	public const DB_PASSWORD = 'm_user_pass';
 	public const DB_NAME = 'eshop';
 	public const COUNT_GOODS_ON_PAGE='2';
-	public const IS_DEV_ENVIRONMENT = false; // dev - true, prod - false
+	public const IS_DEV_ENVIRONMENT = true; // dev - true, prod - false
 
 }

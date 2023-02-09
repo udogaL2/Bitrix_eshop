@@ -56,21 +56,21 @@ class IndexController extends BaseController
 			return null;
 		}
 
-		while ($good = mysqli_fetch_assoc($goodsQuery))
-		{
-			$goods[] = new Good(
-				$good["NAME"],
-				$good["PRICE"],
-				$good["GOOD_CODE"],
-				$good["SHORT_DISC"],
-				$good["FULL_DISC"],
-				$good["ID"],
-				new \DateTime($good["DATE_UPDATE"]),
-				new \DateTime($good["DATE_CREATE"]),
-				$good["IS_ACTIVE"]
-			//TODO получение картинок и тегов из БД
-			);
-		}
+			while ($good = mysqli_fetch_assoc($goodsQuery))
+			{
+				$goods[] = new Good(
+					$good["NAME"],
+					$good["PRICE"],
+					$good["GOOD_CODE"],
+					$good["SHORT_DESC"],
+					$good["FULL_DESC"],
+					$good["ID"],
+					new \DateTime($good["DATE_UPDATE"]),
+					new \DateTime($good["DATE_CREATE"]),
+					$good["IS_ACTIVE"]
+				//TODO получение картинок и тегов из БД
+				);
+			}
 
 		return $goods;
 	}

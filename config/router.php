@@ -4,7 +4,7 @@ return array (
 	 array (
 		'path' => '/',
 		'method' => 'GET',
-		'action' => [new App\Src\Controller\IndexController(), 'indexAction'],
+		'action' => [new App\Src\Controller\IndexController(), 'viewGoodByPage'],
 	),
 	 array (
 		'path' => '/product/:id',

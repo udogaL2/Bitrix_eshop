@@ -6,7 +6,7 @@ use App\Config\Config;
 
 abstract class BaseController
 {
-	public function view(string $path, array $args = []) : string
+	public static function view(string $path, array $args = []) : string
 	{
 		if (preg_match('#^[0-9A-Za-z-_/]+$#', $path))
 		{
@@ -24,12 +24,12 @@ abstract class BaseController
 
 	public function notFoundAction() : void
 	{
-		echo $this->view('service/404.html');
+		echo self::view('service/404.html');
 	}
 
     public function internalErrorAction() : void
     {
-        echo $this->view('service/fatal.html');
+        echo self::view('service/fatal.html');
     }
 }
 

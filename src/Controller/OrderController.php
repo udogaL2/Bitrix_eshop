@@ -6,8 +6,8 @@ class OrderController extends BaseController
 {
     public function viewOrderPageAction() : void
     {
-        echo $this->view('Main/index.html', [
-            'content' => $this->view('Order/orderRegistration.html', []),
+        echo self::view('Main/index.html', [
+            'content' => self::view('Order/orderRegistration.html', []),
         ]);
     }
 

@@ -8,12 +8,11 @@ namespace App\Src\Model;
  */
 class Good
 {
-	private int $id;
+	private ?int $id;
 	private string $name;
 	private float $price;
 	private string $shortDesc;
 	private string $fullDesc;
-	private \DateTime $dateUpdate;
 	private int $numberOfOrders;
 
     /** @var Tag[] $tags */
@@ -40,12 +39,12 @@ class Good
         string $article,
         string $shortDesc = "No description",
         string $fullDesc = "No description",
-        array $tags = [],
-        int    $id = 0,
+        int    $id = null,
 		\DateTime $timeUpdate = null,
         \DateTime $timeCreate = null,
 		bool   $isActive = true,
-        array $images = []
+        array $images = [],
+		array $tags = []
 	)
 	{
 		$this->id = $id;
@@ -61,7 +60,7 @@ class Good
 		$this->isActive = $isActive;
 	}
 
-	public function getId(): int
+	public function getId(): ?int
 	{
 		return $this->id;
 	}

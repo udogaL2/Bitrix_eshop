@@ -106,17 +106,17 @@ class GoodController extends BaseController
             $good_result['GOOD_CODE'],
             $good_result['SHORT_DISC'],
             $good_result['FULL_DISC'],
-            $tags,
             $good_result['ID'],
             new \DateTime($good_result['DATE_UPDATE']),
             new \DateTime($good_result['DATE_CREATE']),
             $good_result['IS_ACTIVE'],
-            $images
+            $images,
+			$tags
         );
         try
         {
-            echo $this->view('Main/index.html', [
-                'content' => $this->view('Detail/index.html', [
+            echo self::view('Main/index.html', [
+                'content' => self::view('Detail/index.html', [
                     'good' => $good,
                 ]),
             ]);

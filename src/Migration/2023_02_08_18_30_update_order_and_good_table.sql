@@ -1,0 +1,2 @@
+ALTER TABLE good MODIFY PRICE float;
+ALTER TABLE `order` MODIFY PRICE float;

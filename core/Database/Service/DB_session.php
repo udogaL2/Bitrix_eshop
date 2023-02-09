@@ -74,7 +74,7 @@ class DB_session
 		string $row_of_types = '',
 		array  $vars = [],
 		bool   $is_multi_query = false
-	) : ?\mysqli_result
+	) : \mysqli_result | bool
 	{
 		if (self::$connection === null)
 		{
@@ -117,7 +117,7 @@ class DB_session
 			}
 		}
 
-		return !is_bool($result) ? $result : null;
+		return $result;
 	}
 
 	public static function clear_buffer(): void

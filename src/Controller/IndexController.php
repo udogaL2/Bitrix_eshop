@@ -4,6 +4,7 @@ namespace App\Src\Controller;
 
 use App\Core\Database\Service\DB_session;
 use App\Src\Model\Good;
+use App\Src\Model\Tag;
 use App\Config\Config;
 use Exception;
 
@@ -48,7 +49,12 @@ class IndexController extends BaseController
 		$offsetByPage = ($page - 1) * $countGoodsOnPage;
 
 		$goodsQuery = DB_session::request_db(
-			"SELECT * FROM good LIMIT $countGoodsOnPage OFFSET $offsetByPage;",
+			"SELECT good.*,  group_concat(tag.NAME SEPARATOR ', ') as TAGS_NAME,
+                     group_concat(tag.ID SEPARATOR ', ') as TAGS_ID FROM good
+					   INNER JOIN tag
+					   INNER JOIN good_tag gt on gt.GOOD_ID=good.ID && gt.TAG_ID=tag.ID
+					   GROUP BY good.ID
+					   LIMIT $countGoodsOnPage OFFSET $offsetByPage;",
 		);
 
 		if ($goodsQuery===null)
@@ -67,11 +73,30 @@ class IndexController extends BaseController
 				$good["ID"],
 				new \DateTime($good["DATE_UPDATE"]),
 				new \DateTime($good["DATE_CREATE"]),
-				$good["IS_ACTIVE"]
-			//TODO получение картинок и тегов из БД
+				$good["IS_ACTIVE"],
+				(array)null,
+				$this->collectToTags($good["TAGS_NAME"], $good["TAGS_ID"])
+			//TODO получение картинок
 			);
 		}
 
 		return $goods;
+	}
+
+	/**
+	 * @return Tag[]
+	 */
+	private function collectToTags(string $nameTags, string $idTags): array
+	{
+		$tagsName=explode(', ', $nameTags);
+		$tagsId=explode(', ', $idTags);
+
+		$tags=[];
+		foreach ($tagsName as $key => $name){
+			$tag = new Tag($name, $tagsId[$key]);
+			$tags[]=$tag;
+		}
+
+		return $tags;
 	}
 }

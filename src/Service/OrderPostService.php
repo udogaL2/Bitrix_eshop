@@ -7,5 +7,7 @@ class OrderPostService
 	function func()
 	{
 		echo $_POST['c_name'];
+
+
 	}
 }

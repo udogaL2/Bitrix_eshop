@@ -117,7 +117,7 @@ class GoodController extends BaseController
         try
         {
             echo self::view('Main/index.html', [
-                'content' => self::view('Detail/index.html', [
+                'content' => self::view('Detail/detail.html', [
                     'good' => $good,
                 ]),
             ]);

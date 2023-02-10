@@ -14,6 +14,7 @@
 
 <div class="content">
 		<?php foreach($goods as $good): ?>
+			<a href="/product/<?=$good->getId()?>">
 			<div class="goods-item">
 				<div class="img-good"></div>
 				<div class="title-good">Good №<?= $good->getId() ?></div>
@@ -28,6 +29,7 @@
 					<?php endforeach; ?>
 				</div>
 			</div>
+			</a>
 		<?php endforeach; ?>
 </div>
 </body>

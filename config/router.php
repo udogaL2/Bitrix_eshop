@@ -27,9 +27,9 @@ return array (
 		 'action' => [new App\Src\Controller\OrderController(), 'createOrderAction'],
 	 ),
 	 array(
-		 'path' => '/src/Service/OrderPostService.php',
+		 'path' => '/orderPlaced/:id',
 		 'method' => 'POST',
-		 'action' => [new \App\Src\Service\OrderPostService(), 'func'],
+		 'action' => [new App\Src\Controller\OrderController(), 'registerOrderAction'],
 	 ),
     array (
         'path' => '/fatal',

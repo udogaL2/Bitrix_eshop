@@ -1,3 +1,5 @@
+<?php /** @var App\Src\Model\Good $good */ ?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -15,14 +17,16 @@
 <div class="content-detail">
 	<div class="detail-list">
 		<div class="detail-list-img"></div>
-		<div class="detail-list-title">Title of Good</div>
-		<div class="detail-list-description">Description</div>
-		<div class="detail-list-producer">Producer of Good</div>
-		<div class="detail-list-tag">Tag of Good</div>
+		<div class="detail-list-title"><?= $good->getName() ?></div>
+		<div class="detail-list-description"><?= $good->getShortDesc() ?></div>
+		<div class="detail-list-producer"><?= 'producer' ?></div>
+		<?php foreach ($good->getTags() as $tag): ?>
+			<div class="detail-list-tag"><?= $tag->getName() ?></div>
+		<?php endforeach; ?>
 	</div>
 	<div class="detail-price-buy">
-		<div class="detail-price">500 RUB</div>
-		<a href="" class="detail-button-buy">Buy</a>
+		<div class="detail-price"><?= $good->getPrice() ?> RUB</div>
+		<a href="/order/<?= $good->getId() ?>" class="detail-button-buy">Buy</a>
 	</div>
 
 </div>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model;
+namespace App\Src\Model;
 
 use DateTime;
 
@@ -15,7 +15,7 @@ class Order
     private float $price;
 
     public function __construct(
-        int      $id,
+        //int      $id,
         int      $good_id,
         Customer $customer,
         string   $address,
@@ -23,7 +23,7 @@ class Order
         string   $status = 'new'
     )
     {
-        $this->setId($id);
+        //$this->setId($id);
         $this->setAddress($address);
         $this->setCustomer($customer);
         $this->setGoodId($good_id);

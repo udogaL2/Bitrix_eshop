@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model;
+namespace App\Src\Model;
 
 class Customer
 {
@@ -10,9 +10,9 @@ class Customer
     private string $email;
     private string $wish;
 
-    public function __construct(int $id, string $name, string $phone, string $email, string $wish)
+    public function __construct(string $name, string $phone, string $email, string $wish)
     {
-        $this->setId($id);
+        //$this->setId($id);
         $this->setName($name);
         $this->setPhone($phone);
         $this->setEmail($email);

@@ -2,47 +2,63 @@
 
 namespace App\Src\Model;
 
+/*
+ * Класс для хранения информации об изображении.
+ * Имеет конструктор; getter для всех параметров; setter для $isMain
+ */
+
 use App\Config\Config;
 
 class Image
 {
-    private const mainWidth = 1000;
-    private const mainHeight = 800;
-    private const nonMainWidth = 300;
-    private const nonMainHeight = 200;
-    private string $name;
-    private string $directory;
+
+	private int $id;
+    private string $path;
     private int $width;
     private int $height;
     private bool $isMain;
 
+	public function __construct(string $path, int $width, int $height, bool $isMain=false, int $id=null)
+	{
+		$this->id = $id;
+		$this->path = $path;
+		$this->width = $width;
+		$this->height = $height;
+		$this->isMain = $isMain;
+	}
 
-    public function __construct($name, $isMain = false, $directory = '/src/images/', $width = 1000, $height = 800)
-    {
-        $this->name = $name;
-        $this->directory = $directory;
-        $this->height = $height;
-        $this->width = $width;
-        $this->isMain = $isMain;
-    }
+	public function getAbsolutePath(): string
+	{
+		return Config::ROOT . "/".$this->getPath();
+	}
 
-    function getAbsolutePath()
-    {
-        return Config::ROOT . $this->directory . $this->name;
-    }
+	public function getId(): int
+	{
+		return $this->id;
+	}
 
-    function resize()
-    {
-        //TODO: implement resizing
-    }
+	public function getPath(): string
+	{
+		return $this->path;
+	}
 
-    public function isMain(): bool
-    {
-        return $this->isMain;
-    }
+	public function getWidth(): int
+	{
+		return $this->width;
+	}
 
-    public function setIsMain(bool $isMain): void
-    {
-        $this->isMain = $isMain;
-    }
+	public function getHeight(): int
+	{
+		return $this->height;
+	}
+
+	public function isMain(): bool
+	{
+		return $this->isMain;
+	}
+
+	public function setIsMain(bool $isMain): void
+	{
+		$this->isMain = $isMain;
+	}
 }

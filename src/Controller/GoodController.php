@@ -81,15 +81,16 @@ class GoodController extends BaseController
             {
                 if (mysqli_num_rows($images_request) !== 0)
                 {
-                    $name_regex = '#[\p{L}\d]+\.\p{L}+$#u';
-                    while ($img = mysqli_fetch_assoc($images_request))
-                    {
-                        $matches = [];
-                        preg_match($name_regex, $img['PATH'], $matches);
-                        $name = array_shift($matches);
-                        $directory = str_replace($name, '', $img['PATH']);
-                        $images[] = new Image($name, $img['IS_MAIN'], $directory, $img['WIDTH'], $img['HEIGHT']);
-                    }
+					while ($img = mysqli_fetch_assoc($images_request))
+					{
+						$images[] = new Image(
+							$img["PATH"],
+							$img["WIDTH"],
+							$img["HEIGHT"],
+							$img["IS_MAIN"],
+							$img["ID"]
+						);
+					}
                 }
             }
         }

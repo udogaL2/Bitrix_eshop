@@ -50,7 +50,7 @@ class IndexController extends BaseController
 		$offsetByPage = ($page - 1) * $countGoodsOnPage;
 
 		$goodsQuery = DB_session::request_db(
-			"SELECT basic.*, group_concat(image.ID SEPARATOR ', ') as IMAGE FROM image,
+			"SELECT basic.*, group_concat(image.ID SEPARATOR ', ') as IMAGES FROM image,
 				(SELECT good.*,  group_concat(tag.NAME SEPARATOR ', ') as TAGS_NAME,
                  group_concat(tag.ID SEPARATOR ', ') as TAGS_ID FROM good
 				INNER JOIN tag
@@ -75,8 +75,7 @@ class IndexController extends BaseController
 				new \DateTime($good["DATE_UPDATE"]),
 				new \DateTime($good["DATE_CREATE"]),
 				$good["IS_ACTIVE"],
-				//TODO запрос в базу данных получает ID изображения для каждого товара. Преобразовать.
-				(array)null,
+				$this->collectToImages($good["IMAGES"]),
 				$this->collectToTags($good["TAGS_NAME"], $good["TAGS_ID"])
 			);
 		}
@@ -102,20 +101,48 @@ class IndexController extends BaseController
 		return $tags;
 	}
 
-	private function getImageById(int $id): ?Image
+	/**
+	 * @return ?Image[]
+	 */
+	private function collectToImages(string $idImages): ?array
 	{
+		try
+		{
+			$ImagesId = explode(', ', $idImages);
 
-			$imageQuery = DB_session::request_db(
-				'SELECT * FROM image WHERE image.ID=?', 'i', [$id]
-			);
-
-			$image = mysqli_fetch_assoc($imageQuery);
-			if ($image === null)
+			$images = [];
+			foreach ($ImagesId as $id)
 			{
-				return null;
+				$image = $this->getImageById($id);
+				if (is_null($image))
+				{
+					throw new PathException("Image by $id not found");
+				}
+				$images[] = $image;
 			}
 
-			//TODO Разобраться с тем, как создать Image, что за поле $name?
-		return new Image();
+			return $images;
+		}
+		catch (Exception $e)
+		{
+			$this->notFoundAction();
+
+			return null;
+		}
+	}
+
+	private function getImageById(int $id): ?Image
+	{
+		$imageQuery = DB_session::request_db(
+			'SELECT * FROM image WHERE image.ID=?', 'i', [$id]
+		);
+
+		$image = mysqli_fetch_assoc($imageQuery);
+		if ($image === null)
+		{
+			return null;
+		}
+
+		return new Image($image["PATH"], $image["WIDTH"], $image["HEIGHT"], $image["IS_MAIN"], $image["ID"]);
 	}
 }

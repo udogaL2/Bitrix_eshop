@@ -37,9 +37,9 @@ class IndexController extends BaseController
 	 * @return ?Good[]
 	 * @throws Exception
 	 */
-	public function getGoodsByPage(int $page = 1): ?array
+	private function getGoodsByPage(int $page = 1): ?array
 	{
-		$goods = null;
+		$goods = [];
 
 		if ($page < 0)
 		{
@@ -79,8 +79,8 @@ class IndexController extends BaseController
 
 		foreach ($goodIds as $goodId)
 		{
-			$goods[$goodId]->setTags($tags[$goodId]);
-			$goods[$goodId]->setImages($images[$goodId]);
+			$goods[$goodId]->setTags($tags[$goodId] ?? []);
+			$goods[$goodId]->setImages($images[$goodId] ?? []);
 		}
 
 		return $goods;
@@ -97,11 +97,11 @@ class IndexController extends BaseController
 					from good_tag gt
 					where gt.GOOD_ID in ({$preparedGoodsIds});";
 
-			$res = DB_session::request_db($query);
+			$DBResponse = DB_session::request_db($query);
 
 			$goodIdTag = [];
 
-			while ($tag = mysqli_fetch_row($res))
+			while ($tag = mysqli_fetch_row($DBResponse))
 			{
 				$goodIdTag[$tag[0]][] = new Tag($tag[1], null);
 			}
@@ -128,42 +128,59 @@ class IndexController extends BaseController
 						from good_image gi
 						where gi.GOOD_ID in ({$preparedGoodsIds});";
 
-			$res = DB_session::request_db($query);
+			$DBResponse = DB_session::request_db($query);
 
-			$goodIm = [];
+			$goodIdImage = [];
 			$imageIds = [];
 
-			while ($good = mysqli_fetch_row($res))
+			while ($good = mysqli_fetch_row($DBResponse))
 			{
-				$goodIm[$good[0]][] = $good[1];
+				$goodIdImage[$good[0]][] = $good[1];
 				$imageIds[] = $good[1];
 			}
 
 			$preparedImagesIds = join(",", $imageIds);
 
+			$images = $this->collectImagesById($preparedImagesIds);
+
+			if (!$images)
+				return null;
+
+			foreach ($goodIdImage as &$item)
+			{
+				$item = array_map(fn($im_id): Image => $images[$im_id], $item);
+			}
+
+			return $goodIdImage;
+		}
+		catch (Exception $e)
+		{
+			$this->notFoundAction();
+
+			return null;
+		}
+	}
+
+	private function collectImagesById(string $preparedImagesIds): ?array
+	{
+		try
+		{
+			$images = [];
+
 			$query = "select *
 					from image
 					where ID in ({$preparedImagesIds});";
 
-			$res = DB_session::request_db($query);
+			$DBResponse = DB_session::request_db($query);
 
-			while ($image = mysqli_fetch_assoc($res))
+			while ($image = mysqli_fetch_assoc($DBResponse))
 			{
-				$imageIds[$image["ID"]] = new Image(
-					$image["PATH"],
-					$image["HEIGHT"],
-					$image["WIDTH"],
-					$image["IS_MAIN"],
-					$image["ID"]
+				$images[$image["ID"]] = new Image(
+					$image["PATH"], $image["HEIGHT"], $image["WIDTH"], $image["IS_MAIN"], $image["ID"]
 				);
 			}
 
-			foreach ($goodIm as &$item)
-			{
-				$item = array_map(fn($im_id): Image => $imageIds[$im_id], $item);
-			}
-
-			return $goodIm;
+			return $images;
 		}
 		catch (Exception $e)
 		{

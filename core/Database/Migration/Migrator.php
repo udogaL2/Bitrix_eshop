@@ -8,70 +8,60 @@ use Exception;
 
 class Migrator
 {
-	// todo(что-то сделать с этими путями до файлов)
-	protected static string $path_to_migration_folder = Config::ROOT . "/src/Migration/";
+	protected static string $pathToMigrationFolder = Config::ROOT . "/src/Migration/";
 
 	public static function migrate(): void
 	{
-		/* todo()
-		 * 	+ 1. просмотреть последнюю запись о миграции
-		 *  	+ 1.1. если не имеется начать с начала
-		 * 		+ 1.2. если имеется начинать со следующей
-		 * 	+ 2. пройтись по /src/Migration/ и найти все новые миграции
-		 * 	+ 3. выполнить все миграции
-		 * 	+ 4. обновить данные о последней примененной миграции в таблице migration
-		 */
-
-		// 1.
+		// 1. последняя запись о миграции
 		try
 		{
-			$last_migration_or_bool = DB_session::request_db(
+			$lastMigrationOrBool = DB_session::request_db(
 				"select NAME from migration order by ID desc limit 1"
 			);
-			$last_migration = $last_migration_or_bool ? mysqli_fetch_row($last_migration_or_bool)[0] : null;
-			if (!$last_migration)
+			$lastMigration = $lastMigrationOrBool ? mysqli_fetch_row($lastMigrationOrBool)[0] : null;
+			if (!$lastMigration)
 			{
 				throw new Exception('cannot get info about last migration');
 			}
 		}
 		catch (Exception $e)
 		{
-			$last_migration = null;
+			$lastMigration = null;
 		}
 
-		// 2.
-		$all_migrations = array_diff(scandir(self::$path_to_migration_folder), ['..', '.']);
+		// 2. поиск всех новых миграций в /src/Migration/
+		$allMigrations = array_diff(scandir(self::$pathToMigrationFolder), ['..', '.']);
 
-		if (!$all_migrations)
+		if (!$allMigrations)
 		{
 			return;
 		}
 
-		$unfulfilled_migrations = $last_migration !== null ? array_slice(
-			$all_migrations,
-			array_search($last_migration, $all_migrations) - 1
-		) : $all_migrations;
+		$unfulfilledMigrations = $lastMigration !== null ? array_slice(
+			$allMigrations,
+			array_search($lastMigration, $allMigrations) - 1
+		) : $allMigrations;
 
-		// 3.
-		if (!$unfulfilled_migrations)
+		// 3. выполнить все миграции
+		if (!$unfulfilledMigrations)
 		{
 			return;
 		}
 
 		// данная часть кода выполняется только если есть невыполненные миграции
-		foreach ($unfulfilled_migrations as $unfulfilled_migration)
+		foreach ($unfulfilledMigrations as $unfulfilledMigration)
 		{
-			$sql_request = file_get_contents(self::$path_to_migration_folder . $unfulfilled_migration);
-			$request_res = DB_session::request_db($sql_request, is_multi_query: substr_count($sql_request, ";") > 1);
+			$sqlRequest = file_get_contents(self::$pathToMigrationFolder . $unfulfilledMigration);
+			$requestResult = DB_session::request_db($sqlRequest, is_multi_query: substr_count($sqlRequest, ";") > 1);
 
-			if (!$request_res)
+			if (!$requestResult)
 			{
-				throw new Exception("миграция " . $unfulfilled_migration . " не выполнена");
+				throw new Exception("миграция " . $unfulfilledMigration . " не выполнена");
 			}
 		}
 
-		// 4.
-		$last_migration = array_pop($unfulfilled_migrations);
-		DB_session::request_db("insert into migration (NAME) value (?);", 's', [$last_migration]);
+		// 4. обновление данных о последней примененной миграции в таблице migration
+		$lastMigration = array_pop($unfulfilledMigrations);
+		DB_session::request_db("insert into migration (NAME) value (?);", 's', [$lastMigration]);
 	}
 }

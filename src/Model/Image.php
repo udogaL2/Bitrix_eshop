@@ -12,7 +12,7 @@ use App\Config\Config;
 class Image
 {
 
-	private int $id;
+	private int|null $id;
     private string $path;
     private int $width;
     private int $height;

@@ -37,7 +37,7 @@ class IndexController extends BaseController
 	 * @return ?Good[]
 	 * @throws Exception
 	 */
-	private function getGoodsByPage(int $page = 1): ?array
+	public function getGoodsByPage(int $page = 1): ?array
 	{
 		$goods = null;
 
@@ -50,22 +50,15 @@ class IndexController extends BaseController
 		$offsetByPage = ($page - 1) * $countGoodsOnPage;
 
 		$goodsQuery = DB_session::request_db(
-			"SELECT basic.*, group_concat(image.ID SEPARATOR ', ') as IMAGES FROM image,
-				(SELECT good.*,  group_concat(tag.NAME SEPARATOR ', ') as TAGS_NAME,
-                 group_concat(tag.ID SEPARATOR ', ') as TAGS_ID FROM good
-				INNER JOIN tag
-				INNER JOIN good_tag gt on gt.GOOD_ID=good.ID && gt.TAG_ID=tag.ID
-
-				GROUP BY good.ID
-				LIMIT $countGoodsOnPage OFFSET $offsetByPage) as basic
-				INNER JOIN good_image gi on basic.ID = gi.GOOD_ID
-				WHERE image.ID=gi.IMAGE_ID
-				GROUP BY basic.ID;",
+			"select * from good
+					LIMIT $countGoodsOnPage OFFSET $offsetByPage;",
 		);
+
+		$goodIds = [];
 
 		while ($good = mysqli_fetch_assoc($goodsQuery))
 		{
-			$goods[] = new Good(
+			$goods[$good["ID"]] = new Good(
 				$good["NAME"],
 				$good["PRICE"],
 				$good["GOOD_CODE"],
@@ -75,53 +68,46 @@ class IndexController extends BaseController
 				new \DateTime($good["DATE_UPDATE"]),
 				new \DateTime($good["DATE_CREATE"]),
 				$good["IS_ACTIVE"],
-				$this->collectToImages($good["IMAGES"]),
-				$this->collectToTags($good["TAGS_NAME"], $good["TAGS_ID"])
 			);
+
+			$goodIds[] = $good["ID"];
+		}
+
+		$preparedGoodsIds = join(",", $goodIds);
+		$images = $this->collectToImages($preparedGoodsIds);
+		$tags = $this->collectToTags($preparedGoodsIds);
+
+		foreach ($goodIds as $goodId)
+		{
+			$goods[$goodId]->setTags($tags[$goodId]);
+			$goods[$goodId]->setImages($images[$goodId]);
 		}
 
 		return $goods;
 	}
 
 	/**
-	 * @return Tag[]
+	 * @return Tag[]|null
 	 */
-	private function collectToTags(string $nameTags, string $idTags): array
-	{
-		$tagsName = explode(', ', $nameTags);
-		$tagsId = explode(', ', $idTags);
-
-		$tags = [];
-		foreach ($tagsName as $key => $name)
-		{
-			$tag = new Tag($name, $tagsId[$key]);
-			$tags[] = $tag;
-		}
-
-		return $tags;
-	}
-
-	/**
-	 * @return ?Image[]
-	 */
-	private function collectToImages(string $idImages): ?array
+	private function collectToTags(string $preparedGoodsIds): ?array
 	{
 		try
 		{
-			$ImagesId = explode(', ', $idImages);
+			$query = "select gt.GOOD_ID, (select t.NAME from tag t where gt.TAG_ID = t.ID) as tag
+					from good_tag gt
+					where gt.GOOD_ID in ({$preparedGoodsIds});";
 
-			$images = [];
-			foreach ($ImagesId as $id)
+			$res = DB_session::request_db($query);
+
+			$goodIdTag = [];
+
+			while ($tag = mysqli_fetch_row($res))
 			{
-				$image = $this->getImageById($id);
-				if (is_null($image))
-				{
-					throw new PathException("Image by $id not found");
-				}
-				$images[] = $image;
+				$goodIdTag[$tag[0]][] = new Tag($tag[1], null);
 			}
 
-			return $images;
+			return $goodIdTag;
+
 		}
 		catch (Exception $e)
 		{
@@ -131,18 +117,59 @@ class IndexController extends BaseController
 		}
 	}
 
-	private function getImageById(int $id): ?Image
+	/**
+	 * @return ?Image[]
+	 */
+	private function collectToImages(string $preparedGoodsIds): ?array
 	{
-		$imageQuery = DB_session::request_db(
-			'SELECT * FROM image WHERE image.ID=?', 'i', [$id]
-		);
-
-		$image = mysqli_fetch_assoc($imageQuery);
-		if ($image === null)
+		try
 		{
+			$query = "select gi.GOOD_ID, (select i.ID from image i where gi.IMAGE_ID = i.ID) as img
+						from good_image gi
+						where gi.GOOD_ID in ({$preparedGoodsIds});";
+
+			$res = DB_session::request_db($query);
+
+			$goodIm = [];
+			$imageIds = [];
+
+			while ($good = mysqli_fetch_row($res))
+			{
+				$goodIm[$good[0]][] = $good[1];
+				$imageIds[] = $good[1];
+			}
+
+			$preparedImagesIds = join(",", $imageIds);
+
+			$query = "select *
+					from image
+					where ID in ({$preparedImagesIds});";
+
+			$res = DB_session::request_db($query);
+
+			while ($image = mysqli_fetch_assoc($res))
+			{
+				$imageIds[$image["ID"]] = new Image(
+					$image["PATH"],
+					$image["HEIGHT"],
+					$image["WIDTH"],
+					$image["IS_MAIN"],
+					$image["ID"]
+				);
+			}
+
+			foreach ($goodIm as &$item)
+			{
+				$item = array_map(fn($im_id): Image => $imageIds[$im_id], $item);
+			}
+
+			return $goodIm;
+		}
+		catch (Exception $e)
+		{
+			$this->notFoundAction();
+
 			return null;
 		}
-
-		return new Image($image["PATH"], $image["WIDTH"], $image["HEIGHT"], $image["IS_MAIN"], $image["ID"]);
 	}
 }

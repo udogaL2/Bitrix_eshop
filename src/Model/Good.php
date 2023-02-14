@@ -6,8 +6,10 @@ namespace App\Src\Model;
  * Класс для хранения информации о товаре.
  * Имеет конструктор; getter для всех параметров; setter для всего, за исключением $id
  */
+
 class Good
 {
+
 	private ?int $id;
 	private string $name;
 	private float $price;
@@ -15,12 +17,12 @@ class Good
 	private string $fullDesc;
 	private int $numberOfOrders;
 
-    /** @var Tag[] $tags */
-    private array $tags;
+	/** @var Tag[] $tags */
+	private array $tags;
 
-    /** @var Image[] $images  */
-    private array $images;
-    private \DateTime $timeCreate;
+	/** @var Image[] $images */
+	private array $images;
+	private \DateTime $timeCreate;
 	private \DateTime $timeUpdate;
 	private string $article;
 	private bool $isActive;
@@ -34,17 +36,17 @@ class Good
 	 */
 
 	public function __construct(
-		string $name,
-		float  $price,
-        string $article,
-        string $shortDesc = "No description",
-        string $fullDesc = "No description",
-        int    $id = null,
+		string    $name,
+		float     $price,
+		string    $article,
+		string    $shortDesc = "No description",
+		string    $fullDesc = "No description",
+		int       $id = null,
 		\DateTime $timeUpdate = null,
-        \DateTime $timeCreate = null,
-		bool   $isActive = true,
-        array $images = [],
-		array $tags = []
+		\DateTime $timeCreate = null,
+		bool      $isActive = true,
+		array     $images = [],
+		array     $tags = []
 	)
 	{
 		$this->id = $id;
@@ -52,11 +54,11 @@ class Good
 		$this->price = $price;
 		$this->shortDesc = $shortDesc;
 		$this->fullDesc = $fullDesc;
-        $this->tags = $tags;
-        $this->images = $images;
+		$this->tags = $tags;
+		$this->images = $images;
 		$this->timeCreate = $timeCreate ?? new \DateTime();
-        $this->timeUpdate = $timeUpdate ?? new \DateTime();
-        $this->article = $article;
+		$this->timeUpdate = $timeUpdate ?? new \DateTime();
+		$this->article = $article;
 		$this->isActive = $isActive;
 	}
 
@@ -115,41 +117,49 @@ class Good
 		$this->isActive = $isActive;
 	}
 
-    public function getTimeCreate(): \DateTime
-    {
-        return $this->timeCreate;
-    }
+	public function getTimeCreate(): \DateTime
+	{
+		return $this->timeCreate;
+	}
 
-    public function getTimeUpdate(): \DateTime
-    {
-        return $this->timeUpdate;
-    }
+	public function getTimeUpdate(): \DateTime
+	{
+		return $this->timeUpdate;
+	}
 
-    public function setTimeUpdate(\DateTime $timeUpdate): void
-    {
-        $this->timeUpdate = $timeUpdate;
-    }
+	public function setTimeUpdate(\DateTime $timeUpdate): void
+	{
+		$this->timeUpdate = $timeUpdate;
+	}
 
-    public function getArticle(): int
-    {
-        return $this->article;
-    }
+	public function getArticle(): int
+	{
+		return $this->article;
+	}
 
-    /** @return Tag[] */
-    public function getTags(): array
-    {
-        return $this->tags;
-    }
+	/** @return Tag[] */
+	public function getTags(): array
+	{
+		return $this->tags;
+	}
 
-    /** @param Tag[] $tags */
-    public function setTags(array $tags): void
-    {
-        $this->tags = $tags;
-    }
+	/** @param Tag[] $tags */
+	public function setTags(array $tags): void
+	{
+		$this->tags = $tags;
+	}
 
-    /** @return Image[] */
-    public function getImages(): array
-    {
-        return $this->images;
-    }
+	/** @return Image[] */
+	public function getImages(): array
+	{
+		return $this->images;
+	}
+
+	/**
+	 * @param array $images
+	 */
+	public function setImages(array $images): void
+	{
+		$this->images = $images;
+	}
 }

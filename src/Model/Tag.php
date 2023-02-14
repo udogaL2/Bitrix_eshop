@@ -8,7 +8,7 @@ namespace App\Src\Model;
  */
 class Tag
 {
-	private int $id;
+	private int|null $id;
 	private string $name;
 
 	public function __construct(string $name, int $id=null)

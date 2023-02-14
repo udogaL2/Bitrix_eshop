@@ -32,28 +32,29 @@ class OrderController extends BaseController
 		$customer = new Customer($c_name, $c_phone, $c_email, $c_wish);
 		$good = $this->getGoodById($id);
 		$order = new Order($good->getId(), $customer, $c_address, $good->getPrice());
-		echo $order->getCustomer()->getName();
 
 		//insert in order table
-		/*try{
+		//TODO(привести в порядок)
+		try{
 			DB_session::request_db(
-				"INSERT INTO order (good_id, date_create, c_name, c_phone, c_email, c_wish, status, address, price));
-					VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);",
-					'idtssss',
-					[$this->good->getId(), , $c_name, ]);
+				"INSERT INTO `order` (good_id, date_create, c_name, c_phone, c_email, c_wish, status, address, price)
+					VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?);",
+					'isssssssd',
+					[$good->getId(), date('Y-m-d H:i:s'), $c_name, $c_phone,
+					$c_email, $c_wish, 'new', $c_address, $good->getPrice()]);
 		}
 		catch (Exception $e)
 		{
 			$this->notFoundAction();
 			return;
-		}*/
+		}
 
 		echo self::view('Main/index.html', [
 			'content' => self::view('Order/orderPlaced.html')
 		]);
 	}
 
-	function getGoodById(int $id)
+	function getGoodById(int $id): ?Good
 	{
 		try
 		{
@@ -66,7 +67,7 @@ class OrderController extends BaseController
 		catch (\Exception $e)
 		{
 			$this->notFoundAction();
-			return;
+			return null;
 		}
 
 		$good_result = mysqli_fetch_assoc($good_request);

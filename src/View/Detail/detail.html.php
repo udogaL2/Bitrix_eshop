@@ -16,7 +16,7 @@
 </div>
 <div class="content-detail">
 	<div class="detail-list">
-		<div class="detail-list-img"></div>
+		<img class="detail-list-img" src="/<?= $good->getImages()[0]->getPath() ?>">
 		<div class="detail-list-title"><?= $good->getName() ?></div>
 		<div class="detail-list-description"><?= $good->getShortDesc() ?></div>
 		<div class="detail-list-producer"><?= 'producer' ?></div>

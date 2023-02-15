@@ -16,7 +16,7 @@
 		<?php foreach($goods as $good): ?>
 			<a href="/product/<?=$good->getId()?>">
 			<div class="goods-item">
-				<div class="img-good"></div>
+				<img class="img-good" src="/<?= $good->getImages()[0]->getPath() ?>">
 				<div class="title-good">Good №<?= $good->getId() ?></div>
                 <div class="title-good">Good Name:<?= $good->getName() ?></div>
 				<div class="description-good">Description of Good: <?= $good->getShortDesc() ?></div>

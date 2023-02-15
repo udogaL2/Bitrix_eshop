@@ -16,7 +16,7 @@
 	<div class="content-order-registration-title">Оформление заказа</div>
 	<form action="/orderPlaced/<?= $good->getId() ?>" method="POST">
 		<div class="order-registration-good">
-			<div class="order-registration-good-img"></div>
+			<img class="order-registration-good-img" src="/<?= $good->getImages()[0]->getPath() ?>">
 			<div class="order-registration-description"><?= $good->getShortDesc() ?></div>
 			<?php foreach ($good->getTags() as $tag): ?>
 				<div class="order-registration-tag"><?= $tag->getName() ?></div>

@@ -2,7 +2,7 @@
 
 namespace App\Src\DAO;
 
-use App\Core\Database\Service\DB_session;
+use App\Core\Database\Service\DBSession;
 use App\Src\Model\Image;
 use Exception;
 
@@ -11,17 +11,19 @@ class ImageDAO
 	/**
 	 * @return ?Image[]
 	 */
-	public static function getImageOfGoods(string $preparedGoodsIds, bool $isOnlyMainImages = false): ?array
+	public static function getImageOfGoods(array $preparedGoodsIds, bool $isOnlyMainImages = false): ?array
 	{
 		try
 		{
 			$additionalConditionForRequest = $isOnlyMainImages ? " and i.IS_MAIN = true" : "";
 
+			$placeholders = str_repeat('?,', count($preparedGoodsIds) - 1) . '?';
+
 			$query = "select gi.GOOD_ID, (select i.ID from image i where gi.IMAGE_ID = i.ID{$additionalConditionForRequest}) as img
 						from good_image gi
-						where gi.GOOD_ID in ({$preparedGoodsIds});";
+						where gi.GOOD_ID in ({$placeholders});";
 
-			$DBResponse = DB_session::request_db($query);
+			$DBResponse = DBSession::requestDB($query, str_repeat('i', count($preparedGoodsIds)), $preparedGoodsIds);
 
 			$goodIdImage = [];
 			$imageIds = [];
@@ -35,9 +37,7 @@ class ImageDAO
 				}
 			}
 
-			$preparedImagesIds = join(",", $imageIds);
-
-			$images = self::collectImagesById($preparedImagesIds);
+			$images = self::collectImagesById($imageIds);
 
 			if (!$images)
 			{
@@ -62,17 +62,19 @@ class ImageDAO
 		}
 	}
 
-	private static function collectImagesById(string $preparedImagesIds): ?array
+	private static function collectImagesById(array $preparedImagesIds): ?array
 	{
 		try
 		{
 			$images = [];
 
+			$placeholders = str_repeat('?,', count($preparedImagesIds) - 1) . '?';
+
 			$query = "select *
 					from image
-					where ID in ({$preparedImagesIds});";
+					where ID in ({$placeholders});";
 
-			$DBResponse = DB_session::request_db($query);
+			$DBResponse = DBSession::requestDB($query, str_repeat('i', count($preparedImagesIds)), $preparedImagesIds);
 
 			while ($image = mysqli_fetch_assoc($DBResponse))
 			{

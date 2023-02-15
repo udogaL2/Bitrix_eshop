@@ -2,11 +2,7 @@
 
 namespace App\Src\Controller;
 
-use App\Src\Model\Image;
-use App\Src\Model\Tag;
-use App\Src\Model\Good;
 use App\Src\DAO\GoodDAO;
-use App\Core\Database\Service\DB_session;
 
 class GoodController extends BaseController
 {

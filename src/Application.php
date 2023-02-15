@@ -9,7 +9,7 @@ use \App\Core\Routing\Router;
 
 require_once __DIR__ . '/../config/Config.php';
 //require_once __DIR__ . '/../core/Database/Migration/Migrator.php';
-//require_once __DIR__ . '/../core/Database/Service/DB_session.php';
+//require_once __DIR__ . '/../core/Database/Service/DBSession.php';
 
 
 class Application

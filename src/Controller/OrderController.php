@@ -2,12 +2,13 @@
 
 namespace App\Src\Controller;
 
-use App\Core\Database\Service\DB_session;
+use App\Core\Database\Service\DBSession;
 use App\Src\Model\Order;
 use App\Src\Model\Customer;
 use App\Src\Model\Good;
 use App\Src\Model\Image;
 use App\Src\Model\Tag;
+use Exception;
 
 class OrderController extends BaseController
 {
@@ -36,7 +37,7 @@ class OrderController extends BaseController
 		//insert in order table
 		//TODO(привести в порядок)
 		try{
-			DB_session::request_db(
+			DBSession::requestDB(
 				"INSERT INTO `order` (good_id, date_create, c_name, c_phone, c_email, c_wish, status, address, price)
 					VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?);",
 					'isssssssd',
@@ -58,7 +59,7 @@ class OrderController extends BaseController
 	{
 		try
 		{
-			$good_request = DB_session::request_db(
+			$good_request = DBSession::requestDB(
 				'SELECT * FROM good where ID = ?;',
 				'i',
 				[$id]
@@ -74,7 +75,7 @@ class OrderController extends BaseController
 
 		try
 		{
-			$tags_request = DB_session::request_db(
+			$tags_request = DBSession::requestDB(
 				'SELECT ID, NAME FROM tag t
             INNER JOIN good_tag gt on t.ID = gt.TAG_ID AND GOOD_ID = ?;',
 				'i',
@@ -101,7 +102,7 @@ class OrderController extends BaseController
 
 		try
 		{
-			$images_request = DB_session::request_db(
+			$images_request = DBSession::requestDB(
 				'SELECT ID, PATH, HEIGHT, WIDTH, IS_MAIN FROM image img
             INNER JOIN good_image g_img on img.ID = g_img.IMAGE_ID AND GOOD_ID = ?;',
 				'i',

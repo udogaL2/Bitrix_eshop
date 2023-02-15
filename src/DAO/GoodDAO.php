@@ -3,10 +3,8 @@
 namespace App\Src\DAO;
 
 use App\Config\Config;
-use App\Core\Database\Service\DB_session;
+use App\Core\Database\Service\DBSession;
 use App\Src\Model\Good;
-use App\Src\DAO\ImageDAO;
-use App\Src\DAO\TagDAO;
 
 class GoodDAO
 {
@@ -15,7 +13,7 @@ class GoodDAO
 
 		try
 		{
-			$res = DB_session::request_db("select COUNT(*) from good where IS_ACTIVE = true;");
+			$res = DBSession::requestDB("select COUNT(*) from good where IS_ACTIVE = true;");
 
 			return mysqli_fetch_array($res)[0];
 		}
@@ -31,10 +29,12 @@ class GoodDAO
 		{
 
 			$countGoodsOnPage = Config::COUNT_GOODS_ON_PAGE;
-			$goodsQuery = DB_session::request_db(
+
+			$goodsQuery = DBSession::requestDB(
 				"select * from good
                     where IS_ACTIVE = true 
-					LIMIT $countGoodsOnPage OFFSET $offsetByPage;",
+					LIMIT ? OFFSET ?;",
+				'ii', [$countGoodsOnPage, $offsetByPage]
 			);
 
 			$goods = [];
@@ -68,7 +68,7 @@ class GoodDAO
 		{
 			$additionalConditionForRequest = !$isNotActive ? " and IS_ACTIVE = true" : "";
 
-			$goodRequest = DB_session::request_db(
+			$goodRequest = DBSession::requestDB(
 				"SELECT * FROM good where ID = ?{$additionalConditionForRequest};", 'i', [$id]
 			);
 
@@ -79,8 +79,8 @@ class GoodDAO
 				return null;
 			}
 
-			$images = ImageDAO::getImageOfGoods((string)$id);
-			$tags = TagDAO::getTagsOfGoods((string)$id);
+			$images = ImageDAO::getImageOfGoods([$id]);
+			$tags = TagDAO::getTagsOfGoods([$id]);
 
 			if (!$images || !$tags)
 			{

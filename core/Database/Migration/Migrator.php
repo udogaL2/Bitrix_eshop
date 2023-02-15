@@ -2,7 +2,7 @@
 
 namespace App\Core\Database\Migration;
 
-use App\Core\Database\Service\DB_session;
+use App\Core\Database\Service\DBSession;
 use App\Config\Config;
 use Exception;
 
@@ -15,7 +15,7 @@ class Migrator
 		// 1. последняя запись о миграции
 		try
 		{
-			$lastMigrationOrBool = DB_session::request_db(
+			$lastMigrationOrBool = DBSession::requestDB(
 				"select NAME from migration order by ID desc limit 1"
 			);
 			$lastMigration = $lastMigrationOrBool ? mysqli_fetch_row($lastMigrationOrBool)[0] : null;
@@ -52,7 +52,7 @@ class Migrator
 		foreach ($unfulfilledMigrations as $unfulfilledMigration)
 		{
 			$sqlRequest = file_get_contents(self::$pathToMigrationFolder . $unfulfilledMigration);
-			$requestResult = DB_session::request_db($sqlRequest, is_multi_query: substr_count($sqlRequest, ";") > 1);
+			$requestResult = DBSession::requestDB($sqlRequest, isMultiQuery: substr_count($sqlRequest, ";") > 1);
 
 			if (!$requestResult)
 			{
@@ -62,6 +62,6 @@ class Migrator
 
 		// 4. обновление данных о последней примененной миграции в таблице migration
 		$lastMigration = array_pop($unfulfilledMigrations);
-		DB_session::request_db("insert into migration (NAME) value (?);", 's', [$lastMigration]);
+		DBSession::requestDB("insert into migration (NAME) value (?);", 's', [$lastMigration]);
 	}
 }

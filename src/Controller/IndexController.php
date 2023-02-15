@@ -29,6 +29,7 @@ class IndexController extends BaseController
 		catch (Exception $e)
 		{
 			$this->notFoundAction();
+			return;
 		}
 	}
 
@@ -54,9 +55,8 @@ class IndexController extends BaseController
 		}
 
 		$goodIds = array_keys($listOfGoods);
+		$images = ImageDAO::getImageOfGoods($goodIds, true);
 
-		$preparedGoodsIds = join(",", $goodIds);
-		$images = ImageDAO::getImageOfGoods($preparedGoodsIds, true);
 		if (!$images)
 		{
 			return null;

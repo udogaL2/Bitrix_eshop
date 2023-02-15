@@ -29,11 +29,11 @@ use mysqli;
 use App\Config\Config;
 
 
-class DB_session
+class DBSession
 {
 	private static ?mysqli $connection = null;
 
-	private static function create_db_connection(): void
+	private static function createDBConnection(): void
 	{
 		if (self::$connection !== null)
 		{
@@ -69,18 +69,18 @@ class DB_session
 		}
 
 	}
-    public static function request_db(
+    public static function requestDB(
 		string $query,
-		string $row_of_types = '',
+		string $rowOfTypes = '',
 		array  $vars = [],
-		bool   $is_multi_query = false
+		bool   $isMultiQuery = false
 	) : \mysqli_result | bool
 	{
 		if (self::$connection === null)
 		{
             try
             {
-                self::create_db_connection();
+                self::createDBConnection();
             }
             catch (Exception $e)
             {
@@ -89,12 +89,12 @@ class DB_session
 
 		}
 
-		if ($row_of_types)
+		if ($rowOfTypes)
 		{
 			// если передается список типов, то запрос формируется с помощью связанных переменных, иначе с обычным
 			$statement = mysqli_prepare(self::$connection, $query);
 
-			mysqli_stmt_bind_param($statement, $row_of_types, ...$vars);
+			mysqli_stmt_bind_param($statement, $rowOfTypes, ...$vars);
 			$execute_result = mysqli_stmt_execute($statement);
 
 			if (!$execute_result)
@@ -106,21 +106,21 @@ class DB_session
 		}
 		else
 		{
-			if (!$is_multi_query)
+			if (!$isMultiQuery)
 			{
 				$result = mysqli_query(self::$connection, $query);
 			}
 			else
 			{
 				$result = mysqli_multi_query(self::$connection, $query);
-				self::clear_buffer();
+				self::clearBuffer();
 			}
 		}
 
 		return $result;
 	}
 
-	public static function clear_buffer(): void
+	private static function clearBuffer(): void
 	{
 		while (self::$connection->next_result())
 		{

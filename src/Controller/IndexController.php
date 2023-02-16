@@ -2,6 +2,7 @@
 
 namespace App\Src\Controller;
 
+use App\Src\DAO\TagDAO;
 use App\Src\Model\Good;
 use App\Config\Config;
 use App\Src\DAO\ImageDAO;
@@ -56,8 +57,9 @@ class IndexController extends BaseController
 
 		$goodIds = array_keys($listOfGoods);
 		$images = ImageDAO::getImageOfGoods($goodIds, true);
+		$tags = TagDAO::getTagsOfGoods($goodIds);
 
-		if (!$images)
+		if (!$images || !$tags)
 		{
 			return null;
 		}
@@ -65,6 +67,7 @@ class IndexController extends BaseController
 		foreach ($goodIds as $goodId)
 		{
 			$listOfGoods[$goodId]->setImages($images[$goodId] ?? []);
+			$listOfGoods[$goodId]->setTags($tags[$goodId] ?? []);
 		}
 
 		return $listOfGoods;

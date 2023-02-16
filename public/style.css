@@ -197,14 +197,13 @@ a.about-item:hover, a.follow-item:hover{
 .index-container{
 	display: flex;
 	flex-direction: column;
-	min-height: 750px;
 }
 
 .goods{
 	display: flex;
-	justify-content: space-evenly;
+	flex-wrap: wrap;
+	justify-content: center;
 }
-
 
 /*
 .goods-item {
@@ -224,7 +223,7 @@ a.about-item:hover, a.follow-item:hover{
 	position: relative;
 	flex-direction: column;
 	align-items: center;
-	/*margin: 2% 0;*/
+	margin: 20px;
 	width: 370px;
 	min-height: 550px;
 	background: #fffdfd;
@@ -234,7 +233,6 @@ a.about-item:hover, a.follow-item:hover{
 	font-weight: 600;
 	color: #363433;
 	text-decoration: none;
-
 }
 
 .goods-item:hover{
@@ -248,7 +246,7 @@ a.about-item:hover, a.follow-item:hover{
 
 .img-good{
 	/*margin: 16px 0 0 13px;*/
-	margin: 3% 1%;
+	/*margin: 3% 1%;*/
 	height: 230px;
 	width: 100%;
 	border-radius: 20px 20px 0 0;

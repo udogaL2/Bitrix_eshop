@@ -10,12 +10,13 @@ use App\Src\Model\Customer;
 use App\Src\Model\Good;
 use App\Src\Model\Image;
 use App\Src\Model\Tag;
+use App\Src\Service\OrderService;
 
 class OrderController extends BaseController
 {
-	function createOrderAction(int $id)
+	public function createOrderAction(int $id): void
 	{
-		$good = GoodDAO::getCurrentGoodById($id, isWithTags: false);
+		$good = OrderService::createOrderById($id);
 
 		echo self::view('Main/index.html', [
 			'content' => self::view('Order/orderRegistration.html', [
@@ -24,21 +25,11 @@ class OrderController extends BaseController
 		]);
 	}
 
-	function registerOrderAction(int $id)
+	public function registerOrderAction(int $id): void
 	{
-		$c_name = $_POST['c_name'] . ' ' . $_POST['c_surname'];
-		$c_phone = $_POST['c_phone'];
-		$c_email = $_POST['c_email'];
-		$c_wish = "Some wish";
-		$c_address = "Some address";
-		$good = GoodDAO::getCurrentGoodById($id, isWithImages: false, isWithTags: false);
+		$result = OrderService::registerOrderById($id);
 
-		$customer = new Customer($c_name, $c_phone, $c_email, $c_wish);
-		$order = new Order($good->getId(), $customer, $c_address, $good->getPrice());
-
-		$res = OrderDAO::createOrder($order, $customer);
-
-		if ($res)
+		if ($result)
 		{
 			header("Location: /orderPlaced/");
 		}

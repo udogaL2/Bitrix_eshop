@@ -50,14 +50,14 @@ body{
 	margin: 16px 0 0 13px;
 	height: 50px;
 	width: 50px;
-	background-image: url(../src/View/icons/logo.png);
+	background-image: url(icons/logo.png);
 	background-size: cover;
 }
 
 .logo-fon{
 	height: 70px;
 	width: 70px;
-	background-image: url(../src/View/icons/logo-fon.png);
+	background-image: url(icons/logo-fon.png);
 	background-size: cover;
 }
 
@@ -73,7 +73,7 @@ body{
 	height: 15px;
 	width: 15px;
 	margin: 7px 0 0 10px;
-	background-image: url(../src/View/icons/icon-search.png);
+	background-image: url(icons/icon-search.png);
 	background-size: cover;
 }
 
@@ -320,7 +320,6 @@ a.about-item:hover, a.follow-item:hover{
 	margin: 16px 0 0 13px;
 	height: 300px;
 	width: 400px;
-	background-image: url(../src/View/icons/logo.png);
 	border-radius: 20px 20px 0 0;
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -412,7 +411,7 @@ a.about-item:hover, a.follow-item:hover{
 .content-detail-back{
 	height: 45px;
 	width: 45px;
-	background-image: url(../src/View/icons/back.png);
+	background-image: url(icons/back.png);
 	background-repeat: no-repeat;
 	background-size: cover;
 }

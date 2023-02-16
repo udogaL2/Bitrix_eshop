@@ -14,7 +14,7 @@
 
 <div class="content-order-registration">
 	<div class="content-order-registration-title">Оформление заказа</div>
-	<form action="/orderPlaced/<?= $good->getId() ?>" method="POST">
+	<form action="/order/<?= $good->getId() ?>" method="POST">
 		<div class="order-registration-good">
 			<img class="order-registration-good-img" src="/<?= $good->getImages()[0]->getPath() ?>">
 			<div class="order-registration-description"><?= $good->getShortDesc() ?></div>

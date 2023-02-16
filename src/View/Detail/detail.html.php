@@ -12,7 +12,7 @@
 </head>
 <body>
 <div class="detail-back">
-	<a href="#" class="content-detail-back"></a>
+	<a href="/" class="content-detail-back"></a>
 </div>
 <div class="content-detail">
 	<div class="detail-list">

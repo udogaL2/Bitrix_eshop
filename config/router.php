@@ -6,6 +6,16 @@ return array (
 		 'method' => 'GET',
 		 'action' => [new App\Src\Controller\IndexController(), 'viewGoodByPage'],
 	 ),
+	 array(
+		 'path' => '/orderPlaced',
+		 'method' => 'GET',
+		 'action' => [new App\Src\Controller\OrderController(), 'successOrderAction'],
+	 ),
+	 array(
+		 'path' => '/oderError',
+		 'method' => 'GET',
+		 'action' => [new App\Src\Controller\OrderController(), 'errorOrderAction'],
+	 ),
 	 array (
 		 'path' => '/:page',
 		 'method' => 'GET',
@@ -27,10 +37,11 @@ return array (
 		 'action' => [new App\Src\Controller\OrderController(), 'createOrderAction'],
 	 ),
 	 array(
-		 'path' => '/orderPlaced/:id',
+		 'path' => '/order/:id',
 		 'method' => 'POST',
 		 'action' => [new App\Src\Controller\OrderController(), 'registerOrderAction'],
 	 ),
+
     array (
         'path' => '/fatal',
         'method' => 'GET',

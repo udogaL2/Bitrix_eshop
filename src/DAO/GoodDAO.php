@@ -33,8 +33,7 @@ class GoodDAO
 			$goodsQuery = DBSession::requestDB(
 				"select * from good
                     where IS_ACTIVE = true 
-					LIMIT ? OFFSET ?;",
-				'ii', [$countGoodsOnPage, $offsetByPage]
+					LIMIT ? OFFSET ?;", 'ii', [$countGoodsOnPage, $offsetByPage]
 			);
 
 			$goods = [];
@@ -62,7 +61,12 @@ class GoodDAO
 		}
 	}
 
-	public static function getCurrentGoodById(int $id, bool $isNotActive = false): ?Good
+	public static function getCurrentGoodById(
+		int $id,
+		bool $isNotActive = false,
+		bool $isWithImages = true,
+		bool $isWithTags = true
+	): ?Good
 	{
 		try
 		{
@@ -79,10 +83,10 @@ class GoodDAO
 				return null;
 			}
 
-			$images = ImageDAO::getImageOfGoods([$id]);
-			$tags = TagDAO::getTagsOfGoods([$id]);
+			$images = $isWithImages ? ImageDAO::getImageOfGoods([$id])[$id] : [];
+			$tags = $isWithTags ? TagDAO::getTagsOfGoods([$id])[$id] : [];
 
-			if (!$images || !$tags)
+			if ($images === null || $tags === null)
 			{
 				return null;
 			}
@@ -96,7 +100,9 @@ class GoodDAO
 				$goodResult['ID'],
 				new \DateTime($goodResult['DATE_UPDATE']),
 				new \DateTime($goodResult['DATE_CREATE']),
-				$goodResult['IS_ACTIVE'], (array)$images[$id], (array)$tags[$id]
+				$goodResult['IS_ACTIVE'],
+				(array)$images,
+				(array)$tags
 			);
 		}
 		catch (\Exception $e)

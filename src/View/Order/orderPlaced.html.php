@@ -1,3 +1,6 @@
+<?php
+/** @var string $content */
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -13,8 +16,9 @@
 <div class="content-order-placed">
 	<div class="content-order-placed-icon"></div>
 	<div class="content-order-placed-title">
-		Ваш заказ оформлен
+		<?= $content ?>
 	</div>
+	<a href="/" class="content-detail-back"></a>
 </div>
 
 </body>

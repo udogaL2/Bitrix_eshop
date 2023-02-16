@@ -3,23 +3,24 @@
 namespace App\Src\Controller;
 
 use App\Core\Database\Service\DBSession;
+use App\Src\DAO\GoodDAO;
+use App\Src\DAO\OrderDAO;
 use App\Src\Model\Order;
 use App\Src\Model\Customer;
 use App\Src\Model\Good;
 use App\Src\Model\Image;
 use App\Src\Model\Tag;
-use Exception;
 
 class OrderController extends BaseController
 {
 	function createOrderAction(int $id)
 	{
-		$good = $this->getGoodById($id);
+		$good = GoodDAO::getCurrentGoodById($id, isWithTags: false);
 
 		echo self::view('Main/index.html', [
 			'content' => self::view('Order/orderRegistration.html', [
 				'good' => $good,
-			])
+			]),
 		]);
 	}
 
@@ -30,121 +31,43 @@ class OrderController extends BaseController
 		$c_email = $_POST['c_email'];
 		$c_wish = "Some wish";
 		$c_address = "Some address";
+		$good = GoodDAO::getCurrentGoodById($id, isWithImages: false, isWithTags: false);
+
 		$customer = new Customer($c_name, $c_phone, $c_email, $c_wish);
-		$good = $this->getGoodById($id);
 		$order = new Order($good->getId(), $customer, $c_address, $good->getPrice());
 
-		//insert in order table
-		//TODO(привести в порядок)
-		try{
-			DBSession::requestDB(
-				"INSERT INTO `order` (good_id, date_create, c_name, c_phone, c_email, c_wish, status, address, price)
-					VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?);",
-					'isssssssd',
-					[$good->getId(), date('Y-m-d H:i:s'), $c_name, $c_phone,
-					$c_email, $c_wish, 'new', $c_address, $good->getPrice()]);
-		}
-		catch (Exception $e)
-		{
-			$this->notFoundAction();
-			return;
-		}
+		$res = OrderDAO::createOrder($order, $customer);
 
+		if ($res)
+		{
+			header("Location: /orderPlaced/");
+		}
+		else
+		{
+			header("Location: /orderError/");
+		}
+	}
+
+	// TODO(переделать в общий метод, который будет обрабатывать системное сообщение для страницы)
+	// Пример: /message/success или /message/order_error
+	//
+	function successOrderAction()
+	{
 		echo self::view('Main/index.html', [
-			'content' => self::view('Order/orderPlaced.html')
+			'content' => self::view(
+				'Order/orderPlaced.html',
+				['content' => 'Заказ успешно оформлен']
+			),
 		]);
 	}
 
-	function getGoodById(int $id): ?Good
+	function errorOrderAction()
 	{
-		try
-		{
-			$good_request = DBSession::requestDB(
-				'SELECT * FROM good where ID = ?;',
-				'i',
-				[$id]
-			);
-		}
-		catch (\Exception $e)
-		{
-			$this->notFoundAction();
-			return null;
-		}
-
-		$good_result = mysqli_fetch_assoc($good_request);
-
-		try
-		{
-			$tags_request = DBSession::requestDB(
-				'SELECT ID, NAME FROM tag t
-            INNER JOIN good_tag gt on t.ID = gt.TAG_ID AND GOOD_ID = ?;',
-				'i',
-				[$id]
-			);
-
-			$tags = [];
-			if ($tags_request !== null)
-			{
-				if (mysqli_num_rows($tags_request) !== 0)
-				{
-					while ($tag = mysqli_fetch_assoc($tags_request))
-					{
-						$tags[] = new Tag($tag['NAME'], $tag['ID']);
-					}
-				}
-			}
-		}
-		catch (\Exception $e)
-		{
-			//Logger::addError($e)
-			$tags = [];
-		}
-
-		try
-		{
-			$images_request = DBSession::requestDB(
-				'SELECT ID, PATH, HEIGHT, WIDTH, IS_MAIN FROM image img
-            INNER JOIN good_image g_img on img.ID = g_img.IMAGE_ID AND GOOD_ID = ?;',
-				'i',
-				[$id]
-			);
-
-			$images = [];
-			if ($images_request !== null)
-			{
-				if (mysqli_num_rows($images_request) !== 0)
-				{
-					while ($img = mysqli_fetch_assoc($images_request))
-					{
-						$images[] = new Image(
-							$img["PATH"],
-							$img["WIDTH"],
-							$img["HEIGHT"],
-							$img["IS_MAIN"],
-							$img["ID"]
-						);
-					}
-				}
-			}
-		}
-		catch (\Exception $e)
-		{
-			//Logger::addError($e)
-			$images = [];
-		}
-
-		return new Good(
-			$good_result['NAME'],
-			$good_result['PRICE'],
-			$good_result['GOOD_CODE'],
-			$good_result['SHORT_DESC'],
-			$good_result['FULL_DESC'],
-			$good_result['ID'],
-			new \DateTime($good_result['DATE_UPDATE']),
-			new \DateTime($good_result['DATE_CREATE']),
-			$good_result['IS_ACTIVE'],
-			$images,
-			$tags
-		);
+		echo self::view('Main/index.html', [
+			'content' => self::view(
+				'Order/orderPlaced.html',
+				['content' => 'Произошла ошибка при создании заказа, повторите попытку']
+			),
+		]);
 	}
 }

@@ -9,7 +9,7 @@ class GoodController extends BaseController
 	public function getDetailedGoodAction($id)
 	{
 		// TODO(сделать запись/чтение количества товаров в кеш)
-		if ($id < 0 || $id >= GoodDAO::getAvailableCount())
+		if ($id < 0 || $id > GoodDAO::getAvailableCount())
 		{
 			$this->notFoundAction();
 

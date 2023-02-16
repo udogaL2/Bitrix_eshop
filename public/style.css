@@ -295,7 +295,7 @@ a.about-item:hover, a.follow-item:hover{
 
 .pagination-item-active{
 	border-radius: 20px 20px;
-	box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.2)  !important;
+	box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.2) !important;
 	cursor: default !important;
 }
 

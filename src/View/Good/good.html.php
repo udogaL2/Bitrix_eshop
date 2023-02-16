@@ -45,7 +45,7 @@ $lastPage= IndexService::getLastPageForPagination();
 	</div>
 
 	<ul class="pagination">
-		<li class="pagination-item <?= ($currentPage === Config::FIRST_PAGE_ON_PAGINATION) ? 'pagination-item-no-active' : '' ?>">
+		<li class="pagination-item <?= ($currentPage == Config::FIRST_PAGE_ON_PAGINATION) ? 'pagination-item-no-active' : '' ?>">
 			<a href="/<?= Config::FIRST_PAGE_ON_PAGINATION ?>"><?= "<<" ?></a>
 		</li>
 

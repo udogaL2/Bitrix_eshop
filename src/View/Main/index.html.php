@@ -15,8 +15,10 @@
 <body>
 <header>
     <div class="header">
+		<a href="/">
+			<div class="logo-fon"><div class="logo"></div></div>
+		</a>
 
-        <div class="logo-fon"><div class="logo"></div></div>
         <div class="div-search">
             <div class="icon-search"></div>
             <label>

@@ -8,12 +8,28 @@ use App\Src\Model\Good;
 
 class GoodDAO
 {
-	public static function getAvailableCount(): ?int
+	public static function getAvailableCount(string $searchSubstring = ''): ?int
 	{
 
 		try
 		{
-			$res = DBSession::requestDB("select COUNT(*) from good where IS_ACTIVE = true;");
+			$request = "select COUNT(*) from good where IS_ACTIVE = true;";
+			$rowOfTypes = '';
+			$listOfValues = [];
+
+			if ($searchSubstring)
+			{
+				$request = substr_replace(
+					$request,
+					" and (NAME like ? or NAME sounds like ?) ",
+					strpos($request, "true") + 4,
+					0
+				);
+				$rowOfTypes = 'ss';
+				$listOfValues = ['%' . $searchSubstring . '%', $searchSubstring];
+			}
+
+			$res = DBSession::requestDB($request, $rowOfTypes, $listOfValues);
 
 			return mysqli_fetch_array($res)[0];
 		}
@@ -23,17 +39,33 @@ class GoodDAO
 		}
 	}
 
-	public static function getAvailableGoodsByOffset(int $offsetByPage): ?array
+	public static function getAvailableGoodsByOffset(int $offsetByPage, string $searchSubstring = ''): ?array
 	{
 		try
 		{
-
 			$countGoodsOnPage = Config::COUNT_GOODS_ON_PAGE;
 
+			$request = "select * from good where IS_ACTIVE = true LIMIT ? OFFSET ?;";
+
+			$rowOfTypes = 'ii';
+			$listOfValues = [$countGoodsOnPage, $offsetByPage];
+
+			if ($searchSubstring)
+			{
+				$request = substr_replace(
+					$request,
+					" and (NAME like ? or NAME sounds like ?) ",
+					strpos($request, "true") + 4,
+					0
+				);
+				$rowOfTypes = 'ss' . $rowOfTypes;
+				array_unshift($listOfValues, '%' . $searchSubstring . '%', $searchSubstring);
+			}
+
 			$goodsQuery = DBSession::requestDB(
-				"select * from good
-                    where IS_ACTIVE = true 
-					LIMIT ? OFFSET ?;", 'ii', [$countGoodsOnPage, $offsetByPage]
+				$request,
+				$rowOfTypes,
+				$listOfValues
 			);
 
 			$goods = [];
@@ -109,6 +141,5 @@ class GoodDAO
 		{
 			return null;
 		}
-
 	}
 }

@@ -55,7 +55,8 @@ body{
 .div-search{
 	display:flex;
 	height:40px;
-	margin: 0 5% ;
+	margin: 0 5% 0 1%;
+	padding: 1px 0 0 0;
 }
 
 .icon-search{
@@ -186,9 +187,7 @@ a.about-item:hover, a.follow-item:hover{
 
 .content{
 	display: flex;
-	/*flex-wrap: wrap;*/
 	justify-content: space-evenly;
-	margin: 10px 200px 0 200px;
 }
 
 /*
@@ -209,12 +208,14 @@ a.about-item:hover, a.follow-item:hover{
 	position: relative;
 	flex-direction: column;
 	align-items: center;
-	margin: 3% 3% ;
+	margin: 2% 0;
 	width: 370px;
-	height: 500px;
+	min-height: 550px;
 	background: #f1f0f0;
 	box-shadow: 3px 3px 3px 1px rgb(218, 218, 218);
 	border-radius: 20px;
+	color:#625f5c;
+	text-decoration: none;
 }
 
 .goods-item:hover{
@@ -228,7 +229,6 @@ a.about-item:hover, a.follow-item:hover{
 	margin: 16px 0 0 13px;
 	height: 230px;
 	width: 100%;
-	background-image: url(../src/View/icons/logo.png);
 	border-radius: 20px 20px 0 0;
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -423,7 +423,7 @@ a.about-item:hover, a.follow-item:hover{
 	height: 55px;
 	width: 55px;
 	margin: 0 2% 0 0;
-	background-image: url(../src/View/icons/logo.png);
+	/*background-image: url(../src/View/icons/logo.png);*/
 	/*border-radius: 20px 20px 0 0;*/
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -535,14 +535,19 @@ a.about-item:hover, a.follow-item:hover{
 	width: 100%;
 }
 
-.content-order-placed-icon{
+img.content-order-placed-icon{
 	height: 255px;
 	width: 255px;
 	margin: 15% 0 5% 0;
-	background-image: url(../src/View/icons/checkmark.png);
 	background-repeat: no-repeat;
 	background-size: cover;
 }
+
+/*.content-order-placed-img{*/
+/*	height: 755px;*/
+/*	width: 755px;*/
+
+/*}*/
 
 .content-order-placed-title{
 	font-family: 'Open Sans', sans-serif;

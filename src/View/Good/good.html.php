@@ -25,14 +25,23 @@ $lastPage= IndexService::getLastPageForPagination();
 <div class="index-container">
 	<div class="goods">
 		<?php foreach($goods as $good): ?>
-			<a class="goods-item" href="/product/<?=$good->getId()?>">
-				<div>
+			<a class="goods-item-a" href="/product/<?=$good->getId()?>">
+				<div class="goods-item">
 					<img class="img-good" src="/<?= $good->getImages()[0]->getPath() ?>">
-					<div class="title-good">Good №<?= $good->getId() ?></div>
-					<div class="title-good">Good Name:<?= $good->getName() ?></div>
-					<div class="description-good">Description of Good: <?= $good->getShortDesc() ?></div>
-					<div class="price-good">Price of Good: <?= $good->getPrice() ?> RUB</div>
-					<div class="tag-good">Tags of Good:
+					<div class="title-good">
+                        <div class="subtitle-name">Good №</div>
+                        <?= $good->getId() ?></div>
+					<div class="title-good">
+                        <div class="subtitle-name"> Good Name: </div>
+                            <?= $good->getName() ?></div>
+					<div class="description-good">
+                        <div class="subtitle-name"> Description of Good: </div>
+                        <?= $good->getShortDesc() ?></div>
+					<div class="price-good">
+                        <div class="subtitle-name"> Price of Good: </div>
+                        <?= $good->getPrice() ?> RUB</div>
+					<div class="tag-good">
+                        <div class="subtitle-name"> Tags of Good:</div>
 						<?php foreach ($good->getTags() as $tag): ?>
 							<div>
 								<?= $tag->getName() ?>

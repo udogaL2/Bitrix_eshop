@@ -151,8 +151,7 @@ input:focus {
 	bottom: 0;
 	z-index: 10;
 	box-shadow: 2px 0 0 2px #ecebeb;
-	height: 15%;
-	/*height:190px;*/
+	height:130px;
 }
 
 .about{
@@ -195,7 +194,16 @@ a.about-item:hover, a.follow-item:hover{
 /*goods*/
 /*===============================*/
 
+.index-container{
+	display: flex;
+	flex-direction: column;
+}
 
+.goods{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
 
 /*
 .goods-item {
@@ -215,7 +223,7 @@ a.about-item:hover, a.follow-item:hover{
 	position: relative;
 	flex-direction: column;
 	align-items: center;
-	margin: 2% 0;
+	margin: 20px;
 	width: 370px;
 	min-height: 550px;
 	background: #fffdfd;
@@ -225,7 +233,6 @@ a.about-item:hover, a.follow-item:hover{
 	font-weight: 600;
 	color: #363433;
 	text-decoration: none;
-
 }
 
 .goods-item:hover{
@@ -238,7 +245,8 @@ a.about-item:hover, a.follow-item:hover{
 }
 
 .img-good{
-	margin: 3% 1%;
+	/*margin: 16px 0 0 13px;*/
+	/*margin: 3% 1%;*/
 	height: 230px;
 	width: 100%;
 	border-radius: 20px 20px 0 0;
@@ -252,10 +260,18 @@ a.about-item:hover, a.follow-item:hover{
 
 .pagination{
 	display: flex;
-	justify-content: flex-end;
+	justify-content: center;
 	flex-direction: row;
-	margin: 3% 10% 3% 0;
+	margin-top: 30px;
 }
+
+.pagination-item a{
+	font-family: 'Open Sans', sans-serif;
+	font-size: 20px;
+	color:#625f5c;
+	text-decoration: none;
+}
+
 .pagination-item{
 	margin:10px;
 	padding: 5px 15px;
@@ -270,12 +286,28 @@ a.about-item:hover, a.follow-item:hover{
 	cursor: pointer;
 }
 
-.pagination-item:hover {
+.pagination-item:hover{
 	cursor: pointer;
 	border-radius: 20px 20px;
-	box-shadow: 3px 3px 3px 1px rgb(255, 255, 255);
+	box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.1);
 	transition: 0.5s;
 }
+
+.pagination-item-active{
+	border-radius: 20px 20px;
+	box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.2)  !important;
+	cursor: default !important;
+}
+
+.pagination-item-active a{
+	cursor: default !important;
+}
+
+.pagination-item-no-active, .pagination-item-no-active a{
+	cursor: default !important;
+	box-shadow: none !important;
+}
+
 /*===============================*/
 /*detail*/
 /*===============================*/
@@ -320,6 +352,7 @@ a.about-item:hover, a.follow-item:hover{
 	margin: 16px 0 0 13px;
 	height: 300px;
 	width: 400px;
+	background-image: url(icons/logo.png);
 	border-radius: 20px 20px 0 0;
 	background-repeat: no-repeat;
 	background-size: cover;

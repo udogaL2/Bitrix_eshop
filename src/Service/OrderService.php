@@ -2,7 +2,7 @@
 
 namespace App\Src\Service;
 
-class OrderPostService
+class OrderService
 {
 	function func()
 	{

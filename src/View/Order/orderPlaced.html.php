@@ -14,7 +14,7 @@
 <body>
 
 <div class="content-order-placed">
-	<div class="content-order-placed-icon"></div>
+	<img class="content-order-placed-icon" src="/src/View/icons/check.png">
 	<div class="content-order-placed-title">
 		<?= $content ?>
 	</div>

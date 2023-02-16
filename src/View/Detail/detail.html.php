@@ -21,7 +21,7 @@
 		<div class="detail-list-producer"><?= 'producer' ?></div>
         <div class="detail-list-tag">
 		<?php foreach ($good->getTags() as $tag): ?>
-			<div class=""><?= $tag->getName() ?></div>
+			<div><?= $tag->getName() ?></div>
 		<?php endforeach; ?>
         </div>
 	</div>

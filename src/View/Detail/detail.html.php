@@ -17,7 +17,7 @@
 	<div class="detail-list">
 		<img class="detail-list-img" src="/<?= $good->getImages()[0]->getPath() ?>">
 		<div class="detail-list-title"><?= $good->getName() ?></div>
-		<div class="detail-list-description"><?= $good->getShortDesc() ?></div>
+		<div class="detail-list-description"><?= $good->getFullDesc() ?></div>
 		<div class="detail-list-producer"><?= 'producer' ?></div>
         <div class="detail-list-tag">
 		<?php foreach ($good->getTags() as $tag): ?>

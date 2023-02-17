@@ -1,4 +1,8 @@
-<?php /** @var App\Src\Model\Good $good */ ?>
+<?php
+/**
+ * @var App\Src\Model\Good $good
+ * @var string[] $errors
+ */ ?>
 
 <!doctype html>
 <html lang="en">
@@ -14,6 +18,11 @@
 <body>
 <div class="container text-center">
 <div class="content-order-registration">
+    <?php if ($errors !== []):?>
+        <?php foreach ($errors as $error): ?>
+            <div class="alert alert-danger" role="alert"><?= $error ?></div>
+        <?php endforeach; ?>
+    <?php endif; ?>
 	<div class="content-order-registration-title">Оформление заказа</div>
 	<form action="/order/<?= $good->getId() ?>" method="POST">
 		<div class="order-registration-good">
@@ -28,20 +37,20 @@
 		</div>
 		<div class="div-content-order-registration-first-name">
 			<label>
-				<input type="text" class="content-order-registration-first-name" name="c_name" placeholder="Введите имя" minlength="3" maxlength="15" required>
+				<input type="text" class="content-order-registration-first-name" name="c_name" placeholder="Введите имя" minlength="1" maxlength="15" required>
 			</label>
 			<span class="validity"></span>
 		</div>
 		<div class="div-content-order-registration-last-name">
 			<label>
-				<input type="text" class="content-order-registration-last-name" name="c_surname" placeholder="Введите фамилию" minlength="3" maxlength="15" required>
+				<input type="text" class="content-order-registration-last-name" name="c_surname" placeholder="Введите фамилию" minlength="1" maxlength="15" required>
 			</label>
 			<span class="validity"></span>
 		</div>
 		<div class="div-content-order-registration-tel">
 			<label>
 				<input type="tel" class="content-order-registration-tel" name="c_phone" placeholder="Введите телефон"  minlength="10" maxlength="12"
-					   required pattern="[0-9]{11}">
+					   required pattern="\+?[0-9]{11}">
 			</label>
 			<span class="validity"></span>
 		</div>

@@ -3,13 +3,15 @@
 namespace App\Src\Controller;
 
 use App\Src\DAO\GoodDAO;
+use App\Src\Service\GoodService;
 
 class GoodController extends BaseController
 {
-	public function getDetailedGoodAction($id)
+	public function getDetailedGoodAction($id) : void
 	{
+        $service = new GoodService(new \DateInterval('P24M'));
 		// TODO(сделать запись/чтение количества товаров в кеш)
-		if ($id < 0 || $id > GoodDAO::getAvailableCount())
+		if ($id < 0 || $id > $service->getNumberOfGoods())
 		{
 			$this->notFoundAction();
 
@@ -18,7 +20,7 @@ class GoodController extends BaseController
 
 		try
 		{
-			$good = GoodDAO::getCurrentGoodById($id);
+			$good = $service->getGoodInfo($id);
 
 			if (!$good)
 			{

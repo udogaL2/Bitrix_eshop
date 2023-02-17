@@ -10,16 +10,31 @@ use App\Src\Model\Good;
 
 class IndexService
 {
-	/**
+    private static int $numberOfGoodsCache;
+    private static \DateTime $cacheExpires;
+
+    public function __construct($TTL = null)
+    {
+        $TTL = $TTL ?? (new \DateInterval('P0M'));
+
+        self::$numberOfGoodsCache = GoodDAO::getAvailableCount();
+        self::$cacheExpires = (new \DateTime)->add($TTL);
+    }
+
+    /**
 	 * @return ?Good[]
 	 */
-	public static function getGoodsByPage(int $page = 1): ?array
+	public function getGoodsByPage(int $page = 1): ?array
 	{
 		$countGoodsOnPage = Config::COUNT_GOODS_ON_PAGE;
 		$offsetByPage = ($page - 1) * $countGoodsOnPage;
 
 		// TODO(сделать запись/чтение количества товаров в кеш)
-		if ($page < 0 || $offsetByPage > GoodDAO::getAvailableCount())
+        if (self::$cacheExpires < (new \DateTime()))
+        {
+            self::$numberOfGoodsCache = GoodDAO::getAvailableCount();
+        }
+		if ($page < 0 || $offsetByPage > self::$numberOfGoodsCache)
 		{
 			return null;
 		}
@@ -48,16 +63,20 @@ class IndexService
 		return $listOfGoods;
 	}
 
-	public static function getLastPageForPagination():int
+	public function getLastPageForPagination():int
 	{
-		$countGoods=GoodDAO::getAvailableCount();
+        if (self::$cacheExpires < (new \DateTime()))
+        {
+            self::$numberOfGoodsCache = GoodDAO::getAvailableCount();
+        }
+		$countGoods = self::$numberOfGoodsCache;
 		return (int)ceil($countGoods/Config::COUNT_GOODS_ON_PAGE);
 	}
 
-	public static function getPagesForPaginationByPage(int $currentPage): ?array
+	public function getPagesForPaginationByPage(int $currentPage): ?array
 	{
-		$pages=[];
-		$lastPage=self::getLastPageForPagination();
+		$pages = [];
+		$lastPage = $this->getLastPageForPagination();
 
 		if ($currentPage>$lastPage || $currentPage<Config::FIRST_PAGE_ON_PAGINATION)
 		{

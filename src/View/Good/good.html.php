@@ -7,10 +7,9 @@ use App\Src\Service\IndexService;
 /**
  * @var Good[] $goods
  * @var $pages
+ * @var $currentPage
+ * @var $lastPage
  */
-
-$currentPage=(int)substr($_SERVER["REQUEST_URI"], 1);
-$lastPage= IndexService::getLastPageForPagination();
 ?>
 
 <!doctype html>

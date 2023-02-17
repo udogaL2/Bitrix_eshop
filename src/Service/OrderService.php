@@ -27,8 +27,7 @@ class OrderService
         {
             throw new InvalidInputException('invalid surname');
         }
-        if (!preg_match('/\+\d{11}/', $_POST['c_phone']) &&
-            !preg_match('/\d{11}/', $_POST['c_phone']))
+        if (!preg_match('/\+?\d{11}/', $_POST['c_phone']))
         {
             throw new InvalidInputException('invalid phone number');
         }

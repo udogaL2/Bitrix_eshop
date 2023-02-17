@@ -10,24 +10,35 @@ use App\Src\Model\Customer;
 use App\Src\Model\Good;
 use App\Src\Model\Image;
 use App\Src\Model\Tag;
+use App\Src\Service\InvalidInputException;
 use App\Src\Service\OrderService;
 
 class OrderController extends BaseController
 {
-	public function createOrderAction(int $id): void
+	public function createOrderAction(int $id, array $errors = []): void
 	{
 		$good = OrderService::createOrderById($id);
 
 		echo self::view('Main/index.html', [
 			'content' => self::view('Order/orderRegistration.html', [
 				'good' => $good,
+                'errors' => $errors,
 			]),
 		]);
 	}
 
 	public function registerOrderAction(int $id): void
 	{
-		$result = OrderService::registerOrderById($id);
+        try
+        {
+            $result = OrderService::registerOrderById($id);
+        }
+        catch (InvalidInputException $e)
+        {
+            ob_clean();
+            $this->createOrderAction($id, [$e->getMessage()]);
+            return;
+        }
 
 		if ($result)
 		{

@@ -17,9 +17,9 @@ class OrderService
 
 	public static function registerOrderById(int $id): bool
 	{
-		$c_name = $_POST['c_name'] . ' ' . $_POST['c_surname'];
-		$c_phone = $_POST['c_phone'];
-		$c_email = $_POST['c_email'];
+		$c_name = HttpService::validateUserInput($_POST['c_name']) . ' ' . HttpService::validateUserInput($_POST['c_surname']);
+		$c_phone = HttpService::validateUserInput($_POST['c_phone']);
+		$c_email = HttpService::validateUserInput($_POST['c_email']);
 		$c_wish = "Some wish";
 		$c_address = "Some address";
 		$good = GoodDAO::getCurrentGoodById($id, isWithImages: false, isWithTags: false);

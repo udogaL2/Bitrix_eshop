@@ -15,12 +15,12 @@
 <body>
 <header>
     <div class="header">
-		<a href="/">
-			<div class="logo-fon"><div class="logo"></div></div>
+		<a class="logo-fon" href="/">
+			<div ><div class="logo"></div></div>
 		</a>
 
         <div class="div-search">
-            <img src="/src/View/icons/icon-search.svg" class="icon-search"></img>
+            <img src="/src/View/icons/icon-search.svg" class="icon-search">
             <label>
                 <input type="text" class="search" placeholder="Поиск по товарам">
             </label>

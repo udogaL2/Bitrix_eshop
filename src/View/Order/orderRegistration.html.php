@@ -24,17 +24,12 @@
         <?php endforeach; ?>
     <?php endif; ?>
 	<div class="content-order-registration-title">Оформление заказа</div>
-	<form action="/order/<?= $good->getId() ?>" method="POST">
 		<div class="order-registration-good">
 			<img class="order-registration-good-img" src="/<?= $good->getImages()[0]->getPath() ?>">
 			<div class="order-registration-description"><?= $good->getShortDesc() ?></div>
-			<div class="order-registration-tag">
-            <?php foreach ($good->getTags() as $tag): ?>
-				<div><?= $tag->getName() ?></div>
-			<?php endforeach; ?>
-            </div>
 			<div class="order-registration-price"><?= $good->getPrice() ?> RUB</div>
 		</div>
+    <form class="order-registration-form" action="/order/<?= $good->getId() ?>" method="POST">
 		<div class="div-content-order-registration-first-name">
 			<label>
 				<input type="text" class="content-order-registration-first-name" name="c_name" placeholder="Введите имя" minlength="1" maxlength="15" required>

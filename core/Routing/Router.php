@@ -22,39 +22,59 @@ class Router
 		}
 	}
 
-	public function add(string $method, string $URI, callable $action)
+	public function add(string $method, string $URI, callable $action) : void
 	{
 		$this->routes[] = new Route($method, $URI, \Closure::fromCallable($action));
 	}
 
-	public function get(string $URI, callable $action)
+	public function get(string $URI, callable $action) : void
 	{
 		$this->add('GET', $URI, $action);
 	}
 
-	public function post(string $URI, callable $action)
+	public function post(string $URI, callable $action) : void
 	{
 		$this->add('POST', $URI, $action);
 	}
 
+    public function update() : void
+    {
+        $this->routes = [];
+        foreach (require $this->config as $route)
+        {
+            $this->add($route['method'], $route['path'], $route['action']);
+        }
+    }
+
+    public function internalSearch($method, $URI) : ?Route
+    {
+        [$path] = explode('?', $URI);
+        foreach ($this->routes as $route)
+        {
+            if ($route->getMethod() !== $method)
+            {
+                continue;
+            }
+
+            if ($route->match($path))
+            {
+                header('HTTP/1.1 200 OK');
+                header('Status: 200 OK');
+                return $route;
+            }
+        }
+        return null;
+    }
+
 	public function find($method, $URI) : ?Route
 	{
-		[$path] = explode('?', $URI);
-		foreach ($this->routes as $route)
-		{
-			if ($route->getMethod() !== $method)
-			{
-				continue;
-			}
-
-			if ($route->match($path))
-			{
-				header('HTTP/1.1 200 OK');
-				header('Status: 200 OK');
-				return $route;
-			}
-		}
-		return null;
+        $route = $this->internalSearch($method, $URI);
+        if ($route !== null)
+        {
+            return $route;
+        }
+        $this->update();
+		return $this->internalSearch($method, $URI);
 	}
 
 	// necessity?
@@ -83,7 +103,7 @@ class Router
 		$host = 'http://'.$_SERVER['HTTP_HOST'];
 		header('HTTP/1.1 404 Not Found');
 		header("Status: 404 Not Found");
-		header('Location:' . $host . '/404/');
+		header('Location:' . $host . '/error/404/');
 	}
 
     public function fatalError() : void

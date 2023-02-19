@@ -132,7 +132,7 @@ class Good
 		$this->timeUpdate = $timeUpdate;
 	}
 
-	public function getArticle(): int
+	public function getArticle(): string
 	{
 		return $this->article;
 	}

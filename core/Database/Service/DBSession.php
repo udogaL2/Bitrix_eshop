@@ -28,7 +28,6 @@ use Exception;
 use mysqli;
 use App\Config\Config;
 
-
 class DBSession
 {
 	private static ?mysqli $connection = null;
@@ -69,23 +68,24 @@ class DBSession
 		}
 
 	}
-    public static function requestDB(
+
+	public static function requestDB(
 		string $query,
 		string $rowOfTypes = '',
 		array  $vars = [],
 		bool   $isMultiQuery = false
-	) : \mysqli_result | bool
+	): \mysqli_result|bool
 	{
 		if (self::$connection === null)
 		{
-            try
-            {
-                self::createDBConnection();
-            }
-            catch (Exception $e)
-            {
-                (new Router)->fatalError();
-            }
+			try
+			{
+				self::createDBConnection();
+			}
+			catch (Exception $e)
+			{
+				(new Router())->fatalError();
+			}
 
 		}
 
@@ -93,6 +93,11 @@ class DBSession
 		{
 			// если передается список типов, то запрос формируется с помощью связанных переменных, иначе с обычным
 			$statement = mysqli_prepare(self::$connection, $query);
+
+			if (is_bool($statement))
+			{
+				throw new Exception(mysqli_error(self::$connection));
+			}
 
 			mysqli_stmt_bind_param($statement, $rowOfTypes, ...$vars);
 			$execute_result = mysqli_stmt_execute($statement);

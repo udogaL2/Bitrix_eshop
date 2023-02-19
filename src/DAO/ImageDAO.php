@@ -6,8 +6,33 @@ use App\Core\Database\Service\DBSession;
 use App\Src\Model\Image;
 use Exception;
 
-class ImageDAO
+// Для удаления и добавления записей в таблицу связей смотри BaseLinkedDAO.php
+
+class ImageDAO extends BaseLinkedDAO
 {
+	protected static string $tableName = "image";
+	protected static string $linkTableName = "good_image";
+	protected static string $primaryLinkColumn = "GOOD_ID";
+	protected static string $secondaryLinkColumn = "IMAGE_ID";
+
+	public static function createImage(Image $image): bool
+	{
+		try
+		{
+			DBSession::requestDB(
+				"insert into image (PATH, HEIGHT, WIDTH, IS_MAIN)
+				VALUE (?, ?, ?, ?)", "siii",
+				[$image->getPath(), $image->getHeight(), $image->getWidth(), $image->isMain()]
+			);
+
+			return true;
+		}
+		catch (Exception $e)
+		{
+			return false;
+		}
+	}
+
 	/**
 	 * @return ?Image[]
 	 */

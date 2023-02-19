@@ -6,8 +6,15 @@ use App\Core\Database\Service\DBSession;
 use App\Src\Model\Tag;
 use Exception;
 
-class TagDAO
+// Для удаления и добавления записей в таблицу связей смотри BaseLinkedDAO.php
+
+class TagDAO extends BaseLinkedDAO
 {
+	protected static string $tableName = "tag";
+	protected static string $linkTableName = "good_tag";
+	protected static string $primaryLinkColumn = "GOOD_ID";
+	protected static string $secondaryLinkColumn = "TAG_ID";
+
 	/**
 	 * @return Tag[]|null
 	 */
@@ -56,89 +63,52 @@ class TagDAO
 		}
 	}
 
-	public static function deleteTag(int $tagId): bool
+	public static function getAllTags(): ?array
 	{
 		try
 		{
-			$request = "DELETE FROM tag WHERE ID = ?";
+			$DBResponse = DBSession::requestDB("select * from tag");
 
-			DBSession::requestDB($request, 'i', [$tagId]);
+			$tags = [];
 
-			return true;
+			while ($rawTag = mysqli_fetch_assoc($DBResponse))
+			{
+				$tags[] = new Tag($rawTag["NAME"], $rawTag["ID"]);
+			}
+
+			return $tags;
 		}
 		catch (Exception $e)
 		{
-			return false;
+			return null;
 		}
 	}
 
-	// В $updateFieldsValue передавать значения в виде ["название столбца, который нужно обновить" => "новое значение", ....]
-	public static function updateTag(int $tagId, array $updateFieldsValue): bool
+	public static function getIdsOfTagNames(array $tagNames): ?array
 	{
 		try
 		{
-			$couplesFieldUpdateValue = "";
+			$placeholders = str_repeat('?,', count($tagNames) - 1) . '?';
 
-			foreach ($updateFieldsValue as $field => $value)
-			{
-				$couplesFieldUpdateValue .= "{$field} = '{$value}',";
-			}
-
-			$couplesFieldUpdateValue = rtrim($couplesFieldUpdateValue, ',');
-
-			$request = "UPDATE tag set {$couplesFieldUpdateValue} WHERE ID = ?";
-
-			DBSession::requestDB($request, 'i', [$tagId]);
-
-			return true;
-		}
-		catch (Exception $e)
-		{
-			return false;
-		}
-	}
-
-	// создание связей необходимо делать после создание товаров и тегов
-	public static function createLinksGoodTag(int $goodId, array $tagNames = [], array $tagIds = []): bool
-	{
-		try
-		{
-			if ($tagNames && !$tagIds)
-			{
-				$tagIds = self::getIdsOfTagNames($tagNames);
-			}
-
-			$couplesGoodIdTagId = "";
-
-			foreach ($tagIds as $tagId)
-			{
-				$couplesGoodIdTagId .= "({$goodId}, {$tagId[0]}),";
-			}
-
-			$couplesGoodIdTagId = rtrim($couplesGoodIdTagId, ',');
-
-			$request = "INSERT INTO good_tag (GOOD_ID, TAG_ID)
-						values {$couplesGoodIdTagId};";
-
-			return DBSession::requestDB($request);
-		}
-		catch (Exception $e)
-		{
-			return false;
-		}
-	}
-
-	private static function getIdsOfTagNames(array $tagNames): ?array
-	{
-		$placeholders = str_repeat('?,', count($tagNames) - 1) . '?';
-
-		$query = "select ID
+			$query = "select *
 					from tag
 					where NAME in ({$placeholders});";
 
-		$DBResponse = DBSession::requestDB($query, str_repeat('s', count($tagNames)), $tagNames);
+			$DBResponse = DBSession::requestDB($query, str_repeat('s', count($tagNames)), $tagNames);
 
-		return mysqli_fetch_all($DBResponse);
+			$tagsId = [];
+
+			foreach (mysqli_fetch_all($DBResponse) as $value)
+			{
+				$tagsId[$value[1]] = $value[0];
+			}
+
+			return $tagsId;
+		}
+		catch (Exception $e)
+		{
+			return null;
+		}
 	}
 }
 

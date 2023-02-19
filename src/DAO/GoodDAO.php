@@ -5,9 +5,59 @@ namespace App\Src\DAO;
 use App\Config\Config;
 use App\Core\Database\Service\DBSession;
 use App\Src\Model\Good;
+use Exception;
+use mysqli_result;
 
-class GoodDAO
+class GoodDAO extends BaseDAO
 {
+	protected static string $tableName = "good";
+
+	public static function createGood(Good $good): bool
+	{
+		try
+		{
+			DBSession::requestDB(
+				"insert into good (NAME, SHORT_DESC, FULL_DESC, PRICE, IS_ACTIVE, GOOD_CODE, DATE_CREATE, DATE_UPDATE)
+				VALUE (?, ?, ?, ?, ?, ?, ?, ?)", "sssdisss", [
+				 $good->getName(),
+				 $good->getShortDesc(),
+				 $good->getFullDesc(),
+				 $good->getPrice(),
+				 $good->isActive(),
+				 $good->getArticle(),
+				 $good->getTimeCreate()->format('Y-m-d H:i:s'),
+				 $good->getTimeUpdate()->format('Y-m-d H:i:s'),
+				]
+			);
+
+			return true;
+		}
+		catch (Exception $e)
+		{
+			return false;
+		}
+	}
+
+	public static function getGoodIdsByTags(array $tagIds): ?array
+	{
+		try
+		{
+			$placeholders = str_repeat('?,', count($tagIds) - 1) . '?';
+
+			$query = "select g.* from good g
+						inner join good_tag gt on g.ID = gt.GOOD_ID
+						where gt.TAG_ID in ({$placeholders});";
+
+			$DBResponse = DBSession::requestDB($query, str_repeat('i', count($tagIds)), $tagIds);
+
+			return self::prepareGoodsFromResponse($DBResponse);
+		}
+		catch (Exception $e)
+		{
+			return null;
+		}
+	}
+
 	public static function getAvailableCount(string $searchSubstring = ''): ?int
 	{
 
@@ -29,11 +79,11 @@ class GoodDAO
 				$listOfValues = ['%' . $searchSubstring . '%', $searchSubstring];
 			}
 
-			$res = DBSession::requestDB($request, $rowOfTypes, $listOfValues);
+			$DBResponse = DBSession::requestDB($request, $rowOfTypes, $listOfValues);
 
-			return mysqli_fetch_array($res)[0];
+			return mysqli_fetch_array($DBResponse)[0];
 		}
-		catch (\Exception $e)
+		catch (Exception $e)
 		{
 			return null;
 		}
@@ -62,32 +112,15 @@ class GoodDAO
 				array_unshift($listOfValues, '%' . $searchSubstring . '%', $searchSubstring);
 			}
 
-			$goodsQuery = DBSession::requestDB(
+			$DBResponse = DBSession::requestDB(
 				$request,
 				$rowOfTypes,
 				$listOfValues
 			);
 
-			$goods = [];
-
-			while ($good = mysqli_fetch_assoc($goodsQuery))
-			{
-				$goods[$good["ID"]] = new Good(
-					$good["NAME"],
-					$good["PRICE"],
-					$good["GOOD_CODE"],
-					$good["SHORT_DESC"],
-					$good["FULL_DESC"],
-					$good["ID"],
-					new \DateTime($good["DATE_UPDATE"]),
-					new \DateTime($good["DATE_CREATE"]),
-					$good["IS_ACTIVE"]
-				);
-			}
-
-			return $goods;
+			return self::prepareGoodsFromResponse($DBResponse);
 		}
-		catch (\Exception $e)
+		catch (Exception $e)
 		{
 			return null;
 		}
@@ -104,11 +137,11 @@ class GoodDAO
 		{
 			$additionalConditionForRequest = !$isNotActive ? " and IS_ACTIVE = true" : "";
 
-			$goodRequest = DBSession::requestDB(
+			$DBResponse = DBSession::requestDB(
 				"SELECT * FROM good where ID = ?{$additionalConditionForRequest};", 'i', [$id]
 			);
 
-			$goodResult = mysqli_fetch_assoc($goodRequest);
+			$goodResult = mysqli_fetch_assoc($DBResponse);
 
 			if (!$goodResult)
 			{
@@ -137,7 +170,36 @@ class GoodDAO
 				(array)$tags
 			);
 		}
-		catch (\Exception $e)
+		catch (Exception $e)
+		{
+			return null;
+		}
+	}
+
+	private static function prepareGoodsFromResponse(mysqli_result $DBResponse): ?array
+	{
+		try
+		{
+			$goods = [];
+
+			while ($good = mysqli_fetch_assoc($DBResponse))
+			{
+				$goods[$good["ID"]] = new Good(
+					$good["NAME"],
+					$good["PRICE"],
+					$good["GOOD_CODE"],
+					$good["SHORT_DESC"],
+					$good["FULL_DESC"],
+					$good["ID"],
+					new \DateTime($good["DATE_UPDATE"]),
+					new \DateTime($good["DATE_CREATE"]),
+					$good["IS_ACTIVE"]
+				);
+			}
+
+			return $goods;
+		}
+		catch (Exception $e)
 		{
 			return null;
 		}

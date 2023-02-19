@@ -7,8 +7,10 @@ use App\Src\Model\Order;
 use App\Src\Model\Customer;
 use Exception;
 
-class OrderDAO
+class OrderDAO extends BaseDAO
 {
+	protected static string $tableName = "`order`";
+
 	public static function createOrder(Order $orderInfo, Customer $customerInfo): bool
 	{
 		try

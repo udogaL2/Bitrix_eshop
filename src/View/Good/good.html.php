@@ -2,9 +2,12 @@
 
 use App\Config\Config;
 use App\Src\Model\Good;
+use App\Src\Model\Tag;
 use \App\Src\Service\HtmlService;
+use App\Src\Service\TagService;
 
 /**
+ * @var Tag[] $tags
  * @var Good[] $goods
  * @var $pages
  * @var $currentPage
@@ -26,6 +29,13 @@ use \App\Src\Service\HtmlService;
 <body>
 
 <div class="index-container">
+	<div class="goods-container">
+	<div class="tags">
+		<?php foreach ($tags as $tag): ?>
+			<a class="good-price" href="/page/1<?= TagService::createSearchRequestForTags($tag->getId()) ?>"><?= $tag->getName() ?></a>
+		<?php endforeach; ?>
+	</div>
+
     <div class="goods">
         <?php foreach($goods as $good): ?>
             <a class="goods-item-a" href="/product/<?=$good->getId()?>">
@@ -47,22 +57,22 @@ use \App\Src\Service\HtmlService;
         <?php endforeach; ?>
     </div>
 
+	</div>
     <ul class="pagination">
         <li class="pagination-item <?= ($currentPage == Config::FIRST_PAGE_ON_PAGINATION) ? 'pagination-item-no-active' : '' ?>">
-            <a href="/page/<?= Config::FIRST_PAGE_ON_PAGINATION ?>"><?= "<<" ?></a>
+            <a href="/page/<?= Config::FIRST_PAGE_ON_PAGINATION.TagService::createSearchRequestForTags() ?>"><?= "<<" ?></a>
         </li>
 
         <?php foreach ($pages as $page): ?>
             <li class="pagination-item <?= ($currentPage === $page) ? 'pagination-item-active' : '' ?>">
-                <a href="/page/<?= $page ?>"><?= $page ?></a>
+                <a href="/page/<?= $page.TagService::createSearchRequestForTags() ?>"><?= $page ?></a>
             </li>
         <?php endforeach ?>
 
         <li class="pagination-item <?= ($currentPage === $lastPage) ? 'pagination-item-no-active' : '' ?>">
-            <a href="/page/<?= $lastPage ?>"><?= ">>"?></a>
+            <a href="/page/<?= $lastPage.TagService::createSearchRequestForTags() ?>"><?= ">>"?></a>
         </li>
     </ul>
 </div>
-
 </body>
 </html>

@@ -38,26 +38,6 @@ class GoodDAO extends BaseDAO
 		}
 	}
 
-	public static function getGoodIdsByTags(array $tagIds): ?array
-	{
-		try
-		{
-			$placeholders = str_repeat('?,', count($tagIds) - 1) . '?';
-
-			$query = "select distinct g.* from good g
-						inner join good_tag gt on g.ID = gt.GOOD_ID
-						where gt.TAG_ID in ({$placeholders}) and g.IS_ACTIVE = true;";
-
-			$DBResponse = DBSession::requestDB($query, str_repeat('i', count($tagIds)), $tagIds);
-
-			return self::prepareGoodsFromResponse($DBResponse);
-		}
-		catch (Exception $e)
-		{
-			return null;
-		}
-	}
-
 	// searchSubstring - для получения товаров по названию из поиска
 	public static function getAvailableCount(string $searchSubstring = ''): ?int
 	{
@@ -93,15 +73,48 @@ class GoodDAO extends BaseDAO
 	{
 		try
 		{
-			$placeholders = str_repeat('?,', count($tagIds) - 1) . '?';
+			$countTagIds=count($tagIds);
+			$placeholders = str_repeat('?,', $countTagIds - 1) . '?';
 
-			$request = "select COUNT(DISTINCT g.ID) from good g
+			$request = "select count(additional.ID)
+						from
+						(select g.ID, COUNT(gt.TAG_ID) as COINCIDENCE from good g
 						inner join good_tag gt on g.ID = gt.GOOD_ID
-						where gt.TAG_ID in ({$placeholders}) and g.IS_ACTIVE = true;";
+						where gt.TAG_ID in ($placeholders) and g.IS_ACTIVE = true
+						group by g.ID) as additional
+						WHERE additional.COINCIDENCE=$countTagIds";
 
 			$DBResponse = DBSession::requestDB($request, str_repeat('i', count($tagIds)), $tagIds);
 
 			return mysqli_fetch_array($DBResponse)[0];
+		}
+		catch (Exception $e)
+		{
+			return null;
+		}
+	}
+
+	public static function getAvailableGoodsByTagsByOffset(array $tagIds, int $offsetByPage): ?array
+	{
+		try
+		{
+			$countGoodsOnPage = Config::COUNT_GOODS_ON_PAGE;
+			$countTagIds=count($tagIds);
+			$placeholders = str_repeat('?,', count($tagIds) - 1) . '?';
+
+			$request = "select additional.* 
+						from 
+						(select g.*, COUNT(gt.TAG_ID) as COINCIDENCE from good g
+						inner join good_tag gt on g.ID = gt.GOOD_ID
+						where gt.TAG_ID in ({$placeholders}) and g.IS_ACTIVE = true
+						group by g.ID) as additional
+						WHERE additional.COINCIDENCE=$countTagIds
+						order by additional.ID
+						LIMIT $countGoodsOnPage OFFSET $offsetByPage;";
+
+			$DBResponse = DBSession::requestDB($request, str_repeat('i', count($tagIds)), $tagIds);
+
+			return self::prepareGoodsFromResponse($DBResponse);
 		}
 		catch (Exception $e)
 		{

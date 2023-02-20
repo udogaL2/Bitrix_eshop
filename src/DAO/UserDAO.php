@@ -3,7 +3,6 @@
 namespace App\Src\DAO;
 
 use App\Core\Database\Service\DBSession;
-use App\Model\User;
 
 class UserDAO
 {

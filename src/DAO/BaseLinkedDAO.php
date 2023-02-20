@@ -5,7 +5,6 @@ namespace App\Src\DAO;
 use App\Core\Database\Service\DBSession;
 use Exception;
 
-// TODO(написать комментарии с описанием работы)
 abstract class BaseLinkedDAO extends BaseDAO
 {
 	protected static string $linkTableName = "";

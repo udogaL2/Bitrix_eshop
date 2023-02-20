@@ -19,15 +19,15 @@ class GoodDAO extends BaseDAO
 			DBSession::requestDB(
 				"insert into good (NAME, SHORT_DESC, FULL_DESC, PRICE, IS_ACTIVE, GOOD_CODE, DATE_CREATE, DATE_UPDATE)
 				VALUE (?, ?, ?, ?, ?, ?, ?, ?)", "sssdisss", [
-				 $good->getName(),
-				 $good->getShortDesc(),
-				 $good->getFullDesc(),
-				 $good->getPrice(),
-				 $good->isActive(),
-				 $good->getArticle(),
-				 $good->getTimeCreate()->format('Y-m-d H:i:s'),
-				 $good->getTimeUpdate()->format('Y-m-d H:i:s'),
-				]
+																   $good->getName(),
+																   $good->getShortDesc(),
+																   $good->getFullDesc(),
+																   $good->getPrice(),
+																   $good->isActive(),
+																   $good->getArticle(),
+																   $good->getTimeCreate()->format('Y-m-d H:i:s'),
+																   $good->getTimeUpdate()->format('Y-m-d H:i:s'),
+															   ]
 			);
 
 			return true;
@@ -44,9 +44,9 @@ class GoodDAO extends BaseDAO
 		{
 			$placeholders = str_repeat('?,', count($tagIds) - 1) . '?';
 
-			$query = "select g.* from good g
+			$query = "select distinct g.* from good g
 						inner join good_tag gt on g.ID = gt.GOOD_ID
-						where gt.TAG_ID in ({$placeholders});";
+						where gt.TAG_ID in ({$placeholders}) and g.IS_ACTIVE = true;";
 
 			$DBResponse = DBSession::requestDB($query, str_repeat('i', count($tagIds)), $tagIds);
 
@@ -58,9 +58,9 @@ class GoodDAO extends BaseDAO
 		}
 	}
 
+	// searchSubstring - для получения товаров по названию из поиска
 	public static function getAvailableCount(string $searchSubstring = ''): ?int
 	{
-
 		try
 		{
 			$request = "select COUNT(*) from good where IS_ACTIVE = true;";
@@ -89,7 +89,31 @@ class GoodDAO extends BaseDAO
 		}
 	}
 
-	public static function getAvailableGoodsByOffset(int $offsetByPage, string $searchSubstring = ''): ?array
+	public static function getAvailableCountByTags(array $tagIds): ?int
+	{
+		try
+		{
+			$placeholders = str_repeat('?,', count($tagIds) - 1) . '?';
+
+			$request = "select COUNT(DISTINCT g.ID) from good g
+						inner join good_tag gt on g.ID = gt.GOOD_ID
+						where gt.TAG_ID in ({$placeholders}) and g.IS_ACTIVE = true;";
+
+			$DBResponse = DBSession::requestDB($request, str_repeat('i', count($tagIds)), $tagIds);
+
+			return mysqli_fetch_array($DBResponse)[0];
+		}
+		catch (Exception $e)
+		{
+			return null;
+		}
+	}
+
+	// searchSubstring - для получения товаров по названию из поиска
+	public static function getAvailableGoodsByOffset(
+		int    $offsetByPage,
+		string $searchSubstring = ''
+	): ?array
 	{
 		try
 		{
@@ -127,7 +151,7 @@ class GoodDAO extends BaseDAO
 	}
 
 	public static function getCurrentGoodById(
-		int $id,
+		int  $id,
 		bool $isNotActive = false,
 		bool $isWithImages = true,
 		bool $isWithTags = true
@@ -184,17 +208,20 @@ class GoodDAO extends BaseDAO
 
 			while ($good = mysqli_fetch_assoc($DBResponse))
 			{
-				$goods[$good["ID"]] = new Good(
-					$good["NAME"],
-					$good["PRICE"],
-					$good["GOOD_CODE"],
-					$good["SHORT_DESC"],
-					$good["FULL_DESC"],
-					$good["ID"],
-					new \DateTime($good["DATE_UPDATE"]),
-					new \DateTime($good["DATE_CREATE"]),
-					$good["IS_ACTIVE"]
-				);
+				if (!array_key_exists($good["ID"], $goods))
+				{
+					$goods[$good["ID"]] = new Good(
+						$good["NAME"],
+						$good["PRICE"],
+						$good["GOOD_CODE"],
+						$good["SHORT_DESC"],
+						$good["FULL_DESC"],
+						$good["ID"],
+						new \DateTime($good["DATE_UPDATE"]),
+						new \DateTime($good["DATE_CREATE"]),
+						$good["IS_ACTIVE"]
+					);
+				}
 			}
 
 			return $goods;

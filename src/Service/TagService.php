@@ -47,4 +47,20 @@ class TagService
 
 		return implode("+", $get);
 	}
+
+	public static function isChecked(int $tagId): string
+	{
+		if (!isset($_GET["tags"]) || empty(trim($_GET["tags"])))
+		{
+			return "";
+		}
+
+		$get = explode(" ", $_GET["tags"]);
+		if (($key = array_search((string)$tagId, $get, true)) !== false)
+		{
+			return "checked";
+		}
+
+		return "";
+	}
 }

@@ -32,7 +32,14 @@ use App\Src\Service\TagService;
 	<div class="goods-container">
 	<div class="tags">
 		<?php foreach ($tags as $tag): ?>
-			<a class="good-price" href="/page/1<?= TagService::createSearchRequestForTags($tag->getId()) ?>"><?= $tag->getName() ?></a>
+			<div>
+				<label>
+					<input type="checkbox" <?= TagService::isChecked($tag->getId()) ?>>
+					<a class="good-price" href="/page/1
+						<?= TagService::createSearchRequestForTags($tag->getId()) ?>"><?= $tag->getName() ?>
+					</a>
+				</label>
+			</div>
 		<?php endforeach; ?>
 	</div>
 

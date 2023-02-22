@@ -29,9 +29,14 @@ class OrderController extends BaseController
 
 	public function registerOrderAction(int $id): void
 	{
+		$cName = $_POST['cName'];
+		$cSurname = $_POST['cSurname'];
+		$cPhone = $_POST['cPhone'];
+		$cEmail = $_POST['cEmail'];
+
         try
         {
-            $result = OrderService::registerOrderById($id);
+            $result = OrderService::registerOrderById($id, $cName, $cSurname, $cPhone, $cEmail);
         }
         catch (InvalidInputException $e)
         {

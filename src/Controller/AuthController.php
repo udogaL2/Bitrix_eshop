@@ -15,7 +15,7 @@ class AuthController extends BaseController
             if ($valid)
             {
                 session_start();
-                header('Location: /');
+                header('Location: /admin');
             }
             $this->error = 'invalid login or password';
         }

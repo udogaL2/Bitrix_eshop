@@ -20,13 +20,13 @@
 		</a>
 
         <div class="div-search">
-            <img src="/src/View/icons/icon-search.svg" class="icon-search">
+            <img src="/public/icons/icon-search.png" class="icon-search">
             <label>
                 <input type="text" class="search" placeholder="Поиск по товарам">
             </label>
             <a class="button-search" href="#">Поиск</a>
         </div>
-
+        <a href="\admin" class="icon-admin"></a>
     </div>
 </header>
 

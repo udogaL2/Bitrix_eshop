@@ -17,8 +17,11 @@ class AdminController extends BaseController
 			$content = AdminService::getContentBySection("tags");
 		}
 
-		echo self::view('Admin/main.html', [
-			'content' => $content,
-		]);
+        echo self::view( 'Main/index.html', [
+            'content' => self::view(
+                'Admin/main.html' , ['content' => $content,])
+        ]);
 	}
 }
+
+

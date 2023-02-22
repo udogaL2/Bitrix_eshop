@@ -2,7 +2,23 @@
 
 namespace App\Src\Controller;
 
-class AdminController
-{
+use App\Src\Service\AdminService;
 
+class AdminController extends BaseController
+{
+	public function getMainAdminPageAction(): void
+	{
+		$section = $_GET['section'] ?? 'tags';
+
+		$content = AdminService::getContentBySection($section);
+
+		if ($content === [])
+		{
+			$content = AdminService::getContentBySection("tags");
+		}
+
+		echo self::view('Admin/main.html', [
+			'content' => $content,
+		]);
+	}
 }

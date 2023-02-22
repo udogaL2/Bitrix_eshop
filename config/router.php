@@ -57,6 +57,11 @@ return array (
         'method' => 'POST',
         'action' => [new App\Src\Controller\AuthController(), 'authPageAction'],
     ),
+	array (
+		 'path' => '/admin',
+		 'method' => 'GET',
+		 'action' => [new \App\Src\Controller\AdminController(), 'getMainAdminPageAction'],
+	 ),
 //     array (
 //         'path' => '/:search/:page',
 //         'method' => 'POST',

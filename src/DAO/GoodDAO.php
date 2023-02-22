@@ -244,4 +244,35 @@ class GoodDAO extends BaseDAO
 			return null;
 		}
 	}
+
+	public static function getAllGoods()
+	{
+		$DBResponse = DBSession::requestDB(
+			"SELECT * FROM good;"
+		);
+
+		$goods = [];
+
+		while ($good = mysqli_fetch_assoc($DBResponse))
+		{
+			$images = ImageDAO::getImageOfGoods([$good['ID']])[$good['ID']];
+			$tags = TagDAO::getTagsOfGoods([$good['ID']])[$good['ID']];
+
+			$goods[] = new Good(
+				$good['NAME'],
+				$good['PRICE'],
+				$good['GOOD_CODE'],
+				$good['SHORT_DESC'],
+				$good['FULL_DESC'],
+				$good['ID'],
+				new \DateTime($good['DATE_UPDATE']),
+				new \DateTime($good['DATE_CREATE']),
+				$good['IS_ACTIVE'],
+				(array)$images,
+				(array)$tags
+			);
+		}
+
+		return $goods;
+	}
 }

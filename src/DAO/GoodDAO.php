@@ -73,7 +73,7 @@ class GoodDAO extends BaseDAO
 	{
 		try
 		{
-			$countTagIds=count($tagIds);
+			$countTagIds = count($tagIds);
 			$placeholders = str_repeat('?,', $countTagIds - 1) . '?';
 
 			$request = "select count(additional.ID)
@@ -99,7 +99,7 @@ class GoodDAO extends BaseDAO
 		try
 		{
 			$countGoodsOnPage = Config::COUNT_GOODS_ON_PAGE;
-			$countTagIds=count($tagIds);
+			$countTagIds = count($tagIds);
 			$placeholders = str_repeat('?,', count($tagIds) - 1) . '?';
 
 			$request = "select additional.* 
@@ -245,34 +245,44 @@ class GoodDAO extends BaseDAO
 		}
 	}
 
-	public static function getAllGoods()
+	public static function getAllGoods(
+		bool $isWithImages = false,
+		bool $isWithTags = false
+	): ?array
 	{
-		$DBResponse = DBSession::requestDB(
-			"SELECT * FROM good;"
-		);
-
-		$goods = [];
-
-		while ($good = mysqli_fetch_assoc($DBResponse))
+		try
 		{
-			$images = ImageDAO::getImageOfGoods([$good['ID']])[$good['ID']];
-			$tags = TagDAO::getTagsOfGoods([$good['ID']])[$good['ID']];
-
-			$goods[] = new Good(
-				$good['NAME'],
-				$good['PRICE'],
-				$good['GOOD_CODE'],
-				$good['SHORT_DESC'],
-				$good['FULL_DESC'],
-				$good['ID'],
-				new \DateTime($good['DATE_UPDATE']),
-				new \DateTime($good['DATE_CREATE']),
-				$good['IS_ACTIVE'],
-				(array)$images,
-				(array)$tags
+			$DBResponse = DBSession::requestDB(
+				"SELECT * FROM good;"
 			);
-		}
 
-		return $goods;
+			$goods = [];
+
+			while ($good = mysqli_fetch_assoc($DBResponse))
+			{
+				$images = $isWithImages ? ImageDAO::getImageOfGoods([$good['ID']])[$good['ID']] : [];
+				$tags = $isWithTags ? TagDAO::getTagsOfGoods([$good['ID']])[$good['ID']] : [];
+
+				$goods[] = new Good(
+					$good['NAME'],
+					$good['PRICE'],
+					$good['GOOD_CODE'],
+					$good['SHORT_DESC'],
+					$good['FULL_DESC'],
+					$good['ID'],
+					new \DateTime($good['DATE_UPDATE']),
+					new \DateTime($good['DATE_CREATE']),
+					$good['IS_ACTIVE'],
+					(array)$images,
+					(array)$tags
+				);
+			}
+
+			return $goods;
+		}
+		catch (Exception $e)
+		{
+			return null;
+		}
 	}
 }

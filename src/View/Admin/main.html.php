@@ -2,7 +2,9 @@
 
 use App\Src\Model\Good;
 use App\Src\Model\Order;
-use App\Src\Model\Tag; ?>
+use App\Src\Model\Tag;
+
+$i=1;?>
 
 <!doctype html>
 <html lang="en">
@@ -17,43 +19,26 @@ use App\Src\Model\Tag; ?>
 </head>
 
 <body>
-<div style="margin: 100px 0 0 50px;
-			display: flex;
-			align-items: center">
+<div class="content-admin-page">
+    <div class="wrapper">
+        <a href="/admin?section=goods" class="admin-page-panel">Товары</a>
+        <a href="/admin?section=tags" class="admin-page-panel">Теги</a>
+        <a href="/admin?section=orders" class="admin-page-panel">Заказы</a>
+    </div>
 
-	<div style="display: flex;
-				flex-direction: column;
-			">
-
-		<a href="/admin?section=orders">
-			<div style="margin: 25px 10px 10px 10px;">Заказы</div>
-		</a>
-
-		<a href="/admin?section=goods">
-			<div style="margin: 25px 10px 10px 10px;">Товары</div>
-		</a>
-
-		<a href="/admin?section=tags">
-			<div style="margin: 25px 10px 10px 10px;">Теги</div>
-		</a>
-	</div>
-
-	<div style="margin-left: 100px;">
-		<?php foreach ($content as $item):?>
-			<div style="display:flex;
-						align-items: flex-end">
-				<div style="margin-top: 10px"> <?= $item->getName() ?> </div>
-				<a href="#" style="margin-left: 15px">Edit</a>
-			</div>
-		<?php endforeach; ?>
-	</div>
-
-	<a href="#" style="font-size: 24px;
-				margin-left: 150px"> Add </a>
-
+    <div class="admin-page-table">
+        <table>
+            <?php foreach($content as $item): ?>
+                <tr>
+                    <th><?= $i++ ?></th>
+                    <th><?= $item->getName() ?></th>
+                    <th><a class="admin-page-a-edit" href="#" >Edit</a></th>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+    </div>
+	<a class="admin-page-a-add" href="#"> Add </a>
 </div>
-
-
 </body>
 </html>
 

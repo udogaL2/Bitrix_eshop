@@ -18,8 +18,8 @@ class AdminController extends BaseController
 		}
 
         echo self::view( 'Main/index.html', [
-            'content' => self::view(
-                'Admin/main.html' , ['content' => $content,])
+            'content' => self::view('Admin/main.html' ,
+                ['content' => $content,])
         ]);
 	}
 }

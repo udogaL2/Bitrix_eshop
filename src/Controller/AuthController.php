@@ -19,6 +19,7 @@ class AuthController extends BaseController
             }
             $this->error = 'invalid login or password';
         }
+
         echo self::view('Main/index.html', [
             'content' => self::view('Admin/auth.html', [
                 'error' => $this->error,

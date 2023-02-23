@@ -140,14 +140,6 @@ input:focus {
 }
 
 /*===============================*/
-/*sidebar*/
-/*===============================*/
-
-input[type="checkbox"] {
-	display: none;
-}
-
-/*===============================*/
 /*footer*/
 /*===============================*/
 
@@ -212,17 +204,18 @@ a.about-item:hover, a.follow-item:hover{
 .goods-container{
 	display: flex;
 	flex-direction: row;
-	align-items: center;
+	justify-content: space-evenly;
+	align-items: flex-start;
+	width: 98vw;
 }
 
 .tags{
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
 	align-items: center;
 	min-width:266px;
 	min-height:267px;
-	margin:40px 200px 0 0;
+	margin: 20px 20px 0 0;
 	background: #cccccc;
 	border-radius: 2px;
 	box-shadow:0 0 13px rgba(128, 127, 127, 0.78);

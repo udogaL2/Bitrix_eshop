@@ -78,5 +78,6 @@ class OrderDAO extends BaseDAO
     public static function getOrderByID(int $id) : Order|null
     {
         //
+        return null;
     }
 }

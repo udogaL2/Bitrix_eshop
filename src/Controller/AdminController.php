@@ -66,14 +66,6 @@ class AdminController extends BaseController
             'content' => $content,
             'isAdmin' => true,
         ]);
-
-        $content = '';
-        echo self::view( 'Main/index.html', [
-            'content' => self::view('Admin/detailed_tags.html' , [
-                'content' => $content,
-            ]),
-            'isAdmin' => true,
-        ]);
     }
 
     public function detailedGoodAdminPageAction(int $id) : void

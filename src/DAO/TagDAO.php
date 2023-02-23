@@ -119,6 +119,7 @@ class TagDAO extends BaseLinkedDAO
     public static function getTagByID(int $id) : Tag|null
     {
         //
+        return null;
     }
 }
 

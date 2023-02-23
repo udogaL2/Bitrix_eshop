@@ -48,7 +48,7 @@ $i=1;
                         <th><?= $i++ ?></th>
                         <th><?= HtmlService::cutGoodTitle($item['goodName'], 30) ?></th>
                         <th><?= $item['status'] ?></th>
-                        <th><a class="admin-page-a-edit" href="#" >Edit</a></th>
+                        <th><a class="admin-page-a-edit" href="/edit/<?=$section?>/<?=$item['ID']?>" >Edit</a></th>
                     </tr>
                 <?php endforeach; ?>
             <?php endif; ?>

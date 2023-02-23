@@ -26,7 +26,7 @@
             </label>
             <a class="button-search" href="#">Поиск</a>
         </div>
-        <a href="\admin" class="icon-admin"></a>
+        <a href="\auth" class="icon-admin"></a>
     </div>
 </header>
 

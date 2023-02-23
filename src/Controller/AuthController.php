@@ -26,11 +26,8 @@ class AuthController extends BaseController
             }
         }
 
-        echo self::view('Main/index.html', [
-            'content' => self::view('Auth/auth.html', [
+        echo self::view('Auth/auth.html', [
                 'error' => $this->error,
-            ]),
-            'isAdmin' => false,
         ]);
     }
 

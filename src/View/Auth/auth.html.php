@@ -12,21 +12,24 @@
 	<title></title>
 </head>
 <body>
-<div class="content-auth">
-    <?php if ($error !== ''): ?>
-        <div class="alert alert-danger" role="alert"><?= $error ?></div>
-    <?php endif; ?>
-	<div class="content-auth-title">Авторизация</div>
-	<form action="/auth" method="post">
-		<label class="content-auth">
-			<input type="text" name="login" class="content-auth-login" placeholder="Логин" minlength="3" maxlength="15" required>
-		    <span class="validity"></span>
-			<input type="password" name="password" class="content-auth-password" placeholder="Пароль" minlength="3" maxlength="15" required>
-		    <span class="validity"></span>
-            <button class="content-auth-button" type="submit">Войти</button>
-        </label>
-	</form>
+<div class="header"></div>
+<div class="content-auth-container">
+    <div class="content-auth">
+        <?php if ($error !== ''): ?>
+            <div class="alert alert-danger" role="alert"><?= $error ?></div>
+        <?php endif; ?>
+        <div class="content-auth-title">Авторизация</div>
+        <form action="/auth" method="post">
+            <label class="content-auth">
+                <input type="text" name="login" class="content-auth-login" placeholder="Логин" minlength="3" maxlength="15" required>
+                <span class="validity"></span>
+                <input type="password" name="password" class="content-auth-password" placeholder="Пароль" minlength="3" maxlength="15" required>
+                <span class="validity"></span>
+                <button class="content-auth-button" type="submit">Войти</button>
+            </label>
+        </form>
+    </div>
 </div>
-
+<div class="footer"></div>
 </body>
 </html>

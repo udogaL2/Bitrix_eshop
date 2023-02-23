@@ -1,5 +1,8 @@
 <?php
-/** @var string $content */
+/**
+ * @var string $content
+ * @var bool $isAdmin
+ */
 ?>
 
 <!doctype html>
@@ -14,19 +17,22 @@
 </head>
 <body>
 <header>
-    <div class="header">
-		<a class="logo-fon" href="/">
-			<div ><div class="logo"></div></div>
-		</a>
-
-        <div class="div-search">
-            <img src="/public/icons/icon-search.png" class="icon-search">
-            <label>
-                <input type="text" class="search" placeholder="Поиск по товарам">
-            </label>
-            <a class="button-search" href="#">Поиск</a>
-        </div>
-        <a href="\auth" class="icon-admin"></a>
+        <div class="header">
+            <?php if (!$isAdmin): ?>
+            <a class="logo-fon" href="/">
+                <div ><div class="logo"></div></div>
+            </a>
+            <div class="div-search">
+                <img src="/public/icons/icon-search.png" class="icon-search">
+                <label>
+                    <input type="text" class="search" placeholder="Поиск по товарам">
+                </label>
+                <a class="button-search" href="#">Поиск</a>
+            </div>
+        <?php endif; ?>
+        <?php if ($isAdmin): ?>
+            <a href="\admin" class="icon-admin"></a>
+        <?php endif; ?>
     </div>
 </header>
 

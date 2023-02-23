@@ -17,6 +17,7 @@ class OrderController extends BaseController
 {
 	public function createOrderAction(int $id, array $errors = []): void
 	{
+        AuthController::adminSessionAction();
 		$good = OrderService::createOrderById($id);
 
 		echo self::view('Main/index.html', [
@@ -24,6 +25,7 @@ class OrderController extends BaseController
 				'good' => $good,
                 'errors' => $errors,
 			]),
+            'isAdmin' => false,
 		]);
 	}
 
@@ -60,16 +62,25 @@ class OrderController extends BaseController
 	//
 	function successOrderAction()
 	{
+        if (!preg_match('#/order/\d#', $_SERVER['HTTP_REFERER']))
+        {
+            header('Location: /');
+        }
 		echo self::view('Main/index.html', [
 			'content' => self::view(
 				'Order/orderPlaced.html',
 				['content' => 'Заказ успешно оформлен']
 			),
+            'isAdmin' => false,
 		]);
 	}
 
 	function errorOrderAction()
 	{
+        if (!preg_match('#/order/\d#', $_SERVER['HTTP_REFERER']))
+        {
+            header('Location: /');
+        }
 		echo self::view('Main/index.html', [
 			'content' => self::view(
 				'Order/orderPlaced.html',

@@ -9,6 +9,8 @@ class GoodController extends BaseController
 {
 	public function getDetailedGoodAction($id) : void
 	{
+        AuthController::adminSessionAction();
+
         $service = new GoodService(new \DateInterval('P24M'));
 		// TODO(сделать запись/чтение количества товаров в кеш)
 		if ($id < 0 || $id > $service->getNumberOfGoods())
@@ -32,6 +34,7 @@ class GoodController extends BaseController
 				'content' => self::view('Detail/detail.html', [
 					'good' => $good,
 				]),
+                'isAdmin' => false,
 			]);
 		}
 		catch (PathException $e)

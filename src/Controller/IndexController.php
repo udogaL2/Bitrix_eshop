@@ -9,19 +9,9 @@ use Exception;
 
 class IndexController extends BaseController
 {
-	//    public function indexPageAction(int $page = 1) : void
-	//    {
-	//        if(isset($_GET['search']))
-	//        {
-	//            var_dump($_GET['search']);
-	//        }
-	//        else
-	//        {
-	//            $this->viewGoodByPage($page);
-	//        }
-	//    }
 	public function viewGoodByPage(int $page = 1): void
 	{
+        AuthController::adminSessionAction();
 		try
 		{
 			if (empty($_GET["tags"]))
@@ -45,6 +35,7 @@ class IndexController extends BaseController
 						'lastPage' => $lastPage,
 						'tags' => $tags,
 					]),
+                    'isAdmin' => false,
 				]);
 			}
 			else
@@ -68,6 +59,7 @@ class IndexController extends BaseController
 						'lastPage' => $lastPage,
 						'tags' => $tags,
 					]),
+                    'isAdmin' => false,
 				]);
 			}
 		}

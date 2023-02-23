@@ -9,11 +9,6 @@ use App\Src\DAO\TagDAO;
 
 class AdminService
 {
-    public static function checkLoginAndPassword($login, $password) : bool
-    {
-        return true;
-    }
-
 	public static function getContentBySection(string $section)
 	{
 		if ($section === 'tags')

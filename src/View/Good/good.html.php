@@ -34,7 +34,7 @@ use App\Src\Service\TagService;
 		<?php foreach ($tags as $tag): ?>
 			<div>
 				<label>
-					<input type="checkbox" <?= TagService::isChecked($tag->getId()) ?>>
+					<input class="checkbox" type="checkbox" <?= TagService::isChecked($tag->getId()) ?>>
 					<a class="good-price" href="/page/1
 						<?= TagService::createSearchRequestForTags($tag->getId()) ?>"><?= $tag->getName() ?>
 					</a>

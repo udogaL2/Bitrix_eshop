@@ -11,8 +11,10 @@ class AuthController extends BaseController
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST')
         {
+			// TODO: сделать проверку для полей
+
             $role = AuthService::getRoleOrFail($_POST['login'], $_POST['password']);
-            var_dump($role);
+
             if ($role === false)
             {
                 $this->error = 'invalid login or password';

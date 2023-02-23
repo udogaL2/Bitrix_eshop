@@ -8,14 +8,15 @@ class AuthService
 {
     public static function getRoleOrFail(string $login, string $password) : string|false
     {
-        $user = UserDAO::checkUser($login);
+        $user = UserDAO::getUser($login);
+
         if ($user === false)
         {
             return false;
         }
-        if (password_verify($password, $user[3]))
+        if (password_verify($password, $user->getHashedPassword()))
         {
-            return $user[4];
+            return $user->getRole();
         }
         return false;
     }

@@ -1,6 +1,7 @@
 <?php /**
  * @var Tag[]|Good[]|array[] $content
  * @var bool $isOrderSection
+ * @var string $section
  */
 
 use App\Src\Model\Good;
@@ -37,7 +38,7 @@ $i=1;
                     <tr>
                         <th><?= $i++ ?></th>
                         <th><?= HtmlService::cutGoodTitle($item->getName(), 30) ?></th>
-                        <th><a class="admin-page-a-edit" href="#" >Edit</a></th>
+                        <th><a class="admin-page-a-edit" href="/edit/<?=$section?>/<?=$item->getId()?>">Edit</a></th>
                     </tr>
                 <?php endforeach; ?>
             <?php endif; ?>

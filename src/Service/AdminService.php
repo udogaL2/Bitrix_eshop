@@ -6,6 +6,9 @@ use App\Config\Config;
 use App\Src\DAO\GoodDAO;
 use App\Src\DAO\OrderDAO;
 use App\Src\DAO\TagDAO;
+use App\Src\Model\Good;
+use App\Src\Model\Order;
+use App\Src\Model\Tag;
 
 class AdminService
 {
@@ -39,7 +42,21 @@ class AdminService
             return $goodsNameAndStatus;
 		}
 
-
 		return [];
 	}
+
+    public static function updateTag(Tag $tag)
+    {
+        //TagDAO::updateTag();
+    }
+
+    public static function updateGood(Good $good)
+    {
+        //TagDAO::updateGood();
+    }
+
+    public static function updateOrder(Order $order)
+    {
+        //TagDAO::updateGood();
+    }
 }

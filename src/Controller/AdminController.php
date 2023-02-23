@@ -19,9 +19,12 @@ class AdminController extends BaseController
 			$content = AdminService::getContentBySection("tags");
 		}
 
+        $isOrderSection = $section === 'orders';
+
         echo self::view( 'Main/index.html', [
             'content' => self::view('Admin/main.html' , [
                 'content' => $content,
+                'isOrderSection' => $isOrderSection,
                 ]),
             'isAdmin' => true,
         ]);

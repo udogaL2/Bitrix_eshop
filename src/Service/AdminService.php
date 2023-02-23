@@ -23,7 +23,20 @@ class AdminService
 
 		if ($section === 'orders')
 		{
-			//return OrderDAO::
+			$orders = OrderDAO::getAllOrders();
+            $goodsNameAndStatus = [];
+            foreach ($orders as $order)
+            {
+                $good = GoodDAO::getCurrentGoodById($order->getGoodId());
+                if ($good !== null)
+                {
+                    $goodsNameAndStatus[] = [
+                        'goodName' => $good->getName(),
+                        'status' => $order->getStatus(),
+                        ];
+                }
+            }
+            return $goodsNameAndStatus;
 		}
 
 

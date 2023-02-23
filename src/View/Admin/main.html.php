@@ -1,7 +1,10 @@
-<?php /** @var Tag[]|Good[]|Order[] $content */
+<?php /**
+ * @var Tag[]|Good[]|array[] $content
+ * @var bool $isOrderSection
+ */
 
 use App\Src\Model\Good;
-use App\Src\Model\Order;
+use \App\Src\Service\HtmlService;
 use App\Src\Model\Tag;
 
 $i=1;
@@ -29,13 +32,25 @@ $i=1;
 
     <div class="admin-page-table">
         <table>
-            <?php foreach($content as $item): ?>
-                <tr>
-                    <th><?= $i++ ?></th>
-                    <th><?= $item->getName() ?></th>
-                    <th><a class="admin-page-a-edit" href="#" >Edit</a></th>
-                </tr>
-            <?php endforeach; ?>
+            <?php if(!$isOrderSection): ?>
+                <?php foreach($content as $item): ?>
+                    <tr>
+                        <th><?= $i++ ?></th>
+                        <th><?= HtmlService::cutGoodTitle($item->getName(), 30) ?></th>
+                        <th><a class="admin-page-a-edit" href="#" >Edit</a></th>
+                    </tr>
+                <?php endforeach; ?>
+            <?php endif; ?>
+            <?php if($isOrderSection): ?>
+                <?php foreach($content as $item): ?>
+                    <tr>
+                        <th><?= $i++ ?></th>
+                        <th><?= HtmlService::cutGoodTitle($item['goodName'], 30) ?></th>
+                        <th><?= $item['status'] ?></th>
+                        <th><a class="admin-page-a-edit" href="#" >Edit</a></th>
+                    </tr>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </table>
     </div>
 	<a class="admin-page-a-add" href="#"> Add </a>

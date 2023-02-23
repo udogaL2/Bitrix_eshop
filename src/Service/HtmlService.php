@@ -6,13 +6,13 @@ use App\Src\Model\Tag;
 
 class HtmlService
 {
-    public static function cutGoodTitle($title) : string
+    public static function cutGoodTitle($title, $length = 26) : string
     {
-        if (mb_strlen($title) < 26)
+        if (mb_strlen($title) < $length)
         {
             return $title;
         }
-        return mb_substr($title, 0, 23) . '...';
+        return mb_substr($title, 0, $length-3) . '...';
     }
 
     public static function cutGoodDescription($title) : string

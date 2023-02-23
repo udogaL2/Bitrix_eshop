@@ -12,7 +12,7 @@ class HtmlService
         {
             return $title;
         }
-        return mb_substr($title, 0, 25) . '...';
+        return mb_substr($title, 0, 23) . '...';
     }
 
     public static function cutGoodDescription($title) : string

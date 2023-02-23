@@ -309,8 +309,8 @@ input[type="checkbox"]:checked + a.good-price:after{
 	flex-direction: column;
 	justify-content: center;
 	margin: 20px;
-	width: 370px;
-	min-height: 550px;
+	width: 380px;
+	min-height: 560px;
 	background: #fffdfd;
 	box-shadow: 0 0 20px 0 rgb(204, 204, 204);
 	border-radius: 10px;

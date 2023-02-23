@@ -4,7 +4,8 @@ use App\Src\Model\Good;
 use App\Src\Model\Order;
 use App\Src\Model\Tag;
 
-$i=1;?>
+$i=1;
+?>
 
 <!doctype html>
 <html lang="en">

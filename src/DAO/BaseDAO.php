@@ -38,6 +38,9 @@ abstract class BaseDAO
 	{
 		try
 		{
+			if (!$updateFieldsValue)
+				return false;
+
 			$tableName = static::$tableName;
 			$placeholders = "";
 			$rowOfTypes = "";

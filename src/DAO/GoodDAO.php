@@ -285,9 +285,4 @@ class GoodDAO extends BaseDAO
 			return null;
 		}
 	}
-
-    public static function updateGood()
-    {
-        //
-    }
 }

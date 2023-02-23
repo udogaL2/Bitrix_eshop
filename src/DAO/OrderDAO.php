@@ -70,14 +70,27 @@ class OrderDAO extends BaseDAO
 		}
 	}
 
-    public static function updateOrder()
-    {
-        //
-    }
+	public static function getOrderByID(int $id): Order|null
+	{
+		try
+		{
+			$DBResponse = DBSession::requestDB("select * from `order` where ID = ?", 'i', [$id]);
 
-    public static function getOrderByID(int $id) : Order|null
-    {
-        //
-        return null;
-    }
+			$result = mysqli_fetch_assoc($DBResponse);
+
+			return $result ? new Order(
+				$result["GOOD_ID"],
+				new Customer($result["C_NAME"], $result["C_PHONE"], $result["C_EMAIL"], $result["C_WISH"]),
+				$result["ADDRESS"],
+				$result["PRICE"],
+				$result["ID"],
+				$result["DATE_CREATE"],
+				$result["STATUS"]
+			) : null;
+		}
+		catch (Exception $e)
+		{
+			return null;
+		}
+	}
 }

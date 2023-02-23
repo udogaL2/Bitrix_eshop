@@ -111,16 +111,21 @@ class TagDAO extends BaseLinkedDAO
 		}
 	}
 
-    public static function updateTag()
-    {
-        //
-    }
+	public static function getTagByID(int $id): ?Tag
+	{
+		try
+		{
+			$DBResponse = DBSession::requestDB("select * from tag where ID = ?", 'i', [$id]);
 
-    public static function getTagByID(int $id) : Tag|null
-    {
-        //
-        return null;
-    }
+			$result = mysqli_fetch_assoc($DBResponse);
+
+			return $result ? new Tag($result["NAME"], $result["ID"]) : null;
+		}
+		catch (Exception $e)
+		{
+			return null;
+		}
+	}
 }
 
 //⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝

@@ -134,7 +134,13 @@ input:focus {
 	background-size: cover;
 }
 
+/*===============================*/
+/*sidebar*/
+/*===============================*/
 
+input[type="checkbox"] {
+	display: none;
+}
 
 /*===============================*/
 /*footer*/

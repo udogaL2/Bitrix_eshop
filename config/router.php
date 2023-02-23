@@ -50,18 +50,23 @@ return array (
     array (
         'path' => '/auth',
         'method' => 'GET',
-        'action' => [new App\Src\Controller\AuthController(), 'authPageAction'],
+        'action' => [new App\Src\Controller\AuthController(), 'loginAction'],
     ),
     array (
         'path' => '/auth',
         'method' => 'POST',
-        'action' => [new App\Src\Controller\AuthController(), 'authPageAction'],
+        'action' => [new App\Src\Controller\AuthController(), 'loginAction'],
     ),
 	array (
 		 'path' => '/admin',
 		 'method' => 'GET',
 		 'action' => [new \App\Src\Controller\AdminController(), 'getMainAdminPageAction'],
 	 ),
+    array (
+        'path' => '/logout',
+        'method' => 'GET',
+        'action' => [new \App\Src\Controller\AuthController(), 'logoutAction'],
+    ),
 //     array (
 //         'path' => '/:search/:page',
 //         'method' => 'POST',

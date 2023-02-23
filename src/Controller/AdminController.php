@@ -8,6 +8,8 @@ class AdminController extends BaseController
 {
 	public function getMainAdminPageAction(): void
 	{
+        AuthController::notAdminSessionAction();
+
 		$section = $_GET['section'] ?? 'tags';
 
 		$content = AdminService::getContentBySection($section);
@@ -18,8 +20,10 @@ class AdminController extends BaseController
 		}
 
         echo self::view( 'Main/index.html', [
-            'content' => self::view('Admin/main.html' ,
-                ['content' => $content,])
+            'content' => self::view('Admin/main.html' , [
+                'content' => $content,
+                ]),
+            'isAdmin' => true,
         ]);
 	}
 }

@@ -905,20 +905,20 @@ img.content-order-placed-icon{
 
 .content-admin-page{
 	display: flex;
-	align-items: center;
 	justify-content: space-between;
 	width:100%;
 	height:100%;
+	padding-top: 20px;
 }
 
-.wrapper{
+.wrapper {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	width:266px;
 	height:267px;
-	margin:0 50px;
+	margin:0 20px;
 	background: #cccccc;
 	border-radius: 5px;
 	box-shadow:0 0 15px rgba(70, 70, 70, 0.55);
@@ -968,7 +968,6 @@ table{
 	min-width:600px;
 	font-size: 18px;
 	font-family: 'Source Sans Pro', sans-serif;
-	margin: 20px 0;
 }
 
 tr{
@@ -1021,7 +1020,7 @@ th:hover{
 	font-size: 20px;
 	width:130px;
 	height:60px;
-	margin:0 100px 0 0;
+	margin:0 20px;
 }
 
 .admin-page-a-add:hover{

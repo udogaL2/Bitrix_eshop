@@ -69,4 +69,15 @@ class OrderDAO extends BaseDAO
 			return false;
 		}
 	}
+
+    public static function updateOrder()
+    {
+        //
+    }
+
+    public static function getOrderByID(int $id) : Order|null
+    {
+        //
+        return null;
+    }
 }

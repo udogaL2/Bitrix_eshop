@@ -114,9 +114,4 @@ class Router
         header('Status: 503 Service Unavailable');
         header('Location:' . $host . '/fatal/');
     }
-
-	// public function saveRoutes() : void
-	// {
-	// 	file_put_contents($this->config, 'return ' . var_export($this->routes, true) . ';');
-	// }
 }

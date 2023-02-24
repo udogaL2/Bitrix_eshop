@@ -163,6 +163,29 @@ class GoodDAO extends BaseDAO
 		}
 	}
 
+	public static function getGoodsByIds(
+		array $ids,
+		bool  $isNotActive = false,
+	): ?array
+	{
+		try
+		{
+			$placeholders = str_repeat('?,', count($ids) - 1) . '?';
+			$additionalConditionForRequest = !$isNotActive ? " and IS_ACTIVE = true" : "";
+
+			$DBResponse = DBSession::requestDB(
+				"SELECT * FROM good where ID in ($placeholders){$additionalConditionForRequest};", str_repeat('i', count($ids)),
+				$ids
+			);
+
+			return self::prepareGoodsFromResponse($DBResponse);
+		}
+		catch (Exception $e)
+		{
+			return null;
+		}
+	}
+
 	public static function getCurrentGoodById(
 		int  $id,
 		bool $isNotActive = false,

@@ -25,7 +25,7 @@ buttonAdd.onclick = function Add() {
 }
 
 window.onclick = function(e){
-    if(!e.target.matches('.admin-page-a-add')){
+    if(e.target.matches('.overlay')){
         formAdd.style.setProperty('display','none')
         overlay.style.setProperty('z-index', '-9')
         overlay.style.setProperty('opacity', '0')

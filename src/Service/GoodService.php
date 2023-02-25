@@ -42,6 +42,7 @@ class GoodService
         self::$cacheExpires = (new \DateTime)->add($TTL);
     }
 
+	// $type - категория товара (например, один из тегов), $name - название товара
 	public static function generateGoodCode(string $type, string $name): string
 	{
 		$typeInEng = self::convertRuToEng($type);

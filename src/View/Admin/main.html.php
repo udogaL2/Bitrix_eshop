@@ -24,6 +24,7 @@ $i=1;
 </head>
 
 <body>
+
 <div class="content-admin-page">
     <div class="wrapper">
         <a href="/admin?section=goods" class="admin-page-panel">Товары</a>
@@ -54,7 +55,19 @@ $i=1;
             <?php endif; ?>
         </table>
     </div>
-	<a class="admin-page-a-add" href="#"> Add </a>
+	<a class="admin-page-a-add" id="add" href="#"> Add </a>
+</div>
+
+<div class="content-add">
+<div class="admin-page-content-add">
+    <div class="admin-page-content-add-title">Создание нового товара</div>
+    <?php foreach($good as $item): ?>
+        <label>
+            <input type="text" class="admin-page-content-add-input" placeholder="Введите <?= $item ?>" minlength="1" maxlength="30" required>
+        </label>
+    <?php endforeach; ?>
+    <a class="admin-page-content-add-a" href="#"> Add </a>
+</div>
 </div>
 </body>
 </html>

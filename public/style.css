@@ -1090,7 +1090,7 @@ th:hover{
 	font-weight: 600;
 }
 
-.admin-page-content-add label{
+.admin-page-content-add label, .admin-page-content-edit label{
 	margin: 37px 0;
 }
 
@@ -1171,6 +1171,7 @@ th:hover{
 	display: flex;
 	font-size: 20px;
 	color:#63605d;
+	font-weight: 600;
 }
 
 .hr-edit{
@@ -1181,7 +1182,7 @@ th:hover{
 }
 
 label{
-	margin: 37px 20px;
+	margin: 15px 20px;
 }
 
 .admin-page-content-edit label, .label-edit{

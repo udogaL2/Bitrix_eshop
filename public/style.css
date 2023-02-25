@@ -256,7 +256,7 @@ a.about-item:hover, a.follow-item:hover{
 	margin: 20px 20px 0 0;
 	background: #cccccc;
 	border-radius: 2px;
-	box-shadow:0 0 13px rgba(128, 127, 127, 0.78);
+	box-shadow:17px 21px 13px rgba(128, 127, 127, 0.78);
 }
 
 .tags div{
@@ -1070,10 +1070,10 @@ th:hover{
 	width:800px;
 	height:800px;
 	background: #e8e8e8;
-	border: 1px solid #e8e8e8;
-	border-radius: 5px;
+	border-radius: 8px;
 	overflow: auto;
 	transition: 0.9s;
+	box-shadow: 20px 20px 45px #4b4b4b;
 }
 
 .admin-page-content-add::-webkit-scrollbar {
@@ -1099,6 +1099,8 @@ th:hover{
 	padding: 6px 0 8px 38px;
 	width: 377px;
 	border: none;
+	font-size: 18px;
+	height: 40px;
 }
 
 .admin-page-content-add-input:hover{
@@ -1110,9 +1112,9 @@ th:hover{
 
 ::placeholder {
 	font-family: 'Source Sans Pro', sans-serif;
-	font-size: 14px;
+	font-size: 17px;
 	font-weight: 500;
-	color: #c4c4c4;
+	color: #b6b5b5;
 	opacity: 1;
 }
 
@@ -1133,5 +1135,68 @@ th:hover{
 }
 
 /*========================================================*/
-/*Admin page edit*/
+/*Admin page edit tags*/
 /*========================================================*/
+
+.admin-page-content-edit{
+	display:flex;
+	flex-direction: column;
+	align-items: center;
+	overflow: auto;
+}
+
+.admin-page-content-edit-input{
+	display: flex;
+	background: #fff;
+	box-shadow: 0 0 20px rgba(182, 182, 182, 0.85);
+	border-radius: 10px;
+	padding: 6px 38px 8px 38px;
+	font-size: 15px;
+	width: 477px;
+	height: 30px;
+	border: none;
+}
+
+.admin-page-content-edit-input:hover{
+	cursor: pointer;
+	border-radius: 15px ;
+	box-shadow: 5px 5px 20px rgb(155, 155, 155);
+	transition: 0.7s;
+}
+
+.subtitle-input{
+	display: flex;
+	font-size: 20px;
+	color:#63605d;
+}
+
+.hr-edit{
+	background: #63605d;
+	width:500px;
+	height: 0.4px;
+	margin: 0 0 40px 0;
+}
+
+label{
+	margin: 37px 20px;
+}
+
+.admin-page-content-edit label, .label-edit{
+	width:577px;
+}
+
+.admin-page-content-edit-button{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-decoration: none;
+	border-radius: 3px;
+	color: #eaeaea;
+	background: #63605d;
+	border-bottom: 1px solid #63605d;
+	font-size: 20px;
+	min-width:130px;
+	min-height:58px;
+	padding:5px 20px;
+	margin:30px 0;
+}

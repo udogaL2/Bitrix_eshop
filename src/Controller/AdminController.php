@@ -57,7 +57,7 @@ class AdminController extends BaseController
         }
         else
         {
-            $content = self::view('Admin/detailed_goods.html' , [
+            $content = self::view('Admin/detailed_tags.html' , [
                 'content' => $updatedTag,
             ]);
         }
@@ -146,7 +146,7 @@ class AdminController extends BaseController
         }
         else
         {
-            $content = self::view('Admin/detailed_goods.html' , [
+            $content = self::view('Admin/detailed_orders.html' , [
                 'content' => $updatedOrder,
             ]);
         }

@@ -19,15 +19,15 @@ class GoodDAO extends BaseDAO
 			DBSession::requestDB(
 				"insert into good (NAME, SHORT_DESC, FULL_DESC, PRICE, IS_ACTIVE, GOOD_CODE, DATE_CREATE, DATE_UPDATE)
 				VALUE (?, ?, ?, ?, ?, ?, ?, ?)", "sssdisss", [
-																   $good->getName(),
-																   $good->getShortDesc(),
-																   $good->getFullDesc(),
-																   $good->getPrice(),
-																   $good->isActive(),
-																   $good->getArticle(),
-																   $good->getTimeCreate()->format('Y-m-d H:i:s'),
-																   $good->getTimeUpdate()->format('Y-m-d H:i:s'),
-															   ]
+				 $good->getName(),
+				 $good->getShortDesc(),
+				 $good->getFullDesc(),
+				 $good->getPrice(),
+				 $good->isActive(),
+				 $good->getArticle(),
+				 $good->getTimeCreate()->format('Y-m-d H:i:s'),
+				 $good->getTimeUpdate()->format('Y-m-d H:i:s'),
+				]
 			);
 
 			return true;
@@ -39,11 +39,27 @@ class GoodDAO extends BaseDAO
 	}
 
 	// searchSubstring - для получения товаров по названию из поиска
-	public static function getAvailableCount(array $tagIds=null, string $searchSubstring = ''): ?int
+	public static function getAvailableCount(array $tagIds = null, string $searchSubstring = ''): ?int
 	{
 		try
 		{
-			if (empty($tagIds))
+			if ($tagIds)
+			{
+				$countTagIds = count($tagIds);
+				$placeholders = str_repeat('?,', $countTagIds - 1) . '?';
+				$rowOfTypes = str_repeat('i', $countTagIds);
+				$listOfValues = $tagIds;
+
+				$request = "select count(additional.ID)
+						from
+						(select g.ID, COUNT(gt.TAG_ID) as COINCIDENCE from good g
+						inner join good_tag gt on g.ID = gt.GOOD_ID
+						where gt.TAG_ID in ($placeholders) and g.IS_ACTIVE = true
+						group by g.ID) as additional
+						WHERE additional.COINCIDENCE=$countTagIds";
+
+			}
+			else
 			{
 				$request = "select COUNT(*) from good where IS_ACTIVE = true;";
 				$rowOfTypes = '';
@@ -60,24 +76,10 @@ class GoodDAO extends BaseDAO
 					$rowOfTypes = 'ss';
 					$listOfValues = ['%' . $searchSubstring . '%', $searchSubstring];
 				}
-
-				$DBResponse = DBSession::requestDB($request, $rowOfTypes, $listOfValues);
 			}
-			else
-			{
-				$countTagIds = count($tagIds);
-				$placeholders = str_repeat('?,', $countTagIds - 1) . '?';
 
-				$request = "select count(additional.ID)
-						from
-						(select g.ID, COUNT(gt.TAG_ID) as COINCIDENCE from good g
-						inner join good_tag gt on g.ID = gt.GOOD_ID
-						where gt.TAG_ID in ($placeholders) and g.IS_ACTIVE = true
-						group by g.ID) as additional
-						WHERE additional.COINCIDENCE=$countTagIds";
+			$DBResponse = DBSession::requestDB($request, $rowOfTypes, $listOfValues);
 
-				$DBResponse = DBSession::requestDB($request, str_repeat('i', count($tagIds)), $tagIds);
-			}
 			return mysqli_fetch_array($DBResponse)[0];
 		}
 		catch (Exception $e)
@@ -88,21 +90,40 @@ class GoodDAO extends BaseDAO
 
 	// searchSubstring - для получения товаров по названию из поиска
 	public static function getAvailableGoodsByOffset(
-		int $offsetByPage,
-		array $tagIds=null,
+		int    $offsetByPage,
+		array  $tagIds = null,
 		string $searchSubstring = ''
 	): ?array
 	{
 		try
 		{
-			if (empty($tagIds))
-			{
-				$countGoodsOnPage = Config::COUNT_GOODS_ON_PAGE;
+			$countGoodsOnPage = Config::COUNT_GOODS_ON_PAGE;
 
-				$request = "select * from good where IS_ACTIVE = true LIMIT ? OFFSET ?;";
+			if ($tagIds)
+			{
+				$countTagIds = count($tagIds);
+				$placeholders = str_repeat('?,', $countTagIds - 1) . '?';
+				$rowOfTypes = str_repeat('i', $countTagIds);
+				$listOfValues = $tagIds;
+
+				$request = "select additional.* 
+						from 
+						(select g.*, COUNT(gt.TAG_ID) as COINCIDENCE from good g
+						inner join good_tag gt on g.ID = gt.GOOD_ID
+						where gt.TAG_ID in ({$placeholders}) and g.IS_ACTIVE = true
+						group by g.ID) as additional
+						WHERE additional.COINCIDENCE=$countTagIds
+						order by additional.ID
+						LIMIT $countGoodsOnPage OFFSET $offsetByPage;";
+
+			}
+			else
+			{
 
 				$rowOfTypes = 'ii';
 				$listOfValues = [$countGoodsOnPage, $offsetByPage];
+
+				$request = "select * from good where IS_ACTIVE = true LIMIT ? OFFSET ?;";
 
 				if ($searchSubstring)
 				{
@@ -115,30 +136,9 @@ class GoodDAO extends BaseDAO
 					$rowOfTypes = 'ss' . $rowOfTypes;
 					array_unshift($listOfValues, '%' . $searchSubstring . '%', $searchSubstring);
 				}
-
-				$DBResponse = DBSession::requestDB(
-					$request,
-					$rowOfTypes,
-					$listOfValues
-				);
-
-				return self::prepareGoodsFromResponse($DBResponse);
 			}
-			$countGoodsOnPage = Config::COUNT_GOODS_ON_PAGE;
-			$countTagIds = count($tagIds);
-			$placeholders = str_repeat('?,', count($tagIds) - 1) . '?';
 
-			$request = "select additional.* 
-						from 
-						(select g.*, COUNT(gt.TAG_ID) as COINCIDENCE from good g
-						inner join good_tag gt on g.ID = gt.GOOD_ID
-						where gt.TAG_ID in ({$placeholders}) and g.IS_ACTIVE = true
-						group by g.ID) as additional
-						WHERE additional.COINCIDENCE=$countTagIds
-						order by additional.ID
-						LIMIT $countGoodsOnPage OFFSET $offsetByPage;";
-
-			$DBResponse = DBSession::requestDB($request, str_repeat('i', count($tagIds)), $tagIds);
+			$DBResponse = DBSession::requestDB($request, $rowOfTypes, $listOfValues);
 
 			return self::prepareGoodsFromResponse($DBResponse);
 		}
@@ -159,7 +159,8 @@ class GoodDAO extends BaseDAO
 			$additionalConditionForRequest = !$isNotActive ? " and IS_ACTIVE = true" : "";
 
 			$DBResponse = DBSession::requestDB(
-				"SELECT * FROM good where ID in ($placeholders){$additionalConditionForRequest};", str_repeat('i', count($ids)),
+				"SELECT * FROM good where ID in ($placeholders){$additionalConditionForRequest};",
+				str_repeat('i', count($ids)),
 				$ids
 			);
 

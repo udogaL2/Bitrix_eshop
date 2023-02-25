@@ -10,7 +10,7 @@ class Config
 	public const DB_PASSWORD = 'm_user_pass';
 	public const DB_NAME = 'eshop';
 
-	public const COUNT_GOODS_ON_PAGE='2';
+	public const COUNT_GOODS_ON_PAGE='6';
 	public const FIRST_PAGE_ON_PAGINATION='1';
 	public const COUNT_PAGES_ON_PAGINATION='3';
 

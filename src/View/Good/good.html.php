@@ -27,9 +27,8 @@ use App\Src\Service\TagService;
     <title>EShop</title>
 </head>
 <body>
-
+<div class="content-index">
 <div class="index-container">
-	<div class="goods-container">
 	<div class="tags">
 		<?php foreach ($tags as $tag): ?>
 			<div>
@@ -42,7 +41,7 @@ use App\Src\Service\TagService;
 			</div>
 		<?php endforeach; ?>
 	</div>
-
+    <div class="goods-container">
     <div class="goods">
         <?php foreach($goods as $good): ?>
             <a class="goods-item-a" href="/product/<?=$good->getId()?>">
@@ -63,23 +62,26 @@ use App\Src\Service\TagService;
             </a>
         <?php endforeach; ?>
     </div>
+    </div>
 
-	</div>
-    <ul class="pagination">
-        <li class="pagination-item <?= ($currentPage == Config::FIRST_PAGE_ON_PAGINATION) ? 'pagination-item-no-active' : '' ?>">
-            <a href="/page/<?= Config::FIRST_PAGE_ON_PAGINATION.TagService::createSearchRequestForTags() ?>"><?= "<<" ?></a>
-        </li>
+</div>
 
-        <?php foreach ($pages as $page): ?>
-            <li class="pagination-item <?= ($currentPage === $page) ? 'pagination-item-active' : '' ?>">
-                <a href="/page/<?= $page.TagService::createSearchRequestForTags() ?>"><?= $page ?></a>
+        <ul class="pagination">
+            <li class="pagination-item <?= ($currentPage == Config::FIRST_PAGE_ON_PAGINATION) ? 'pagination-item-no-active' : '' ?>">
+                <a href="/page/<?= Config::FIRST_PAGE_ON_PAGINATION.TagService::createSearchRequestForTags() ?>"><?= "<<" ?></a>
             </li>
-        <?php endforeach ?>
 
-        <li class="pagination-item <?= ($currentPage === $lastPage) ? 'pagination-item-no-active' : '' ?>">
-            <a href="/page/<?= $lastPage.TagService::createSearchRequestForTags() ?>"><?= ">>"?></a>
-        </li>
-    </ul>
+            <?php foreach ($pages as $page): ?>
+                <li class="pagination-item <?= ($currentPage === $page) ? 'pagination-item-active' : '' ?>">
+                    <a href="/page/<?= $page.TagService::createSearchRequestForTags() ?>"><?= $page ?></a>
+                </li>
+            <?php endforeach ?>
+
+            <li class="pagination-item <?= ($currentPage === $lastPage) ? 'pagination-item-no-active' : '' ?>">
+                <a href="/page/<?= $lastPage.TagService::createSearchRequestForTags() ?>"><?= ">>"?></a>
+            </li>
+        </ul>
 </div>
 </body>
 </html>
+

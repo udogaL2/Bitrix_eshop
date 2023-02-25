@@ -39,44 +39,36 @@ class GoodDAO extends BaseDAO
 	}
 
 	// searchSubstring - для получения товаров по названию из поиска
-	public static function getAvailableCount(string $searchSubstring = ''): ?int
+	public static function getAvailableCount(array $tagIds=null, string $searchSubstring = ''): ?int
 	{
 		try
 		{
-			$request = "select COUNT(*) from good where IS_ACTIVE = true;";
-			$rowOfTypes = '';
-			$listOfValues = [];
-
-			if ($searchSubstring)
+			if (empty($tagIds))
 			{
-				$request = substr_replace(
-					$request,
-					" and (NAME like ? or NAME sounds like ?) ",
-					strpos($request, "true") + 4,
-					0
-				);
-				$rowOfTypes = 'ss';
-				$listOfValues = ['%' . $searchSubstring . '%', $searchSubstring];
+				$request = "select COUNT(*) from good where IS_ACTIVE = true;";
+				$rowOfTypes = '';
+				$listOfValues = [];
+
+				if ($searchSubstring)
+				{
+					$request = substr_replace(
+						$request,
+						" and (NAME like ? or NAME sounds like ?) ",
+						strpos($request, "true") + 4,
+						0
+					);
+					$rowOfTypes = 'ss';
+					$listOfValues = ['%' . $searchSubstring . '%', $searchSubstring];
+				}
+
+				$DBResponse = DBSession::requestDB($request, $rowOfTypes, $listOfValues);
 			}
+			else
+			{
+				$countTagIds = count($tagIds);
+				$placeholders = str_repeat('?,', $countTagIds - 1) . '?';
 
-			$DBResponse = DBSession::requestDB($request, $rowOfTypes, $listOfValues);
-
-			return mysqli_fetch_array($DBResponse)[0];
-		}
-		catch (Exception $e)
-		{
-			return null;
-		}
-	}
-
-	public static function getAvailableCountByTags(array $tagIds): ?int
-	{
-		try
-		{
-			$countTagIds = count($tagIds);
-			$placeholders = str_repeat('?,', $countTagIds - 1) . '?';
-
-			$request = "select count(additional.ID)
+				$request = "select count(additional.ID)
 						from
 						(select g.ID, COUNT(gt.TAG_ID) as COINCIDENCE from good g
 						inner join good_tag gt on g.ID = gt.GOOD_ID
@@ -84,8 +76,8 @@ class GoodDAO extends BaseDAO
 						group by g.ID) as additional
 						WHERE additional.COINCIDENCE=$countTagIds";
 
-			$DBResponse = DBSession::requestDB($request, str_repeat('i', count($tagIds)), $tagIds);
-
+				$DBResponse = DBSession::requestDB($request, str_repeat('i', count($tagIds)), $tagIds);
+			}
 			return mysqli_fetch_array($DBResponse)[0];
 		}
 		catch (Exception $e)
@@ -94,10 +86,44 @@ class GoodDAO extends BaseDAO
 		}
 	}
 
-	public static function getAvailableGoodsByTagsByOffset(array $tagIds, int $offsetByPage): ?array
+	// searchSubstring - для получения товаров по названию из поиска
+	public static function getAvailableGoodsByOffset(
+		int $offsetByPage,
+		array $tagIds=null,
+		string $searchSubstring = ''
+	): ?array
 	{
 		try
 		{
+			if (empty($tagIds))
+			{
+				$countGoodsOnPage = Config::COUNT_GOODS_ON_PAGE;
+
+				$request = "select * from good where IS_ACTIVE = true LIMIT ? OFFSET ?;";
+
+				$rowOfTypes = 'ii';
+				$listOfValues = [$countGoodsOnPage, $offsetByPage];
+
+				if ($searchSubstring)
+				{
+					$request = substr_replace(
+						$request,
+						" and (NAME like ? or NAME sounds like ?) ",
+						strpos($request, "true") + 4,
+						0
+					);
+					$rowOfTypes = 'ss' . $rowOfTypes;
+					array_unshift($listOfValues, '%' . $searchSubstring . '%', $searchSubstring);
+				}
+
+				$DBResponse = DBSession::requestDB(
+					$request,
+					$rowOfTypes,
+					$listOfValues
+				);
+
+				return self::prepareGoodsFromResponse($DBResponse);
+			}
 			$countGoodsOnPage = Config::COUNT_GOODS_ON_PAGE;
 			$countTagIds = count($tagIds);
 			$placeholders = str_repeat('?,', count($tagIds) - 1) . '?';
@@ -113,47 +139,6 @@ class GoodDAO extends BaseDAO
 						LIMIT $countGoodsOnPage OFFSET $offsetByPage;";
 
 			$DBResponse = DBSession::requestDB($request, str_repeat('i', count($tagIds)), $tagIds);
-
-			return self::prepareGoodsFromResponse($DBResponse);
-		}
-		catch (Exception $e)
-		{
-			return null;
-		}
-	}
-
-	// searchSubstring - для получения товаров по названию из поиска
-	public static function getAvailableGoodsByOffset(
-		int    $offsetByPage,
-		string $searchSubstring = ''
-	): ?array
-	{
-		try
-		{
-			$countGoodsOnPage = Config::COUNT_GOODS_ON_PAGE;
-
-			$request = "select * from good where IS_ACTIVE = true LIMIT ? OFFSET ?;";
-
-			$rowOfTypes = 'ii';
-			$listOfValues = [$countGoodsOnPage, $offsetByPage];
-
-			if ($searchSubstring)
-			{
-				$request = substr_replace(
-					$request,
-					" and (NAME like ? or NAME sounds like ?) ",
-					strpos($request, "true") + 4,
-					0
-				);
-				$rowOfTypes = 'ss' . $rowOfTypes;
-				array_unshift($listOfValues, '%' . $searchSubstring . '%', $searchSubstring);
-			}
-
-			$DBResponse = DBSession::requestDB(
-				$request,
-				$rowOfTypes,
-				$listOfValues
-			);
 
 			return self::prepareGoodsFromResponse($DBResponse);
 		}

@@ -3,6 +3,7 @@
 namespace App\Src\Controller;
 
 use App\Config\Config;
+use App\Src\DAO\TagDAO;
 
 abstract class BaseController
 {
@@ -20,6 +21,14 @@ abstract class BaseController
 		ob_start();
 		require $path;
 		return ob_get_clean();
+	}
+
+	public function goodsNotFoundAction():void
+	{
+		echo self::view('Main/index.html', [
+			'content' => config::GOODS_NOT_FOUND,
+			'isAdmin' => false,
+		]);
 	}
 
 	public function notFoundAction() : void

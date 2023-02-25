@@ -4,7 +4,6 @@ namespace App\Src\Controller;
 
 use App\Src\DAO\TagDAO;
 use App\Src\Service\IndexService;
-use App\Src\Service\TagService;
 use Exception;
 
 class IndexController extends BaseController
@@ -14,9 +13,9 @@ class IndexController extends BaseController
         AuthController::adminSessionAction();
 		try
 		{
+			$service = new IndexService();
 			if (empty($_GET["tags"]))
 			{
-				$service = new IndexService();
 				$goods = $service->getGoodsByPage($page);
 				if (!isset($goods))
 				{
@@ -26,21 +25,9 @@ class IndexController extends BaseController
 				$tags = TagDAO::getAllTags();
 				$lastPage = $service->getLastPageForPagination();
 				$pages = $service->getPagesForPaginationByPage($page);
-
-				echo self::view('Main/index.html', [
-					'content' => self::view('Good/good.html', [
-						'goods' => $goods,
-						'pages' => $pages,
-						'currentPage' => $page,
-						'lastPage' => $lastPage,
-						'tags' => $tags,
-					]),
-                    'isAdmin' => false,
-				]);
 			}
 			else
 			{
-				$service = new IndexService();
 				$goods = $service->getGoodsByPage($page, $_GET["tags"]);
 				if (!isset($goods))
 				{
@@ -50,23 +37,22 @@ class IndexController extends BaseController
 				$tags = TagDAO::getAllTags();
 				$lastPage = $service->getLastPageForPagination($_GET["tags"]);
 				$pages = $service->getPagesForPaginationByPage($page, $_GET["tags"]);
-
-				echo self::view('Main/index.html', [
-					'content' => self::view('Good/good.html', [
-						'goods' => $goods,
-						'pages' => $pages,
-						'currentPage' => $page,
-						'lastPage' => $lastPage,
-						'tags' => $tags,
-					]),
-                    'isAdmin' => false,
-				]);
 			}
+
+			echo self::view('Main/index.html', [
+				'content' => self::view('Good/good.html', [
+					'goods' => $goods,
+					'pages' => $pages,
+					'currentPage' => $page,
+					'lastPage' => $lastPage,
+					'tags' => $tags,
+				]),
+				'isAdmin' => false,
+			]);
 		}
 		catch (Exception $e)
 		{
-			$this->notFoundAction();
-
+			$this->goodsNotFoundAction();
 			return;
 		}
 	}

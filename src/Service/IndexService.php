@@ -3,6 +3,7 @@
 namespace App\Src\Service;
 
 use App\Config\Config;
+use App\Src\Controller\PathException;
 use App\Src\DAO\GoodDAO;
 use App\Src\DAO\ImageDAO;
 use App\Src\DAO\TagDAO;
@@ -21,88 +22,59 @@ class IndexService
 		self::$cacheExpires = (new \DateTime())->add($TTL);
 	}
 
-	/**
-	 * @return ?Good[]
-	 */
-	private function getGoodsByPageWithoutTags(int $page = 1): ?array
+	private function updateCache():void
 	{
-		$countGoodsOnPage = Config::COUNT_GOODS_ON_PAGE;
-		$offsetByPage = ($page - 1) * $countGoodsOnPage;
 		if (self::$cacheExpires < (new \DateTime()))
 		{
 			self::$allCountOfGoodsCache = GoodDAO::getAvailableCount();
 		}
-		if ($page < 0 || $offsetByPage > self::$allCountOfGoodsCache)
-		{
-			return null;
-		}
-
-		$listOfGoods = GoodDAO::getAvailableGoodsByOffset($offsetByPage);
-		if (!$listOfGoods)
-		{
-			return null;
-		}
-
-		$goodIds = array_keys($listOfGoods);
-		$images = ImageDAO::getImageOfGoods($goodIds, true);
-		$tags = TagDAO::getTagsOfGoods($goodIds);
-
-		if (!$images || !$tags)
-		{
-			return null;
-		}
-
-		foreach ($goodIds as $goodId)
-		{
-			$listOfGoods[$goodId]->setImages($images[$goodId] ?? []);
-			$listOfGoods[$goodId]->setTags($tags[$goodId] ?? []);
-		}
-
-		return $listOfGoods;
 	}
 
-	private function getGoodsByPageWithTags(string $tagsFromGet, int $page = 1): ?array
+	/**
+	 * @return ?Good[]
+	 * @throws PathException
+	 */
+	private function getListOfGoodsByPage(string $tagsFromGet, int $page = 1): ?array
 	{
 		$countGoodsOnPage = Config::COUNT_GOODS_ON_PAGE;
 		$offsetByPage = ($page - 1) * $countGoodsOnPage;
 
-		$tagsFromGetToArrayInt = $this->arrayStringToInt(explode(" ", $tagsFromGet));
-		$countOfGoods = GoodDAO::getAvailableCountByTags($tagsFromGetToArrayInt);
+		if (empty($tagsFromGet))
+		{
+			$this->updateCache();
+
+			if ($page < 0 || $offsetByPage > self::$allCountOfGoodsCache)
+			{
+				return null;
+			}
+
+			return GoodDAO::getAvailableGoodsByOffset($offsetByPage);
+		}
+
+		$tagsFromGetToArrayInt = $this->arrayStringIdToInt(explode(" ", $tagsFromGet));
+		$countOfGoods = GoodDAO::getAvailableCount($tagsFromGetToArrayInt);
 
 		if ($page < 0 || $offsetByPage > $countOfGoods)
 		{
 			return null;
 		}
 
-		$listOfGoods = GoodDAO::getAvailableGoodsByTagsByOffset($tagsFromGetToArrayInt, $offsetByPage);
-		if (!$listOfGoods)
-		{
-			return null;
-		}
-
-		$goodIds = array_keys($listOfGoods);
-		$images = ImageDAO::getImageOfGoods($goodIds, true);
-		$tags = TagDAO::getTagsOfGoods($goodIds);
-
-		if (!$images || !$tags)
-		{
-			return null;
-		}
-
-		foreach ($goodIds as $goodId)
-		{
-			$listOfGoods[$goodId]->setImages($images[$goodId] ?? []);
-			$listOfGoods[$goodId]->setTags($tags[$goodId] ?? []);
-		}
-
-		return $listOfGoods;
+		return GoodDAO::getAvailableGoodsByOffset($offsetByPage, $tagsFromGetToArrayInt);
 	}
 
-	private function arrayStringToInt(array $str): array
+	/**
+	 * @throws PathException
+	 */
+	private function arrayStringIdToInt(array $str): ?array
 	{
 		$arrayOfInt = [];
+
 		foreach ($str as $element)
 		{
+			if (!preg_match('/^\d+$/', $element))
+			{
+				throw new PathException("Array of id contains invalid characters");
+			}
 			$arrayOfInt[] = (int)$element;
 		}
 
@@ -114,14 +86,34 @@ class IndexService
 	 */
 	public function getGoodsByPage(int $page = 1, string $tagsFromGet = ""): ?array
 	{
-		if (empty($tagsFromGet))
+		$listOfGoods=$this->getListOfGoodsByPage($tagsFromGet, $page);
+
+		if (!$listOfGoods)
 		{
-			return $this->getGoodsByPageWithoutTags($page);
+			return null;
 		}
 
-		return $this->getGoodsByPageWithTags($tagsFromGet, $page);
+		$goodIds = array_keys($listOfGoods);
+		$images = ImageDAO::getImageOfGoods($goodIds, true);
+		$tags = TagDAO::getTagsOfGoods($goodIds);
+
+		if (!$images || !$tags)
+		{
+			return null;
+		}
+
+		foreach ($goodIds as $goodId)
+		{
+			$listOfGoods[$goodId]->setImages($images[$goodId] ?? []);
+			$listOfGoods[$goodId]->setTags($tags[$goodId] ?? []);
+		}
+
+		return $listOfGoods;
 	}
 
+	/**
+	 * @throws PathException
+	 */
 	public function getLastPageForPagination(string $tagsFromGet = ""): int
 	{
 		if (empty($tagsFromGet))
@@ -134,8 +126,8 @@ class IndexService
 		}
 		else
 		{
-			$tagsFromGetToArrayInt = $this->arrayStringToInt(explode(" ", $tagsFromGet));
-			$countGoods = GoodDAO::getAvailableCountByTags($tagsFromGetToArrayInt);
+			$tagsFromGetToArrayInt = $this->arrayStringIdToInt(explode(" ", $tagsFromGet));
+			$countGoods = GoodDAO::getAvailableCount($tagsFromGetToArrayInt);
 		}
 
 		return (int)ceil($countGoods / Config::COUNT_GOODS_ON_PAGE);

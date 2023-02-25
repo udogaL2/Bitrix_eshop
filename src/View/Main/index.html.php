@@ -18,6 +18,7 @@
 </head>
 
 <body>
+<div class="overlay"></div>
 <header>
         <div class="header">
             <?php if (!$isAdmin): ?>

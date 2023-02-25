@@ -1,12 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300&display=swap');
 
+/*========================================================*/
+/*header footer*/
+/*========================================================*/
+
 * {
 	padding: 0;
 	margin: 0;
 }
 
 body{
+	position: relative;
 	background: #e8e8e8;
+
 }
 
 .header, .footer{
@@ -16,6 +22,7 @@ body{
 	justify-content: center;
 	height: 78px;
 	background: #cccccc;
+	flex-shrink: 0;
 }
 
 .header{
@@ -24,7 +31,7 @@ body{
 	left: 0;
 	right: 0;
 	top: 0;
-	box-shadow: 2px 0 0 2px #ecebeb;
+
 }
 
 .header,.content{
@@ -114,8 +121,6 @@ input:focus {
 	text-decoration: none;
 }
 
-
-
 .button-search:hover{
 	cursor:pointer;
 	border-radius: 3px;
@@ -183,8 +188,6 @@ input:focus {
 	left: 0;
 	right: 0;
 	bottom: 0;
-	z-index: 10;
-	box-shadow: 2px 0 0 2px #ecebeb;
 	height:150px;
 	vertical-align:bottom;
 }
@@ -225,15 +228,15 @@ a.about-item:hover, a.follow-item:hover{
 	font-weight: 700;
 }
 
-
-/*===============================*/
+/*========================================================*/
 /*goods*/
-/*===============================*/
+/*========================================================*/
 
 .index-container{
 	display: flex;
 	flex-direction: column;
-
+	flex: 1;
+	overflow: auto;
 }
 
 .goods-container{
@@ -503,7 +506,9 @@ input[type="checkbox"]:checked + a.good-price:after{
 	margin: 10px;
 	border : 1px solid #C3C3C3;
 }
-
+/*========================================================*/
+/*detail goods*/
+/*========================================================*/
 /*===============================*/
 /*detail*/
 /*===============================*/
@@ -512,7 +517,7 @@ input[type="checkbox"]:checked + a.good-price:after{
 	display: flex;
 	min-height: calc(100vh - 260px);
 	justify-content: center;
-	align-items: center;
+	align-items: flex-start;
 }
 .content-detail{
 	display: flex;
@@ -642,7 +647,9 @@ input[type="checkbox"]:checked + a.good-price:after{
 	box-shadow: 0 5px 5px rgb(255, 255, 255);
 	transition: 0.5s;
 }
-
+/*========================================================*/
+/*Order Registration*/
+/*========================================================*/
 /*===============================*/
 /*Order Registration*/
 /*===============================*/
@@ -778,7 +785,9 @@ input[type="checkbox"]:checked + a.good-price:after{
 	font-weight: 700;
 	transition: 0.7s;
 }
-
+/*========================================================*/
+/*Order placed*/
+/*========================================================*/
 /*===============================*/
 /*Order placed*/
 /*===============================*/
@@ -814,7 +823,9 @@ img.content-order-placed-icon{
 	background-repeat: no-repeat;
 	background-size: cover;
 }
-
+/*========================================================*/
+/*Page not found*/
+/*========================================================*/
 /*===============================*/
 /*Page not found*/
 /*===============================*/
@@ -828,10 +839,9 @@ img.content-order-placed-icon{
 	margin: 5% 0;
 }
 
-
-/*===============================*/
-/*Admin*/
-/*===============================*/
+/*========================================================*/
+/*Auth*/
+/*========================================================*/
 
 .content-auth-container{
 	height: calc(100vh - 245px);
@@ -903,9 +913,9 @@ img.content-order-placed-icon{
 	transition: 0.7s;
 }
 
-/*===============================*/
-/*Detail Admin Page*/
-/*===============================*/
+/*========================================================*/
+/*Admin main*/
+/*========================================================*/
 
 .content-admin-page{
 	display: flex;
@@ -925,7 +935,7 @@ img.content-order-placed-icon{
 	margin:0 20px;
 	background: #cccccc;
 	border-radius: 5px;
-	box-shadow:0 0 15px rgba(70, 70, 70, 0.55);
+	box-shadow:6px 25px 16px rgba(70, 70, 70, 0.55);
 }
 
 .admin-page-panel{
@@ -968,7 +978,7 @@ table{
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	min-height:600px;
+	min-height:423px;
 	min-width:600px;
 	font-size: 18px;
 	font-family: 'Source Sans Pro', sans-serif;
@@ -1024,7 +1034,7 @@ th:hover{
 	font-size: 20px;
 	width:130px;
 	height:60px;
-	margin:0 20px;
+	margin:20px 20px;
 }
 
 .admin-page-a-add:hover{
@@ -1033,3 +1043,95 @@ th:hover{
 	border-bottom: 1px solid #63605d;
 	transition: 0.7s;
 }
+
+/*========================================================*/
+/*Admin page add*/
+/*========================================================*/
+.overlay{
+	position: absolute;
+	width:100%;
+	height:100%;
+	background: #646464;
+	opacity:0;
+	z-index: -9;
+
+}
+
+.content-add{
+	display: none;
+}
+
+.admin-page-content-add{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 40px 0 40px 0;
+	margin: 30px 0;
+	width:800px;
+	height:800px;
+	background: #e8e8e8;
+	border: 1px solid #e8e8e8;
+	border-radius: 5px;
+	overflow: auto;
+	transition: 0.9s;
+}
+
+.admin-page-content-add::-webkit-scrollbar {
+	width: 0;
+}
+
+.admin-page-content-add-title{
+	margin: 20px 0;
+	font-family: 'Source Sans Pro', sans-serif;
+	font-size: 30px;
+	font-weight: 600;
+}
+
+.admin-page-content-add label{
+	margin: 37px 0;
+}
+
+.admin-page-content-add-input{
+	display: flex;
+	background: #fff;
+	box-shadow: 0 0 20px rgba(182, 182, 182, 0.85);
+	border-radius: 10px;
+	padding: 6px 0 8px 38px;
+	width: 377px;
+	border: none;
+}
+
+.admin-page-content-add-input:hover{
+	cursor: pointer;
+	border-radius: 15px ;
+	box-shadow: 5px 5px 20px rgb(155, 155, 155);
+	transition: 0.7s;
+}
+
+::placeholder {
+	font-family: 'Source Sans Pro', sans-serif;
+	font-size: 14px;
+	font-weight: 500;
+	color: #c4c4c4;
+	opacity: 1;
+}
+
+.admin-page-content-add-a{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-decoration: none;
+	border-radius: 3px;
+	color: #eaeaea;
+	background: #63605d;
+	border-bottom: 1px solid #63605d;
+	font-size: 20px;
+	width:130px;
+	min-height:58px;
+	margin:20px 20px;
+
+}
+
+/*========================================================*/
+/*Admin page edit*/
+/*========================================================*/

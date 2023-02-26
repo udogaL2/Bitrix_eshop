@@ -121,7 +121,7 @@ input:focus {
 	color: #63605d;
 	background: #cccccc;
 	border-radius: 3px;
-	border-bottom: 1px solid #63605d;
+	border: none;
 	text-decoration: none;
 }
 
@@ -519,7 +519,7 @@ input[type="checkbox"]:checked + a.good-price:after{
 .content{
 	display: flex;
 	min-height: calc(100vh - 260px);
-	justify-content: center;
+	justify-content: flex-end;
 	align-items: flex-start;
 }
 .content-detail{

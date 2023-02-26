@@ -12,6 +12,7 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 	<link href="/reset.css" rel="stylesheet">
 	<link href="/style.css" rel="stylesheet">
+<!--    <link href="/MainStyle.css" rel="stylesheet">-->
     <link href="/scripts.js" rel="stylesheet">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title></title>
@@ -26,11 +27,11 @@
                 <div ><div class="logo"></div></div>
             </a>
             <div class="div-search">
-                <img src="/public/icons/icon-search.png" class="icon-search">
+                <img src="/icons/icon-search.png" class="icon-search">
                 <label>
 					<form action="/" method="get" class="search-good">
                     	<input type="text" name="search_query" class="search" placeholder="Поиск по товарам" id="search-text">
-						<button type="submit" class="button-search">искать</button>
+                        <button type="submit" class="button-search">искать</button>
 					</form>
                 </label>
             </div>

@@ -258,10 +258,10 @@ a.about-item:hover, a.follow-item:hover{
 	flex-direction: column;
 	align-items: flex-start;
 	width:266px;
-	min-height:267px;
+	min-height: 400px;
 	margin: 20px 20px 35px 100px;
 	background: #cccccc;
-	border-radius: 2px;
+	border-radius: 4px;
 	box-shadow:17px 21px 13px rgba(128, 127, 127, 0.78);
 }
 
@@ -270,7 +270,11 @@ a.about-item:hover, a.follow-item:hover{
 	align-items: center;
 	min-width:100px;
 	min-height:65px;
-	margin-left: 15px;
+	margin: 15px 0 0 15px;
+}
+
+.tags div:last-child{
+	padding-bottom:15px;
 }
 
 input[type="checkbox"]:checked,
@@ -453,36 +457,33 @@ input[type="checkbox"]:checked + a.good-price:after{
 .pagination{
 	display: flex;
 	justify-content: center;
+	align-items: center;
 	flex-direction: row;
 	margin-top: 1%;
 }
 
-.pagination-item a {
-	font-family: 'Open Sans', sans-serif;
-	font-weight: 400;
+.pagination-item-a {
+	font-family: 'Source Sans Pro', sans-serif;
+	font-weight: 500;
 	font-size: 20px;
 	color:#625f5c;
 	text-decoration: none;
+	padding:13px 10px;
 }
 
 .pagination-item{
-	margin:10px;
-	padding: 5px 15px;
+	display: flex;
+	margin:15px;
 	font-family: 'Source Sans Pro', sans-serif;
 	font-size: 20px;
-	line-height: 40px;
 	color:#625f5c;
 	text-decoration: none;
 }
 
-.pagination-item:hover{
-	cursor: pointer;
-}
-
-.pagination-item:hover{
+.pagination-item-a:hover{
 	cursor: pointer;
 	border-radius: 20px 20px;
-	box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.1);
+	box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.65);
 	transition: 0.5s;
 }
 
@@ -653,9 +654,6 @@ input[type="checkbox"]:checked + a.good-price:after{
 /*========================================================*/
 /*Order Registration*/
 /*========================================================*/
-/*===============================*/
-/*Order Registration*/
-/*===============================*/
 
 .content-order-registration{
 	display: flex;
@@ -791,9 +789,6 @@ input[type="checkbox"]:checked + a.good-price:after{
 /*========================================================*/
 /*Order placed*/
 /*========================================================*/
-/*===============================*/
-/*Order placed*/
-/*===============================*/
 
 .content-order-placed{
 	display: flex;
@@ -826,13 +821,10 @@ img.content-order-placed-icon{
 	background-repeat: no-repeat;
 	background-size: cover;
 }
-/*========================================================*/
-/*Page not found*/
-/*========================================================*/
-/*===============================*/
-/*Page not found*/
-/*===============================*/
 
+/*========================================================*/
+/*Page not found*/
+/*========================================================*/
 .page-not-found{
 	display: flex;
 	justify-content: center;

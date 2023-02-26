@@ -24,11 +24,13 @@ use App\Src\Service\TagService;
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
     <link href="/reset.css" rel="stylesheet">
     <link href="/style.css" rel="stylesheet">
+<!--    <link href="/GoodsStyle.css" rel="stylesheet">-->
     <title>EShop</title>
 </head>
 <body>
 <div class="content-index">
 <div class="index-container">
+    <div>
 	<div class="tags">
 		<?php foreach ($tags as $tag): ?>
 			<div>
@@ -41,6 +43,7 @@ use App\Src\Service\TagService;
 			</div>
 		<?php endforeach; ?>
 	</div>
+    </div>
     <div class="goods-container">
     <div class="goods">
         <?php foreach($goods as $good): ?>
@@ -68,17 +71,17 @@ use App\Src\Service\TagService;
 
         <ul class="pagination">
             <li class="pagination-item <?= ($currentPage == Config::FIRST_PAGE_ON_PAGINATION) ? 'pagination-item-no-active' : '' ?>">
-                <a href="/page/<?= Config::FIRST_PAGE_ON_PAGINATION.TagService::createSearchRequestForTags() ?>"><?= "<<" ?></a>
+                <a href="/page/<?= Config::FIRST_PAGE_ON_PAGINATION.TagService::createSearchRequestForTags() ?>" class="pagination-item-a"><?= "<<" ?></a>
             </li>
 
             <?php foreach ($pages as $page): ?>
                 <li class="pagination-item <?= ($currentPage === $page) ? 'pagination-item-active' : '' ?>">
-                    <a href="/page/<?= $page.TagService::createSearchRequestForTags() ?>"><?= $page ?></a>
+                    <a href="/page/<?= $page.TagService::createSearchRequestForTags() ?>" class="pagination-item-a"><?= $page ?></a>
                 </li>
             <?php endforeach ?>
 
             <li class="pagination-item <?= ($currentPage === $lastPage) ? 'pagination-item-no-active' : '' ?>">
-                <a href="/page/<?= $lastPage.TagService::createSearchRequestForTags() ?>"><?= ">>"?></a>
+                <a href="/page/<?= $lastPage.TagService::createSearchRequestForTags() ?>" class="pagination-item-a"><?= ">>"?></a>
             </li>
         </ul>
 </div>

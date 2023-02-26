@@ -462,35 +462,29 @@ input[type="checkbox"]:checked + a.good-price:after{
 	margin-top: 1%;
 }
 
-.pagination-item-a {
-	font-family: 'Source Sans Pro', sans-serif;
-	font-weight: 500;
-	font-size: 20px;
-	color:#625f5c;
-	box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.63);
-	text-decoration: none;
-	padding:13px 10px;
-}
-
 .pagination-item{
-	display: flex;
-	margin:15px;
-	font-family: 'Source Sans Pro', sans-serif;
+	padding: 10px;
+	font-family: 'Montserrat', sans-serif;
 	font-size: 20px;
-	color:#625f5c;
+	line-height: 40px;
+	font-weight: 100;
+	color: #4b4949;
 	text-decoration: none;
 }
 
-.pagination-item-a:hover{
+
+.pagination-item:hover{
 	cursor: pointer;
 	border-radius: 20px 20px;
-	box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.63);
+	padding: 10px;
+	box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.27);
 	transition: 0.5s;
 }
 
 .pagination-item-active{
 	border-radius: 20px 20px;
 	box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.2) !important;
+	padding: 10px;
 	cursor: default !important;
 }
 
@@ -1084,7 +1078,7 @@ th:hover{
 }
 
 .admin-page-content-add label, .admin-page-content-edit label{
-	margin: 37px 20px;
+	margin: 37px 0;
 }
 
 .admin-page-content-add-input{

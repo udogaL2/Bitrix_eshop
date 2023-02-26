@@ -70,18 +70,18 @@ use App\Src\Service\TagService;
 </div>
 
         <ul class="pagination">
-            <li class="pagination-item <?= ($currentPage == Config::FIRST_PAGE_ON_PAGINATION) ? 'pagination-item-no-active' : '' ?>">
-                <a href="/page/<?= Config::FIRST_PAGE_ON_PAGINATION.TagService::createSearchRequestForTags() ?>" class="pagination-item-a"><?= "<<" ?></a>
+            <li>
+                <a class="pagination-item <?= ($currentPage == Config::FIRST_PAGE_ON_PAGINATION) ? 'pagination-item-no-active' : '' ?>" href="/page/<?= Config::FIRST_PAGE_ON_PAGINATION.TagService::createSearchRequestForTags() ?>" ><?= "<<" ?></a>
             </li>
 
             <?php foreach ($pages as $page): ?>
-                <li class="pagination-item <?= ($currentPage === $page) ? 'pagination-item-active' : '' ?>">
-                    <a href="/page/<?= $page.TagService::createSearchRequestForTags() ?>" class="pagination-item-a"><?= $page ?></a>
+                <li>
+                    <a class="pagination-item <?= ($currentPage === $page) ? 'pagination-item-active' : '' ?>" href="/page/<?= $page.TagService::createSearchRequestForTags() ?>" class="pagination-item-a"><?= $page ?></a>
                 </li>
             <?php endforeach ?>
 
-            <li class="pagination-item <?= ($currentPage === $lastPage) ? 'pagination-item-no-active' : '' ?>">
-                <a href="/page/<?= $lastPage.TagService::createSearchRequestForTags() ?>" class="pagination-item-a"><?= ">>"?></a>
+            <li >
+                <a class="pagination-item <?= ($currentPage === $lastPage) ? 'pagination-item-no-active' : '' ?>" href="/page/<?= $lastPage.TagService::createSearchRequestForTags() ?>" class="pagination-item-a"><?= ">>"?></a>
             </li>
         </ul>
 </div>

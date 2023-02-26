@@ -28,9 +28,11 @@
             <div class="div-search">
                 <img src="/public/icons/icon-search.png" class="icon-search">
                 <label>
-                    <input type="text" class="search" placeholder="Поиск по товарам">
+					<form action="/" method="get" class="search-good">
+                    	<input type="text" name="search_query" class="search" placeholder="Поиск по товарам" id="search-text">
+						<button type="submit" class="button-search">искать</button>
+					</form>
                 </label>
-                <a class="button-search" href="#">Поиск</a>
             </div>
         <?php endif; ?>
         <?php if ($isAdmin): ?>

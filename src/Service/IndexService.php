@@ -22,7 +22,7 @@ class IndexService
 		self::$cacheExpires = (new \DateTime())->add($TTL);
 	}
 
-	private function updateCache():void
+	private function updateCache(): void
 	{
 		if (self::$cacheExpires < (new \DateTime()))
 		{
@@ -34,12 +34,12 @@ class IndexService
 	 * @return ?Good[]
 	 * @throws PathException
 	 */
-	private function getListOfGoodsByPage(string $tagsFromGet, int $page = 1): ?array
+	private function getListOfGoodsByPage(string $tagsFromGet, int $page = 1, string $searchSubstr = ""): ?array
 	{
 		$countGoodsOnPage = Config::COUNT_GOODS_ON_PAGE;
 		$offsetByPage = ($page - 1) * $countGoodsOnPage;
 
-		if (empty($tagsFromGet))
+		if (empty($tagsFromGet) && empty($searchSubstr))
 		{
 			$this->updateCache();
 
@@ -52,14 +52,14 @@ class IndexService
 		}
 
 		$tagsFromGetToArrayInt = $this->arrayStringIdToInt(explode(" ", $tagsFromGet));
-		$countOfGoods = GoodDAO::getAvailableCount($tagsFromGetToArrayInt);
+		$countOfGoods = GoodDAO::getAvailableCount($tagsFromGetToArrayInt, $searchSubstr);
 
 		if ($page < 0 || $offsetByPage > $countOfGoods)
 		{
 			return null;
 		}
 
-		return GoodDAO::getAvailableGoodsByOffset($offsetByPage, $tagsFromGetToArrayInt);
+		return GoodDAO::getAvailableGoodsByOffset($offsetByPage, $tagsFromGetToArrayInt, $searchSubstr);
 	}
 
 	/**
@@ -67,6 +67,11 @@ class IndexService
 	 */
 	private function arrayStringIdToInt(array $str): ?array
 	{
+		if ($str === [""])
+		{
+			return [];
+		}
+
 		$arrayOfInt = [];
 
 		foreach ($str as $element)
@@ -83,10 +88,13 @@ class IndexService
 
 	/**
 	 * @return ?Good[]
+	 * @throws PathException
 	 */
-	public function getGoodsByPage(int $page = 1, string $tagsFromGet = ""): ?array
+	public function getGoodsByPage(int $page = 1, string $tagsFromGet = "", string $searchSubstr = ""): ?array
 	{
-		$listOfGoods=$this->getListOfGoodsByPage($tagsFromGet, $page);
+
+
+		$listOfGoods = $this->getListOfGoodsByPage($tagsFromGet, $page, $searchSubstr);
 
 		if (!$listOfGoods)
 		{
@@ -114,9 +122,9 @@ class IndexService
 	/**
 	 * @throws PathException
 	 */
-	public function getLastPageForPagination(string $tagsFromGet = ""): int
+	public function getLastPageForPagination(string $tagsFromGet = "", string $searchSubstr = ""): int
 	{
-		if (empty($tagsFromGet))
+		if (empty($tagsFromGet) && empty($searchSubstr))
 		{
 			if (self::$cacheExpires < (new \DateTime()))
 			{
@@ -127,16 +135,20 @@ class IndexService
 		else
 		{
 			$tagsFromGetToArrayInt = $this->arrayStringIdToInt(explode(" ", $tagsFromGet));
-			$countGoods = GoodDAO::getAvailableCount($tagsFromGetToArrayInt);
+			$countGoods = GoodDAO::getAvailableCount($tagsFromGetToArrayInt, $searchSubstr);
 		}
 
 		return (int)ceil($countGoods / Config::COUNT_GOODS_ON_PAGE);
 	}
 
-	public function getPagesForPaginationByPage(int $currentPage, string $tagsFromGet = ""): ?array
+	public function getPagesForPaginationByPage(
+		int    $currentPage,
+		string $tagsFromGet = "",
+		string $searchSubstr = ""
+	): ?array
 	{
 		$pages = [];
-		$lastPage = $this->getLastPageForPagination($tagsFromGet);
+		$lastPage = $this->getLastPageForPagination($tagsFromGet, $searchSubstr);
 
 		if ($currentPage > $lastPage || $currentPage < Config::FIRST_PAGE_ON_PAGINATION)
 		{
@@ -189,5 +201,28 @@ class IndexService
 		}
 
 		return $pages;
+	}
+
+	public static function getTagIDifSearchQueryIsTag(string $searchQuery): int|bool
+	{
+		if (!$searchQuery){
+			return false;
+		}
+		return TagDAO::getTagIdLikeSubstr($searchQuery) ?? false;
+	}
+
+	public static function stripData(string $data): string
+	{
+		$data = strip_tags($data);
+		$data = htmlspecialchars($data);
+
+		$quotes = ["\x27", "\x22", "\x60", "\t", "\n", "\r", "*", "%", "<", ">", "?", "!"];
+		$goodQuotes = ["-", "+", "#"];
+		$repQuotes = ["\-", "\+", "\#"];
+		$text = trim(strip_tags($data));
+		$text = str_replace($quotes, '', $text);
+		$text = str_replace($goodQuotes, $repQuotes, $text);
+
+		return mb_ereg_replace(" +", " ", $text);
 	}
 }

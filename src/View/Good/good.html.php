@@ -12,6 +12,7 @@ use App\Src\Service\TagService;
  * @var $pages
  * @var $currentPage
  * @var $lastPage
+ * @var $searchQuery
  */
 ?>
 
@@ -37,7 +38,7 @@ use App\Src\Service\TagService;
 				<label>
 					<input class="checkbox" type="checkbox" <?= TagService::isChecked($tag->getId()) ?>>
 					<a class="good-price" href="/page/1
-						<?= TagService::createSearchRequestForTags($tag->getId()) ?>"><?= $tag->getName() ?>
+						<?= HtmlService::createSearchRequest($tag->getId(), $searchQuery) ?>"><?= $tag->getName() ?>
 					</a>
 				</label>
 			</div>
@@ -71,17 +72,17 @@ use App\Src\Service\TagService;
 
         <ul class="pagination">
             <li>
-                <a class="pagination-item <?= ($currentPage == Config::FIRST_PAGE_ON_PAGINATION) ? 'pagination-item-no-active' : '' ?>" href="/page/<?= Config::FIRST_PAGE_ON_PAGINATION.TagService::createSearchRequestForTags() ?>" ><?= "<<" ?></a>
+                <a class="pagination-item <?= ($currentPage == Config::FIRST_PAGE_ON_PAGINATION) ? 'pagination-item-no-active' : '' ?>" href="/page/<?= Config::FIRST_PAGE_ON_PAGINATION.HtmlService::createSearchRequest(searchSubstr: $searchQuery) ?>" ><?= "<<" ?></a>
             </li>
 
             <?php foreach ($pages as $page): ?>
                 <li>
-                    <a class="pagination-item <?= ($currentPage === $page) ? 'pagination-item-active' : '' ?>" href="/page/<?= $page.TagService::createSearchRequestForTags() ?>" class="pagination-item-a"><?= $page ?></a>
+                    <a class="pagination-item <?= ($currentPage === $page) ? 'pagination-item-active' : '' ?>" href="/page/<?= $page.HtmlService::createSearchRequest(searchSubstr: $searchQuery) ?>" class="pagination-item-a"><?= $page ?></a>
                 </li>
             <?php endforeach ?>
 
             <li >
-                <a class="pagination-item <?= ($currentPage === $lastPage) ? 'pagination-item-no-active' : '' ?>" href="/page/<?= $lastPage.TagService::createSearchRequestForTags() ?>" class="pagination-item-a"><?= ">>"?></a>
+                <a class="pagination-item <?= ($currentPage === $lastPage) ? 'pagination-item-no-active' : '' ?>" href="/page/<?= $lastPage.HtmlService::createSearchRequest(searchSubstr: $searchQuery) ?>" class="pagination-item-a"><?= ">>"?></a>
             </li>
         </ul>
 </div>

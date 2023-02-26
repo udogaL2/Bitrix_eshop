@@ -63,21 +63,21 @@ class GoodDAO extends BaseDAO
 			}
 			else
 			{
-				$request = "select COUNT(*) from good where IS_ACTIVE = true;";
+				$request = "select COUNT(*) from good g where g.IS_ACTIVE = true;";
 				$rowOfTypes = '';
 				$listOfValues = [];
+			}
 
-				if ($searchSubstring)
-				{
-					$request = substr_replace(
-						$request,
-						" and (NAME like ? or NAME sounds like ?) ",
-						strpos($request, "true") + 4,
-						0
-					);
-					$rowOfTypes = 'ss';
-					$listOfValues = ['%' . $searchSubstring . '%', $searchSubstring];
-				}
+			if ($searchSubstring)
+			{
+				$request = substr_replace(
+					$request,
+					" and (g.NAME like ? or g.NAME sounds like ?) ",
+					strpos($request, "true") + 4,
+					0
+				);
+				$rowOfTypes .= 'ss';
+				$listOfValues = array_merge($listOfValues, ['%' . $searchSubstring . '%', $searchSubstring]);
 			}
 
 			$DBResponse = DBSession::requestDB($request, $rowOfTypes, $listOfValues);
@@ -105,18 +105,18 @@ class GoodDAO extends BaseDAO
 			{
 				$countTagIds = count($tagIds);
 				$placeholders = str_repeat('?,', $countTagIds - 1) . '?';
-				$rowOfTypes = str_repeat('i', $countTagIds);
-				$listOfValues = $tagIds;
+				$rowOfTypes = str_repeat('i', $countTagIds) . 'ii';
+				$listOfValues = array_merge($tagIds, [$countGoodsOnPage, $offsetByPage]);
 
 				$request = "select additional.* 
 						from 
 						(select g.*, COUNT(gt.TAG_ID) as COINCIDENCE from good g
 						inner join good_tag gt on g.ID = gt.GOOD_ID
-						where gt.TAG_ID in ({$placeholders}) and g.IS_ACTIVE = true
+						where g.IS_ACTIVE = true and gt.TAG_ID in ({$placeholders}) 
 						group by g.ID) as additional
 						WHERE additional.COINCIDENCE=$countTagIds
 						order by additional.ID
-						LIMIT $countGoodsOnPage OFFSET $offsetByPage;";
+						LIMIT ? OFFSET ?;";
 
 			}
 			else
@@ -125,19 +125,19 @@ class GoodDAO extends BaseDAO
 				$rowOfTypes = 'ii';
 				$listOfValues = [$countGoodsOnPage, $offsetByPage];
 
-				$request = "select * from good where IS_ACTIVE = true LIMIT ? OFFSET ?;";
+				$request = "select * from good g where g.IS_ACTIVE = true LIMIT ? OFFSET ?;";
+			}
 
-				if ($searchSubstring)
-				{
-					$request = substr_replace(
-						$request,
-						" and (NAME like ? or NAME sounds like ?) ",
-						strpos($request, "true") + 4,
-						0
-					);
-					$rowOfTypes = 'ss' . $rowOfTypes;
-					array_unshift($listOfValues, '%' . $searchSubstring . '%', $searchSubstring);
-				}
+			if ($searchSubstring)
+			{
+				$request = substr_replace(
+					$request,
+					" and (g.NAME like ? or g.NAME sounds like ?) ",
+					strpos($request, "true") + 4,
+					0
+				);
+				$rowOfTypes = 'ss' . $rowOfTypes;
+				array_unshift($listOfValues, '%' . $searchSubstring . '%', $searchSubstring);
 			}
 
 			$DBResponse = DBSession::requestDB($request, $rowOfTypes, $listOfValues);

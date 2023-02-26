@@ -10,11 +10,29 @@ class IndexController extends BaseController
 {
 	public function viewGoodByPage(int $page = 1): void
 	{
-        AuthController::adminSessionAction();
+		AuthController::adminSessionAction();
 		try
 		{
 			$service = new IndexService();
-			if (empty($_GET["tags"]))
+
+			$searchTags = $_GET["tags"] ?? '';
+			$searchQuery = $_GET["search_query"] ?? '';
+
+			if ($searchQuery)
+			{
+				$searchQuery = IndexService::stripData($searchQuery);
+
+				if (mb_strlen($searchQuery) < 2)
+				{
+					throw new PathException("Array of id contains invalid characters");
+				}
+				elseif (mb_strlen($searchQuery) > 128)
+				{
+					throw new PathException("Array of id contains invalid characters");
+				}
+			}
+
+			if (empty($searchTags) && empty($searchQuery))
 			{
 				$goods = $service->getGoodsByPage($page);
 				if (!isset($goods))
@@ -28,15 +46,22 @@ class IndexController extends BaseController
 			}
 			else
 			{
-				$goods = $service->getGoodsByPage($page, $_GET["tags"]);
+				$searchQueryTag = IndexService::getTagIDifSearchQueryIsTag($searchQuery);
+
+				if ($searchQueryTag)
+				{
+					header("Location: /?tags={$searchQueryTag}");
+				}
+
+				$goods = $service->getGoodsByPage($page, $searchTags, $searchQuery);
 				if (!isset($goods))
 				{
 					throw new PathException("Page not found");
 				}
 
 				$tags = TagDAO::getAllTags();
-				$lastPage = $service->getLastPageForPagination($_GET["tags"]);
-				$pages = $service->getPagesForPaginationByPage($page, $_GET["tags"]);
+				$lastPage = $service->getLastPageForPagination($searchTags, $searchQuery);
+				$pages = $service->getPagesForPaginationByPage($page, $searchTags, $searchQuery);
 			}
 
 			echo self::view('Main/index.html', [
@@ -46,6 +71,7 @@ class IndexController extends BaseController
 					'currentPage' => $page,
 					'lastPage' => $lastPage,
 					'tags' => $tags,
+					'searchQuery' => $searchQuery,
 				]),
 				'isAdmin' => false,
 			]);
@@ -53,6 +79,7 @@ class IndexController extends BaseController
 		catch (Exception $e)
 		{
 			$this->goodsNotFoundAction();
+
 			return;
 		}
 	}

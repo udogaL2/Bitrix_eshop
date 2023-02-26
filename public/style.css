@@ -103,6 +103,12 @@ input:focus {
 	opacity: 1;
 }
 
+.search-good{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
 .button-search{
 	display: flex;
 	justify-content: center;

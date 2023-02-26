@@ -128,6 +128,22 @@ class TagDAO extends BaseLinkedDAO
 			return null;
 		}
 	}
+
+	public static function getTagIdLikeSubstr(string $substr): ?int
+	{
+		try
+		{
+			$DBResponse = DBSession::requestDB("select * from tag where NAME like ?", 's', ['%' . $substr . '%']);
+
+			$result = mysqli_fetch_assoc($DBResponse);
+
+			return $result ? $result["ID"] : null;
+		}
+		catch (Exception $e)
+		{
+			return null;
+		}
+	}
 }
 
 //⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝

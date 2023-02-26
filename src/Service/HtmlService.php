@@ -51,7 +51,10 @@ class HtmlService
 		{
 			return $tagRequest;
 		}
+		elseif ($searchSubstr){
+			return "?search_query=" . $searchSubstr;
+		}
 
-		return "?search_query=" . $searchSubstr;
+		return '';
 	}
 }

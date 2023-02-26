@@ -71,7 +71,6 @@ body{
 	height: 15px;
 	width: 15px;
 	margin: 0 0 0 32px;
-	background-image: url(icons/icon-search.png);
 	background-size: cover;
 }
 
@@ -558,7 +557,8 @@ input[type="checkbox"]:checked + a.good-price:after{
 }
 
 .carousel-control-next, .carousel-control-prev{
-	background-color: #4b4b4b7a;
+	filter: invert(1);
+	background-color: rgba(45, 45, 45, 0.48);
 }
 
 .detail-list-title,
@@ -1092,7 +1092,7 @@ th:hover{
 }
 
 .admin-page-content-add label, .admin-page-content-edit label{
-	margin: 37px 0;
+	margin: 37px 20px;
 }
 
 .admin-page-content-add-input{

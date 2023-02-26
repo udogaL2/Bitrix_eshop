@@ -12,7 +12,7 @@ class GoodDAO extends BaseDAO
 {
 	protected static string $tableName = "good";
 
-	public static function createGood(Good $good): bool
+	public static function createGood(Good $good): int|bool
 	{
 		try
 		{
@@ -30,7 +30,9 @@ class GoodDAO extends BaseDAO
 				]
 			);
 
-			return true;
+			$goodId = self::getLastCreatedId();
+
+			return $goodId ?? false;
 		}
 		catch (Exception $e)
 		{

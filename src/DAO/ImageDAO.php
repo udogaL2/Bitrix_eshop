@@ -15,17 +15,39 @@ class ImageDAO extends BaseLinkedDAO
 	protected static string $primaryLinkColumn = "GOOD_ID";
 	protected static string $secondaryLinkColumn = "IMAGE_ID";
 
-	public static function createImage(Image $image): bool
+	/**
+	 * @param Image[] $images
+	 */
+	public static function createImages(array $images): array|bool
 	{
 		try
 		{
+			if (!$images)
+			{
+				return false;
+			}
+
+			$countImages = count($images);
+			$placeholders = str_repeat("(?, ?, ?, ?), ", $countImages - 1) . "(?, ?, ?, ?)";
+			$rowOfTypes = str_repeat("siii", $countImages);
+			$request = "insert into image (PATH, HEIGHT, WIDTH, IS_MAIN) VALUES {$placeholders};";
+			$values = [];
+
+			foreach ($images as $image)
+			{
+				$values[] = $image->getPath();
+				$values[] = $image->getHeight();
+				$values[] = $image->getWidth();
+				$values[] = $image->isMain();
+			}
+
 			DBSession::requestDB(
-				"insert into image (PATH, HEIGHT, WIDTH, IS_MAIN)
-				VALUE (?, ?, ?, ?)", "siii",
-				[$image->getPath(), $image->getHeight(), $image->getWidth(), $image->isMain()]
+				$request, $rowOfTypes, $values
 			);
 
-			return true;
+			$lastImageId = self::getLastCreatedId();
+
+			return isset($lastImageId) ? range($lastImageId - $countImages + 1, $lastImageId) : false;
 		}
 		catch (Exception $e)
 		{

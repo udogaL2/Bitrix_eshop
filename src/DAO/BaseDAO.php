@@ -39,7 +39,9 @@ abstract class BaseDAO
 		try
 		{
 			if (!$updateFieldsValue)
+			{
 				return false;
+			}
 
 			$tableName = static::$tableName;
 			$placeholders = "";
@@ -64,6 +66,26 @@ abstract class BaseDAO
 			);
 
 			return true;
+		}
+		catch (Exception $e)
+		{
+			return false;
+		}
+	}
+
+	public static function getLastCreatedId(): ?int
+	{
+		try
+		{
+			$tableName = static::$tableName;
+
+			$request = "SELECT MAX(id) FROM {$tableName};";
+
+			$DBResponse = DBSession::requestDB(
+				$request
+			);
+
+			return mysqli_fetch_array($DBResponse)[0];
 		}
 		catch (Exception $e)
 		{

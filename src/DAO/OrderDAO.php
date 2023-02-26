@@ -50,19 +50,20 @@ class OrderDAO extends BaseDAO
 			DBSession::requestDB(
 				"INSERT INTO `order` (good_id, date_create, c_name, c_phone, c_email, c_wish, status, address, price)
 					VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?);", 'isssssssd', [
-																		   $orderInfo->getGoodId(),
-																		   date('Y-m-d H:i:s'),
-																		   $customerInfo->getName(),
-																		   $customerInfo->getPhone(),
-																		   $customerInfo->getEmail(),
-																		   $customerInfo->getWish(),
-																		   'new',
-																		   $orderInfo->getAddress(),
-																		   $orderInfo->getPrice(),
-																	   ]
+					 $orderInfo->getGoodId(),
+					 date('Y-m-d H:i:s'),
+					 $customerInfo->getName(),
+					 $customerInfo->getPhone(),
+					 $customerInfo->getEmail(),
+					 $customerInfo->getWish(),
+					 'new',
+					 $orderInfo->getAddress(),
+					 $orderInfo->getPrice(),
+					]
 			);
+			$orderId = self::getLastCreatedId();
 
-			return true;
+			return $orderId ?? false;
 		}
 		catch (Exception $e)
 		{

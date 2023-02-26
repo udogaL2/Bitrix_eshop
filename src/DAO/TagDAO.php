@@ -55,7 +55,9 @@ class TagDAO extends BaseLinkedDAO
 				VALUE (?)", "s", [$tag->getName()]
 			);
 
-			return true;
+			$tagId = self::getLastCreatedId();
+
+			return $tagId ?? false;
 		}
 		catch (Exception $e)
 		{

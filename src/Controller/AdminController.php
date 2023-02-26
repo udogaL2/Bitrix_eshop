@@ -18,7 +18,9 @@ class AdminController extends BaseController
 
 		$section = $_GET['section'] ?? 'tags';
 
-		$content = AdminService::getContentBySection($section);
+		$contentAndField = AdminService::getContentBySection($section);
+		$fields = $contentAndField['fields'];
+		$content = $contentAndField['values'];
 
 		if ($content === [])
 		{
@@ -32,6 +34,7 @@ class AdminController extends BaseController
                 'content' => $content,
                 'section' => $section,
                 'isOrderSection' => $isOrderSection,
+				'fields' => $fields,
                 ]),
             'isAdmin' => true,
         ]);
@@ -156,6 +159,37 @@ class AdminController extends BaseController
             'isAdmin' => true,
         ]);
     }
+
+	public function addNewData(): void
+	{
+		$section = $_GET['section'] ?? 'tags';
+
+		if ($section === 'tags')
+		{
+			$tag = new Tag($_POST['dataInput'][0]);
+			TagDAO::createNewTag($tag);
+			header("Location: /admin");
+		}
+
+		if ($section === 'goods')
+		{
+			$name = $_POST['dataInput'][0];
+			$price = $_POST['dataInput'][1];
+			$article = $_POST['dataInput'][2];
+			$tags = $_POST['dataInput'][3];
+			$tags = explode(',', $tags);
+
+			$good = new Good($name, $price, $article);
+			GoodDAO::createGood($good);
+			TagDAO::createLinks(15, $tags);
+			header("Location: /admin");
+		}
+
+		if ($section === 'orders')
+		{
+
+		}
+	}
 }
 
 

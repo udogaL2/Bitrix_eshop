@@ -62,6 +62,11 @@ return array (
 		 'method' => 'GET',
 		 'action' => [new \App\Src\Controller\AdminController(), 'getMainAdminPageAction'],
 	 ),
+	 array (
+		 'path' => '/admin',
+		 'method' => 'POST',
+		 'action' => [new \App\Src\Controller\AdminController(), 'addNewData'],
+	 ),
     array (
         'path' => '/logout',
         'method' => 'GET',

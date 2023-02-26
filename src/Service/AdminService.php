@@ -16,12 +16,16 @@ class AdminService
 	{
 		if ($section === 'tags')
 		{
-			return TagDAO::getAllTags();
+			return [ 'fields' => ['name'],
+					 'values' => TagDAO::getAllTags(),
+			];
 		}
 
 		if ($section === 'goods')
 		{
-			return GoodDAO::getAllGoods();
+			return [ 'fields' => ['name', 'price', 'article', 'tags'],
+					 'values' => GoodDAO::getAllGoods(),
+			];
 		}
 
 		if ($section === 'orders')
@@ -40,7 +44,9 @@ class AdminService
                         ];
                 }
             }
-            return $goodsIDNameAndStatus;
+            return [ 'fields' => ['idGood', 'cName', 'cPhone', 'cEmail'],
+					 'values' => $goodsIDNameAndStatus,
+			];
 		}
 
 		return [];

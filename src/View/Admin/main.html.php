@@ -2,6 +2,7 @@
  * @var Tag[]|Good[]|array[] $content
  * @var bool $isOrderSection
  * @var string $section
+ * @var string[] $fields
  */
 
 use App\Src\Model\Good;
@@ -60,16 +61,20 @@ $i=1;
 </div>
 
 <div class="content-add">
-<div class="admin-page-content-add">
-    <div class="admin-page-content-add-title">Создание нового товара</div>
-    <?php $good=['название', 'id', 'коротко описание', 'длинное описание', 'теги']?>
-    <?php foreach($good as $item): ?>
-        <label>
-            <input type="text" class="admin-page-content-add-input" placeholder="Введите <?= $item ?>" minlength="1" maxlength="30" required>
-        </label>
-    <?php endforeach; ?>
-    <a class="admin-page-content-add-a" href="#"> Add </a>
-</div>
+	<form action="/admin?section=<?=$section?>" method="post">
+		<div class="admin-page-content-add">
+			<div class="admin-page-content-add-title">Создание нового товара</div>
+
+    <?php foreach($fields as $field): ?>
+		<label>
+			<input type="text" class="admin-page-content-add-input" name="dataInput[]" placeholder="Введите <?= $field ?>" minlength="1" maxlength="30" required>
+		</label>
+	<?php endforeach; ?>
+
+<!--			<a href="/admin" class="admin-page-content-add-a">Add</a>-->
+			<input class="admin-page-content-add-a" type="submit" value="Add">
+		</div>
+	</form>
 </div>
 </body>
 </html>

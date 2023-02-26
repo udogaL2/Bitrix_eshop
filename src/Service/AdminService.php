@@ -95,4 +95,23 @@ class AdminService
     {
         //TagDAO::updateGood();
     }
+
+    public static function addGoodOrderTag(string $section):string
+    {
+     if($section === 'goods')
+     {
+         return 'товара';
+     }
+     if($section === 'tags')
+        {
+            return 'тега';
+        }
+     if($section === 'orders')
+     {
+         return 'заказа';
+     }
+     return '';
+    }
+
 }
+

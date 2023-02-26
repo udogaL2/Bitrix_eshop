@@ -467,6 +467,7 @@ input[type="checkbox"]:checked + a.good-price:after{
 	font-weight: 500;
 	font-size: 20px;
 	color:#625f5c;
+	box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.63);
 	text-decoration: none;
 	padding:13px 10px;
 }
@@ -483,7 +484,7 @@ input[type="checkbox"]:checked + a.good-price:after{
 .pagination-item-a:hover{
 	cursor: pointer;
 	border-radius: 20px 20px;
-	box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.65);
+	box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.63);
 	transition: 0.5s;
 }
 
@@ -1083,7 +1084,7 @@ th:hover{
 }
 
 .admin-page-content-add label, .admin-page-content-edit label{
-	margin: 37px 0;
+	margin: 37px 20px;
 }
 
 .admin-page-content-add-input{

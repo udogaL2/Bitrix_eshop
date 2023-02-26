@@ -57,4 +57,9 @@ class HtmlService
 
 		return '';
 	}
+
+	public static function safe(string $value): string
+	{
+		return htmlspecialchars($value, ENT_QUOTES);
+	}
 }

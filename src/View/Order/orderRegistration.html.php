@@ -2,7 +2,11 @@
 /**
  * @var App\Src\Model\Good $good
  * @var string[] $errors
- */ ?>
+ */
+
+use App\Src\Service\HtmlService;
+
+?>
 
 <!doctype html>
 <html lang="en">
@@ -26,8 +30,8 @@
 	<div class="content-order-registration-title">Оформление заказа</div>
 		<div class="order-registration-good">
 			<img class="order-registration-good-img" src="/<?= $good->getImages()[0]->getPath() ?>">
-			<div class="order-registration-description"><?= $good->getShortDesc() ?></div>
-			<div class="order-registration-price"><?= $good->getPrice() ?> RUB</div>
+			<div class="order-registration-description"><?= HtmlService::safe($good->getShortDesc()) ?></div>
+			<div class="order-registration-price"><?= HtmlService::safe($good->getPrice()) ?> RUB</div>
 		</div>
     <form class="order-registration-form" action="/order/<?= $good->getId() ?>" method="POST">
 		<div class="div-content-order-registration-first-name">

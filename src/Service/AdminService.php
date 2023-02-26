@@ -52,6 +52,35 @@ class AdminService
 		return [];
 	}
 
+	public static function addNewDataBySection(string $section, array $dataInput): void
+	{
+		if ($section === 'tags')
+		{
+			$tagName = new Tag(HtmlService::safe($dataInput[0]));
+			TagDAO::createNewTag($tagName);
+			header("Location: /admin");
+		}
+
+		if ($section === 'goods')
+		{
+			$name = HtmlService::safe($dataInput[0]);
+			$price = HtmlService::safe($dataInput[1]);
+			$article = HtmlService::safe($dataInput[2]);
+			$tags = HtmlService::safe($dataInput[3]);
+			$tags = explode(',', $tags);
+
+			$good = new Good($name, $price, $article);
+			$goodId = GoodDAO::createGood($good);
+			TagDAO::createLinks($goodId, $tags);
+			header("Location: /admin");
+		}
+
+		if ($section === 'orders')
+		{
+			//header("Location: /order");
+		}
+	}
+
     public static function updateTag(Tag $tag)
     {
         //TagDAO::updateTag();

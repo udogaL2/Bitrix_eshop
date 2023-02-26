@@ -3,6 +3,7 @@
  * @var bool $isOrderSection
  * @var string $section
  * @var string[] $fields
+ // * @var string[] $errors
  */
 
 use App\Src\Model\Good;
@@ -40,7 +41,7 @@ $i=1;
                 <?php foreach($content as $item): ?>
                     <tr>
                         <th><?= $i++ ?></th>
-                        <th><?= HtmlService::cutGoodTitle($item->getName(), 30) ?></th>
+                        <th><?= HtmlService::safe(HtmlService::cutGoodTitle($item->getName(), 30)) ?></th>
                         <th><a class="admin-page-a-edit" href="/edit/<?=$section?>/<?=$item->getId()?>">Edit</a></th>
                     </tr>
                 <?php endforeach; ?>
@@ -49,8 +50,8 @@ $i=1;
                 <?php foreach($content as $item): ?>
                     <tr>
                         <th><?= $i++ ?></th>
-                        <th><?= HtmlService::cutGoodTitle($item['goodName'], 30) ?></th>
-                        <th><?= $item['status'] ?></th>
+                        <th><?= HtmlService::safe(HtmlService::cutGoodTitle($item['goodName'], 30)) ?></th>
+                        <th><?= HtmlService::safe($item['status']) ?></th>
                         <th><a class="admin-page-a-edit" href="/edit/<?=$section?>/<?=$item['ID']?>" >Edit</a></th>
                     </tr>
                 <?php endforeach; ?>
@@ -64,6 +65,12 @@ $i=1;
 	<form action="/admin?section=<?=$section?>" method="post">
 		<div class="admin-page-content-add">
 			<div class="admin-page-content-add-title">Создание нового товара</div>
+
+	<?php //if ($errors !== []):?>
+	<!--	--><?php //foreach ($errors as $error): ?>
+	<!--		<div class="alert alert-danger" role="alert">--><?php //$error ?><!--</div>-->
+	<!--	--><?php //endforeach; ?>
+	<?php //endif; ?>
 
     <?php foreach($fields as $field): ?>
 		<label>

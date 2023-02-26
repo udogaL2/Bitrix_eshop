@@ -22,11 +22,6 @@ class AdminController extends BaseController
 		$fields = $contentAndField['fields'];
 		$content = $contentAndField['values'];
 
-		if ($content === [])
-		{
-			$content = AdminService::getContentBySection("tags");
-		}
-
         $isOrderSection = $section === 'orders';
 
         echo self::view( 'Main/index.html', [
@@ -162,33 +157,12 @@ class AdminController extends BaseController
 
 	public function addNewData(): void
 	{
+		AuthController::notAdminSessionAction();
 		$section = $_GET['section'] ?? 'tags';
 
-		if ($section === 'tags')
-		{
-			$tag = new Tag($_POST['dataInput'][0]);
-			TagDAO::createNewTag($tag);
-			header("Location: /admin");
-		}
+		$dataInput = $_POST['dataInput'];
 
-		if ($section === 'goods')
-		{
-			$name = $_POST['dataInput'][0];
-			$price = $_POST['dataInput'][1];
-			$article = $_POST['dataInput'][2];
-			$tags = $_POST['dataInput'][3];
-			$tags = explode(',', $tags);
-
-			$good = new Good($name, $price, $article);
-			GoodDAO::createGood($good);
-			TagDAO::createLinks(15, $tags);
-			header("Location: /admin");
-		}
-
-		if ($section === 'orders')
-		{
-
-		}
+		AdminService::addNewDataBySection($section, $dataInput);
 	}
 }
 

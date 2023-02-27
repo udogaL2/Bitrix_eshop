@@ -57,8 +57,9 @@ class AdminController extends BaseController
         }
         else
         {
+            $field=AdminService::fieldValueTag($updatedTag);
             $content = self::view('Admin/detailed_tags.html' , [
-                'content' => $updatedTag,
+                'content' => $field,
             ]);
         }
 
@@ -106,8 +107,9 @@ class AdminController extends BaseController
         }
         else
         {
+            $field=AdminService::fieldValueGood($updatedGood);
             $content = self::view('Admin/detailed_goods.html' , [
-                'content' => $updatedGood,
+                'content' => $field,
             ]);
         }
 
@@ -146,8 +148,9 @@ class AdminController extends BaseController
         }
         else
         {
+            $field=AdminService::fieldValueOrder($updatedOrder);
             $content = self::view('Admin/detailed_orders.html' , [
-                'content' => $updatedOrder,
+                'content' => $field,
             ]);
         }
 

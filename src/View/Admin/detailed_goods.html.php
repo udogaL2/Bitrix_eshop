@@ -1,4 +1,5 @@
 <?php
+/** @var \App\Src\Model\Good $content */
 ?>
 
 <!doctype html>
@@ -17,35 +18,14 @@
 <div class="admin-page-content-edit">
 <div class="admin-page-content-add-title">Редактирование Товара</div>
     <hr class="hr-edit">
-    <?= $content?>
-<!--    <div class="subtitle-input">Id</div>-->
-<!--    <label>-->
-<!--        <input type="text" class="admin-page-content-edit-input" value="--><?php //=$content -> getId()?><!--">-->
-<!--    </label>-->
-<!--    <div class="subtitle-input">Name</div>-->
-<!--    <label>-->
-<!--        <input type="text" class="admin-page-content-edit-input" value="--><?php //= $content -> getName() ?><!--">-->
-<!--    </label>-->
-<!--    <div class="subtitle-input">Price</div>-->
-<!--    <label>-->
-<!--        <input type="text" class="admin-page-content-edit-input" value="--><?php //= $content -> getPrice() ?><!--">-->
-<!--    </label>-->
-<!--    <div class="subtitle-input">Short description</div>-->
-<!--    <label>-->
-<!--        <input type="text" class="admin-page-content-edit-input" value="--><?php //= $content -> getShortDesc() ?><!--">-->
-<!--    </label>-->
-<!--    <div class="subtitle-input">Full description</div>-->
-<!--    <label>-->
-<!--        <input type="text" class="admin-page-content-edit-input" value="--><?php //= $content -> getFullDesc() ?><!--">-->
-<!--    </label>-->
-<!--    <div class="subtitle-input">Article</div>-->
-<!--    <label>-->
-<!--        <input type="text" class="admin-page-content-edit-input" value="--><?php //= $content -> getArticle() ?><!--">-->
-<!--    </label>-->
-<!--    <div class="subtitle-input">Tags</div>-->
-<!--    <label>-->
-<!--        <input type="text" class="admin-page-content-edit-input" value="--><?php //= $content -> getTags() ?><!--">-->
-<!--    </label>-->
+    <?php foreach($content as $item):?>
+        <?php foreach ($item as $key => $value):?>
+            <div class="subtitle-input"><?= $key?></div>
+            <label>
+                <input type="text" class="admin-page-content-edit-input" value="<?=$value?>">
+            </label>
+        <?php endforeach;?>
+    <?php endforeach;?>
 <a class="admin-page-content-edit-button" href="#"> Редактировать</a>
 </div>
 </body>

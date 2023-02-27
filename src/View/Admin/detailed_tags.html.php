@@ -1,4 +1,5 @@
 <?php
+/** @var \App\Src\Model\Tag $content */
 ?>
 
 <!doctype html>
@@ -17,15 +18,14 @@
 <div class="admin-page-content-edit">
 <div class="admin-page-content-add-title">Редактирование Тега</div>
 <hr class="hr-edit">
-    <?= $content?>
-<!--<div class="subtitle-input">Id</div>-->
-<!--<label>-->
-<!--    <input type="text" class="admin-page-content-edit-input" value="--><?php //=$content -> getId()?><!--">-->
-<!--</label>-->
-<!--<div class="subtitle-input">Name</div>-->
-<!--<label>-->
-<!--    <input type="text" class="admin-page-content-edit-input" value="--><?php //= $content -> getName() ?><!--">-->
-<!--</label>-->
+    <?php foreach($content as $item):?>
+        <?php foreach ($item as $key => $value):?>
+            <div class="subtitle-input"><?= $key?></div>
+            <label>
+                <input type="text" class="admin-page-content-edit-input" value="<?=$value?>">
+            </label>
+        <?php endforeach;?>
+    <?php endforeach;?>
 <a class="admin-page-content-edit-button" href="#"> Редактировать</a>
 </div>
 </body>

@@ -519,8 +519,9 @@ input[type="checkbox"]:checked + a.good-price:after{
 .content{
 	display: flex;
 	min-height: calc(100vh - 260px);
-	justify-content: flex-end;
+	justify-content: center;
 	align-items: flex-start;
+	overflow: hidden;
 }
 .content-detail{
 	display: flex;
@@ -1091,8 +1092,13 @@ th:hover{
 	font-weight: 600;
 }
 
-.admin-page-content-add label, .admin-page-content-edit label{
+.admin-page-content-add label{
 	margin: 37px 20px;
+}
+
+.admin-page-content-edit label{
+	padding: 0 0 0 63px;
+	margin: 37px 0;
 }
 
 .admin-page-content-add-input{
@@ -1187,7 +1193,7 @@ label{
 }
 
 .admin-page-content-edit label, .label-edit{
-	width:577px;
+	width:588px;
 }
 
 .admin-page-content-edit-button{

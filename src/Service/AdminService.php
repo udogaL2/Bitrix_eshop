@@ -98,4 +98,59 @@ class AdminService
     {
         //TagDAO::updateGood();
     }
+
+    public static function fieldValueGood(Good $good)
+    {
+        $tag ='';
+        if(is_array($good -> getTags()))
+        {
+            foreach($good -> getTags() as $item)
+            {
+                $tag="{$tag} {$item -> getName()},";
+            }
+        }
+        else
+        {
+            $tag = $good -> getTags() -> getName();
+        }
+
+
+        $field[]=
+            [
+             'Id товара' => $good -> getId(),
+             'Наименование товара' => $good -> getName(),
+             'Цена товара' => $good -> getPrice(),
+             'Короткое описание' => $good -> getShortDesc(),
+             'Полное описание' => $good -> getFullDesc(),
+             'Теги товара' => $tag,
+            ];
+
+            return $field;
+    }
+
+    public static function fieldValueOrder(Order $order)
+    {
+        $field[]=
+            [
+                'Id заказа' => $order -> getId(),
+                'Id товара' => $order -> getGoodId(),
+                'Имя покупателя' => $order -> getCustomer() ->getName(),
+                'Статус заказара' => $order -> getStatus(),
+                'Адрес заказа' => $order -> getAddress(),
+                'Стоимость заказа' => $order -> getPrice(),
+            ];
+
+        return $field;
+    }
+
+    public static function fieldValueTag(Tag $tag)
+    {
+        $field[]=
+            [
+                'Id тега' => $tag -> getId(),
+                'Название тега' => $tag -> getName(),
+            ];
+
+        return $field;
+    }
 }

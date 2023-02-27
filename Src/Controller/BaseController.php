@@ -14,7 +14,7 @@ abstract class BaseController
 			throw new PathException('invalid page address');
 		}
 
-		$path = Config::ROOT . "/src/View/$path.php";
+		$path = Config::ROOT . "/Src/View/$path.php";
 
 		extract($args, EXTR_OVERWRITE);
 

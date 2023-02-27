@@ -2,6 +2,8 @@
 
 namespace App\Src\Service;
 
+use App\Src\DAO\TagDAO;
+
 class TagService
 {
 	public static function createSearchRequestForTags(int $tagId = null): string
@@ -63,4 +65,9 @@ class TagService
 
 		return "";
 	}
+
+    public static function updateTagByID($id, $newName) : bool
+    {
+        return TagDAO::updateUnit($id, ['NAME' => $newName]);
+    }
 }

@@ -115,7 +115,7 @@ class AdminService
 
         $field[]=
             [
-             'Id товара' => $good -> getId(),
+//             'Id товара' => $good -> getId(),
              'Наименование товара' => $good -> getName(),
              'Цена товара' => $good -> getPrice(),
              'Короткое описание' => $good -> getShortDesc(),
@@ -168,7 +168,7 @@ class AdminService
     {
         $field[]=
             [
-                'Id заказа' => $order -> getId(),
+//                'Id заказа' => $order -> getId(),
                 'Id товара' => $order -> getGoodId(),
                 'Имя покупателя' => $order -> getCustomer() ->getName(),
                 'Статус заказа' => $order -> getStatus(),
@@ -182,7 +182,7 @@ class AdminService
     {
         $field[]=
             [
-                'Id тега' => $tag -> getId(),
+//                'Id тега' => $tag -> getId(),
                 'Название тега' => $tag -> getName(),
             ];
 

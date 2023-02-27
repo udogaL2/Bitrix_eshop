@@ -21,12 +21,12 @@
     <?php foreach($content as $item):?>
         <?php foreach ($item as $key => $value):?>
             <div class="subtitle-input"><?= $key?></div>
-            <label>
-                <input type="text" class="admin-page-content-edit-input" value="<?=$value?>">
-            </label>
+                <label>
+                    <input type="text" class="admin-page-content-edit-input" value="<?=$value?>">
+                </label>
         <?php endforeach;?>
     <?php endforeach;?>
-<a class="admin-page-content-edit-button" href="#"> Редактировать</a>
+<button class="admin-page-content-edit-button" type="submit"> Редактировать</button>
 </div>
 </body>
 </html>

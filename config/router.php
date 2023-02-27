@@ -78,13 +78,28 @@ return array (
         'action' => [new \App\Src\Controller\AdminController(), 'detailedTagsAdminPageAction'],
     ),
     array (
+        'path' => '/edit/tags/:id',
+        'method' => 'POST',
+        'action' => [new \App\Src\Controller\AdminController(), 'detailedTagsAdminPageAction'],
+    ),
+    array (
         'path' => '/edit/goods/:id',
         'method' => 'GET',
         'action' => [new \App\Src\Controller\AdminController(), 'detailedGoodAdminPageAction'],
     ),
     array (
+        'path' => '/edit/goods/:id',
+        'method' => 'POST',
+        'action' => [new \App\Src\Controller\AdminController(), 'detailedGoodAdminPageAction'],
+    ),
+    array (
         'path' => '/edit/orders/:id',
         'method' => 'GET',
+        'action' => [new \App\Src\Controller\AdminController(), 'detailedOrdersAdminPageAction'],
+    ),
+    array (
+        'path' => '/edit/orders/:id',
+        'method' => 'POST',
         'action' => [new \App\Src\Controller\AdminController(), 'detailedOrdersAdminPageAction'],
     ),
 //    array(

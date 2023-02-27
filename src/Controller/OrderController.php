@@ -17,6 +17,7 @@ class OrderController extends BaseController
 {
 	public function createOrderAction(int $id, array $errors = []): void
 	{
+        AuthController::adminSessionAction();
 		$good = OrderService::createOrderById($id);
 
 		echo self::view('Main/index.html', [
@@ -24,14 +25,20 @@ class OrderController extends BaseController
 				'good' => $good,
                 'errors' => $errors,
 			]),
+            'isAdmin' => false,
 		]);
 	}
 
 	public function registerOrderAction(int $id): void
 	{
+		$cName = $_POST['cName'];
+		$cSurname = $_POST['cSurname'];
+		$cPhone = $_POST['cPhone'];
+		$cEmail = $_POST['cEmail'];
+
         try
         {
-            $result = OrderService::registerOrderById($id);
+            $result = OrderService::registerOrderById($id, $cName, $cSurname, $cPhone, $cEmail);
         }
         catch (InvalidInputException $e)
         {
@@ -55,16 +62,25 @@ class OrderController extends BaseController
 	//
 	function successOrderAction()
 	{
+        if (!preg_match('#/order/\d#', $_SERVER['HTTP_REFERER']))
+        {
+            header('Location: /');
+        }
 		echo self::view('Main/index.html', [
 			'content' => self::view(
 				'Order/orderPlaced.html',
 				['content' => 'Заказ успешно оформлен']
 			),
+            'isAdmin' => false,
 		]);
 	}
 
 	function errorOrderAction()
 	{
+        if (!preg_match('#/order/\d#', $_SERVER['HTTP_REFERER']))
+        {
+            header('Location: /');
+        }
 		echo self::view('Main/index.html', [
 			'content' => self::view(
 				'Order/orderPlaced.html',

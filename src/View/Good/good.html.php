@@ -2,72 +2,90 @@
 
 use App\Config\Config;
 use App\Src\Model\Good;
-use App\Src\Service\IndexService;
+use App\Src\Model\Tag;
+use \App\Src\Service\HtmlService;
+use App\Src\Service\TagService;
 
 /**
+ * @var Tag[] $tags
  * @var Good[] $goods
  * @var $pages
  * @var $currentPage
  * @var $lastPage
+ * @var $searchQuery
  */
 ?>
 
 <!doctype html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<link href="/reset.css" rel="stylesheet">
-	<link href="/style.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
+    <link href="/reset.css" rel="stylesheet">
+    <link href="/style.css" rel="stylesheet">
+<!--    <link href="/GoodsStyle.css" rel="stylesheet">-->
+    <title>EShop</title>
 </head>
 <body>
-
+<div class="content-index">
 <div class="index-container">
-	<div class="goods">
-		<?php foreach($goods as $good): ?>
-			<a class="goods-item-a" href="/product/<?=$good->getId()?>">
-				<div class="goods-item">
-					<img class="img-good" src="/<?= $good->getImages()[0]->getPath() ?>">
-					<div class="title-good">
-                        <div class="subtitle-name">Good №</div>
-                        <?= $good->getId() ?></div>
-					<div class="title-good">
-                        <div class="subtitle-name"> Good Name: </div>
-                            <?= $good->getName() ?></div>
-					<div class="description-good">
-                        <div class="subtitle-name"> Description of Good: </div>
-                        <?= $good->getShortDesc() ?></div>
-					<div class="price-good">
-                        <div class="subtitle-name"> Price of Good: </div>
-                        <?= $good->getPrice() ?> RUB</div>
-					<div class="tag-good">
-                        <div class="subtitle-name"> Tags of Good:</div>
-						<?php foreach ($good->getTags() as $tag): ?>
-							<div>
-								<?= $tag->getName() ?>
-							</div>
-						<?php endforeach; ?>
-					</div>
-				</div>
-			</a>
+    <div>
+	<div class="tags">
+		<?php foreach ($tags as $tag): ?>
+			<div>
+				<label>
+					<input class="checkbox" type="checkbox" <?= TagService::isChecked($tag->getId()) ?>>
+					<a class="good-price" href="/page/1
+						<?= HtmlService::createSearchRequest($tag->getId(), $searchQuery) ?>"><?= $tag->getName() ?>
+					</a>
+				</label>
+			</div>
 		<?php endforeach; ?>
 	</div>
+    </div>
+    <div class="goods-container">
+    <div class="goods">
+        <?php foreach($goods as $good): ?>
+            <a class="goods-item-a" href="/product/<?=$good->getId()?>">
+                <div class="goods-item">
+                    <img class="img-good" src="/<?= $good->getImages()[0]->getPath() ?>">
+                    <div class="br"></div>
+                    <div class="good-text-container">
+                        <div class="title-price-container">
+                            <div class="good-name"><?= HtmlService::cutGoodTitle($good->getName()) ?></div>
+                            <div class="vl"></div>
+                            <div class="good-price"><?= $good->getPrice() ?> ₽</div>
+                        </div>
+                        <div class="good-description"><?= HtmlService::cutGoodDescription($good->getShortDesc())?></div>
+                        <div class="tag-good"><?=HtmlService::concatTheFirstThreeGoodTags($good->getTags())?></div>
+                    </div>
+                    <div class="br"></div>
+                </div>
+            </a>
+        <?php endforeach; ?>
+    </div>
+    </div>
 
-	<ul class="pagination">
-		<li class="pagination-item <?= ($currentPage == Config::FIRST_PAGE_ON_PAGINATION) ? 'pagination-item-no-active' : '' ?>">
-			<a href="/<?= Config::FIRST_PAGE_ON_PAGINATION ?>"><?= "<<" ?></a>
-		</li>
-
-		<?php foreach ($pages as $page): ?>
-			<li class="pagination-item <?= ($currentPage === $page) ? 'pagination-item-active' : '' ?>">
-				<a href="/<?= $page ?>"><?= $page ?></a>
-			</li>
-		<?php endforeach ?>
-
-		<li class="pagination-item <?= ($currentPage === $lastPage) ? 'pagination-item-no-active' : '' ?>">
-			<a href="/<?= $lastPage ?>"><?= ">>"?></a>
-		</li>
-	</ul>
 </div>
 
+        <ul class="pagination">
+            <li>
+                <a class="pagination-item <?= ($currentPage == Config::FIRST_PAGE_ON_PAGINATION) ? 'pagination-item-no-active' : '' ?>" href="/page/<?= Config::FIRST_PAGE_ON_PAGINATION.HtmlService::createSearchRequest(searchSubstr: $searchQuery) ?>" ><?= "<<" ?></a>
+            </li>
+
+            <?php foreach ($pages as $page): ?>
+                <li>
+                    <a class="pagination-item <?= ($currentPage === $page) ? 'pagination-item-active' : '' ?>" href="/page/<?= $page.HtmlService::createSearchRequest(searchSubstr: $searchQuery) ?>" class="pagination-item-a"><?= $page ?></a>
+                </li>
+            <?php endforeach ?>
+
+            <li >
+                <a class="pagination-item <?= ($currentPage === $lastPage) ? 'pagination-item-no-active' : '' ?>" href="/page/<?= $lastPage.HtmlService::createSearchRequest(searchSubstr: $searchQuery) ?>" class="pagination-item-a"><?= ">>"?></a>
+            </li>
+        </ul>
+</div>
 </body>
 </html>
+

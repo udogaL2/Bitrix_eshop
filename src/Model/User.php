@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Model;
+namespace App\Src\Model;
 
 class User
 {
     private int $id;
     private string $login;
     private string $email;
-    private string $hashed_password;
+    private string $hashedPassword;
     private string $role;
 
-    public function __construct(int $id, string $login, string $email, string $hashed_password, string $role)
+    public function __construct(int $id, string $login, string $email, string $hashedPassword, string $role)
     {
         $this->setId($id);
         $this->setLogin($login);
         $this->setEmail($email);
-        $this->setHashedPassword($hashed_password);
+        $this->setHashedPassword($hashedPassword);
         $this->setRole($role);
     }
 
@@ -72,15 +72,15 @@ class User
      */
     public function getHashedPassword(): string
     {
-        return $this->hashed_password;
+        return $this->hashedPassword;
     }
 
     /**
-     * @param string $hashed_password
+     * @param string $hashedPassword
      */
-    public function setHashedPassword(string $hashed_password): void
+    public function setHashedPassword(string $hashedPassword): void
     {
-        $this->hashed_password = $hashed_password;
+        $this->hashedPassword = $hashedPassword;
     }
 
     /**

@@ -135,7 +135,7 @@ class AdminService
                 'Id заказа' => $order -> getId(),
                 'Id товара' => $order -> getGoodId(),
                 'Имя покупателя' => $order -> getCustomer() ->getName(),
-                'Статус заказара' => $order -> getStatus(),
+                'Статус заказа' => $order -> getStatus(),
                 'Адрес заказа' => $order -> getAddress(),
                 'Стоимость заказа' => $order -> getPrice(),
             ];

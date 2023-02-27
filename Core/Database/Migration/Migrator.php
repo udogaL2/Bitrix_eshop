@@ -8,7 +8,7 @@ use Exception;
 
 class Migrator
 {
-	protected static string $pathToMigrationFolder = Config::ROOT . "/src/Migration/";
+	protected static string $pathToMigrationFolder = Config::ROOT . "/Src/Migration/";
 
 	public static function migrate(): void
 	{
@@ -29,7 +29,7 @@ class Migrator
 			$lastMigration = null;
 		}
 
-		// 2. поиск всех новых миграций в /src/Migration/
+		// 2. поиск всех новых миграций в /Src/Migration/
 		$allMigrations = array_diff(scandir(self::$pathToMigrationFolder), ['..', '.']);
 
 		if (!$allMigrations)

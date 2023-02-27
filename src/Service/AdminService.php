@@ -139,7 +139,6 @@ class AdminService
                 'Адрес заказа' => $order -> getAddress(),
                 'Стоимость заказа' => $order -> getPrice(),
             ];
-
         return $field;
     }
 

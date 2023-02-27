@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="9c087184-008e-4c7f-96f2-abcb101e572e" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Src/Application.php" beforeDir="false" afterPath="$PROJECT_DIR$/Src/Application.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.php" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP" />
+  <component name="ProjectId" id="2MIJQEN5oawpKS37MI0R8EiCNcY" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/home/user/PhpstormProjects/eshop/install/2023_02_08_18_33_create_test_goods.sql",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "reference.webide.settings.project.settings.php",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
+    ],
+    "RunConfigurationTargetLRU": [
+      "10e38566-db57-4e59-9145-08757188e7bf"
+    ]
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Src/View" />
+      <recent name="$PROJECT_DIR$/Src/Service" />
+      <recent name="$PROJECT_DIR$/Src/Migration" />
+      <recent name="$PROJECT_DIR$/Src/DAO" />
+      <recent name="$PROJECT_DIR$/Src/Controller" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Database Script.2023_01_31_19_00_initial_migration.sql">
+    <configuration name="2023_01_31_19_00_initial_migration.sql" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
+      <script-file value="$PROJECT_DIR$/install/2023_01_31_19_00_initial_migration.sql" />
+      <script-file value="$PROJECT_DIR$/install/2023_02_08_18_33_create_test_goods.sql" />
+      <script-mode>FILE</script-mode>
+      <data-source id="10e38566-db57-4e59-9145-08757188e7bf" />
+      <method v="2" />
+    </configuration>
+    <configuration name="2023_01_31_19_30_create_migration_table.sql" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
+      <script-file value="$PROJECT_DIR$/Src/Migration/2023_01_31_19_30_create_migration_table.sql" />
+      <script-file value="$PROJECT_DIR$/Src/Migration/2023_02_01_17_00_create_all_main_tables.sql" />
+      <script-file value="$PROJECT_DIR$/Src/Migration/2023_02_08_18_30_update_order_and_good_table.sql" />
+      <script-file value="$PROJECT_DIR$/Src/Migration/2023_02_09_22_25_update_changing_column_names_specifically_for_Pavel_Volkov.sql" />
+      <script-file value="$PROJECT_DIR$/Src/Migration/2023_02_19_20_26_make_login_table_uniq.sql" />
+      <script-mode>FILE</script-mode>
+      <data-source id="10e38566-db57-4e59-9145-08757188e7bf" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Database Script.2023_01_31_19_00_initial_migration.sql" />
+        <item itemvalue="Database Script.2023_01_31_19_30_create_migration_table.sql" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9c087184-008e-4c7f-96f2-abcb101e572e" name="Changes" comment="" />
+      <created>1677449145302</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1677449145302</updated>
+      <workItem from="1677449146992" duration="2363000" />
+      <workItem from="1677451545586" duration="5613000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

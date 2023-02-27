@@ -67,7 +67,7 @@ class Application
 			$prefix = 'App\\';
 			$base_dir = Config::ROOT;
 
-			if (strpos($class, "App") !== 0)
+			if (!str_starts_with($class, "App"))
 			{
 				return;
 			}

@@ -1,5 +1,5 @@
 <?php
 
-require_once '../src/Application.php';
+require_once '../Src/Application.php';
 
 \App\Application::run();

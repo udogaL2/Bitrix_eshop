@@ -9,10 +9,11 @@ use App\Src\Model\Good;
 use App\Src\Model\Order;
 use App\Src\Model\Tag;
 use App\Src\Service\AdminService;
+use App\Src\Service\InvalidInputException;
 
 class AdminController extends BaseController
 {
-	public function getMainAdminPageAction(): void
+	public function getMainAdminPageAction(array $errors = []): void
 	{
         AuthController::notAdminSessionAction();
 
@@ -30,6 +31,7 @@ class AdminController extends BaseController
                 'section' => $section,
                 'isOrderSection' => $isOrderSection,
 				'fields' => $fields,
+				'errors' => $errors,
                 ]),
             'isAdmin' => true,
         ]);
@@ -160,9 +162,25 @@ class AdminController extends BaseController
 		AuthController::notAdminSessionAction();
 		$section = $_GET['section'] ?? 'tags';
 
+		if (!isset($_POST['dataInput']))
+		{
+			ob_clean();
+			$this->getMainAdminPageAction(['Fields are empty']);
+			return;
+		}
+
 		$dataInput = $_POST['dataInput'];
 
-		AdminService::addNewDataBySection($section, $dataInput);
+		try
+		{
+			AdminService::addNewDataBySection($section, $dataInput);
+		}
+		catch (InvalidInputException $e)
+		{
+			ob_clean();
+			$this->getMainAdminPageAction([$e->getMessage()]);
+			return;
+		}
 	}
 }
 

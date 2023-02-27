@@ -44,7 +44,7 @@ class AdminService
                         ];
                 }
             }
-            return [ 'fields' => ['idGood', 'cName', 'cPhone', 'cEmail'],
+            return [ 'fields' => [],
 					 'values' => $goodsIDNameAndStatus,
 			];
 		}
@@ -54,6 +54,14 @@ class AdminService
 
 	public static function addNewDataBySection(string $section, array $dataInput): void
 	{
+		foreach ($dataInput as $item)
+		{
+			if ($item === '')
+			{
+				throw new InvalidInputException('Some fields are empty');
+			}
+		}
+
 		if ($section === 'tags')
 		{
 			$tagName = new Tag(HtmlService::safe($dataInput[0]));
@@ -74,11 +82,6 @@ class AdminService
 			TagDAO::createLinks($goodId, $tags);
 			header("Location: /admin");
 		}
-
-		if ($section === 'orders')
-		{
-			//header("Location: /order");
-		}
 	}
 
     public static function updateTag(Tag $tag)
@@ -95,23 +98,4 @@ class AdminService
     {
         //TagDAO::updateGood();
     }
-
-    public static function addGoodOrderTag(string $section):string
-    {
-     if($section === 'goods')
-     {
-         return 'товара';
-     }
-     if($section === 'tags')
-        {
-            return 'тега';
-        }
-     if($section === 'orders')
-     {
-         return 'заказа';
-     }
-     return '';
-    }
-
 }
-

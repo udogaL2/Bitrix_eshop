@@ -14,10 +14,10 @@
 </head>
 <body>
 <!--<div class="admin-page-content-edit">-->
-<div class="subtitle-input">Id</div>
-<label>
-    <input type="text" class="admin-page-content-edit-input" value="<?=$content -> getId()?>">
-</label>
+    <div class="subtitle-input">Id</div>
+    <label>
+        <input type="text" class="admin-page-content-edit-input" value="<?=$content -> getId()?>">
+    </label>
 <!--</div>-->
 </body>
 </html>

@@ -69,7 +69,8 @@ $i=1;
     <ul class="table-tag-add" style="visibility: <?= $isGoodSection ? 'visible' : 'hidden' ?>">
     <?php foreach($allTag as $key => $value):?>
             <label>
-                <input class="checkbox" type="checkbox" >
+                <input class="checkbox" name="tagsInput[<?=$key?>]" type="checkbox" >
+<!--				<input name="tagsInput[]" value="--><?php //= $key ?><!--" style="visibility: hidden">-->
                 <div class="admin-tag"> <?= $value ?></div>
             </label>
     <?php endforeach;?>

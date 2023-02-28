@@ -181,10 +181,11 @@ class AdminController extends BaseController
 		}
 
 		$dataInput = $_POST['dataInput'];
+		$tagsInput = $_POST['tagsInput'] ?? [];
 
 		try
 		{
-			AdminService::addNewDataBySection($section, $dataInput);
+			AdminService::addNewDataBySection($section, $dataInput, $tagsInput);
 		}
 		catch (InvalidInputException $e)
 		{

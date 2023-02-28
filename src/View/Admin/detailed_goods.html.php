@@ -1,5 +1,9 @@
 <?php
+use \App\Src\Service\AdminService;
+
 /** @var \App\Src\Model\Good $content */
+/** @var array $allTag */
+/** @var array $tagGood */
 ?>
 
 <!doctype html>
@@ -10,7 +14,7 @@
     <link href="/reset.css" rel="stylesheet">
     <link href="/style.css" rel="stylesheet">
 <!--    <link href="/AdminEditStyle.css" rel="stylesheet">-->
-    <link href="/scripts.js" rel="stylesheet">
+<!--    <link href="/scripts.js" rel="stylesheet">-->
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title></title>
 </head>
@@ -27,6 +31,21 @@
             </label>
         <?php endforeach;?>
     <?php endforeach;?>
+        <ul>
+            <?php foreach($allTag as $key => $value):?>
+            <li>
+                    <div>
+                        <label>
+                            <input class="checkbox" type="checkbox" <?= AdminService::isCheckedTag($value, $tagGood)?>>
+                            <div class="admin-tag">
+                                <?= $value?>
+                            </div>
+                        </label>
+                    </div>
+               </li>
+            <?php endforeach;?>
+        </ul>
+
     <button type="submit" class="admin-page-content-edit-button">Редактировать</button>
     </form>
 </div>

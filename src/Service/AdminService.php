@@ -101,17 +101,13 @@ class AdminService
 
     public static function fieldValueGood(Good $good)
     {
-        $tag ='';
+        $tag =[];
         if(is_array($good -> getTags()))
         {
             foreach($good -> getTags() as $item)
             {
-                $tag="{$tag} {$item -> getName()},";
+                $tag[]=$item -> getName();
             }
-        }
-        else
-        {
-            $tag = $good -> getTags() -> getName();
         }
 
 
@@ -122,10 +118,44 @@ class AdminService
              'Цена товара' => $good -> getPrice(),
              'Короткое описание' => $good -> getShortDesc(),
              'Полное описание' => $good -> getFullDesc(),
-             'Теги товара' => $tag,
             ];
 
             return $field;
+    }
+
+    public static function allTagAdmin()
+    {
+        $allTag = TagDAO::getAllTags();
+        foreach($allTag as $item)
+        {
+            $tag[]=$item -> getName();
+        }
+
+        return $tag;
+    }
+
+    public static function isCheckedTag(string $tag, array $tagGood)
+    {
+    foreach($tagGood as $item) {
+        if (in_array($tag, $item)) {
+            return 'checked';
+        } else {
+            return '';
+        }
+    }
+    }
+
+    public static function tagGood(array $tag)
+    {
+        foreach ($tag as $item)
+        {
+            foreach($item as $key => $value)
+            {
+                $tagGood[] = $value -> getName();
+            }
+
+        }
+        return $tagGood;
     }
 
     public static function fieldValueOrder(Order $order)

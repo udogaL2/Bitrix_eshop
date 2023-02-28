@@ -17,7 +17,7 @@
 <div class="admin-page-content-edit">
     <div class="admin-page-content-add-title">Редактирование заказа</div>
     <hr class="hr-edit">
-    <form action="" method="">
+    <form class='detail-form' action="" method="">
     <?php foreach($content as $item):?>
         <?php foreach ($item as $key => $value):?>
             <div class="subtitle-input"><?= $key?></div>

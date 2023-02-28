@@ -288,7 +288,10 @@ input[type="checkbox"]:not(:checked) {
 }
 
 input[type="checkbox"]:checked + a.good-price,
-input[type="checkbox"]:not(:checked) + a.good-price{
+input[type="checkbox"]:not(:checked) + a.good-price,
+input[type="checkbox"]:checked + div.admin-tag,
+input[type="checkbox"]:not(:checked) + div.admin-tag
+{
 	display: inline-block;
 	position: relative;
 	padding-left: 28px;
@@ -296,7 +299,10 @@ input[type="checkbox"]:not(:checked) + a.good-price{
 }
 
 input[type="checkbox"]:checked + a.good-price:before,
-input[type="checkbox"]:not(:checked) + a.good-price:before{
+input[type="checkbox"]:not(:checked) + a.good-price:before,
+input[type="checkbox"]:checked + div.admin-tag:before,
+input[type="checkbox"]:not(:checked) + div.admin-tag:before
+{
 	content: "";
 	position: absolute;
 	left: -2px;
@@ -310,7 +316,9 @@ input[type="checkbox"]:not(:checked) + a.good-price:before{
 }
 
 input[type="checkbox"]:checked + a.good-price:after,
-input[type="checkbox"]:not(:checked) + a.good-price:after
+input[type="checkbox"]:not(:checked) + a.good-price:after,
+input[type="checkbox"]:checked + div.admin-tag:after,
+input[type="checkbox"]:not(:checked) + div.admin-tag:after
 {
 	content:"";
 	position: absolute;
@@ -325,15 +333,19 @@ input[type="checkbox"]:not(:checked) + a.good-price:after
 	border-radius: 3px;
 }
 
-input[type="checkbox"]:not(:checked) + a.good-price:after{
+input[type="checkbox"]:not(:checked) + a.good-price:after,
+input[type="checkbox"]:not(:checked) + div.admin-tag:after
+{
 	opacity: 0;
 }
 
-input[type="checkbox"]:checked + a.good-price:after{
+input[type="checkbox"]:checked + a.good-price:after,
+input[type="checkbox"]:checked + div.admin-tag:after
+{
 	opacity: 1;
 }
 
-.good-price{
+.good-price, .admin-tag{
 	text-decoration: none;
 	padding:8px;
 	font-family: 'Source Sans Pro', sans-serif;
@@ -342,7 +354,8 @@ input[type="checkbox"]:checked + a.good-price:after{
 	color:#63605d;
 }
 
-.good-price:hover{
+.good-price:hover, .admin-tag:hover{
+	cursor: pointer;
 	color: #ffffff;
 	transition: 0.5s;
 }
@@ -1230,3 +1243,4 @@ label{
 	border-radius: 5px;
 	transition: 0.5s;
 }
+

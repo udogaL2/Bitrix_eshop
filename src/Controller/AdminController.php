@@ -10,6 +10,7 @@ use App\Src\Model\Order;
 use App\Src\Model\Tag;
 use App\Src\Service\AdminService;
 use App\Src\Service\InvalidInputException;
+use Cassandra\Varint;
 
 class AdminController extends BaseController
 {
@@ -108,8 +109,13 @@ class AdminController extends BaseController
         else
         {
             $field=AdminService::fieldValueGood($updatedGood);
+            $allTag=AdminService::allTagAdmin();
+            $tagGood[]=$updatedGood -> getTags();
+            $tag[]=AdminService::tagGood($tagGood);
             $content = self::view('Admin/detailed_goods.html' , [
                 'content' => $field,
+                'allTag'=>$allTag,
+                'tagGood'=> $tag,
             ]);
         }
 

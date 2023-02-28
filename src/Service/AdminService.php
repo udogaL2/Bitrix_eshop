@@ -52,7 +52,7 @@ class AdminService
 		return [];
 	}
 
-	public static function addNewDataBySection(string $section, array $dataInput): void
+	public static function addNewDataBySection(string $section, array $dataInput, array $tagsInput): void
 	{
 		foreach ($dataInput as $item)
 		{
@@ -74,9 +74,11 @@ class AdminService
 			$name = HtmlService::safe($dataInput[0]);
 			$price = HtmlService::safe($dataInput[1]);
 			$article = HtmlService::safe($dataInput[2]);
-			$tags = HtmlService::safe($dataInput[3]);
-			$tags = explode(',', $tags);
-
+			$tags = [];
+			foreach ($tagsInput as $key => $value)
+			{
+				$tags[] = $key;
+			}
 			$good = new Good($name, $price, $article);
 			$goodId = GoodDAO::createGood($good);
 			TagDAO::createLinks($goodId, $tags);

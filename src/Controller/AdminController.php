@@ -23,9 +23,9 @@ class AdminController extends BaseController
 		$contentAndField = AdminService::getContentBySection($section);
 		$fields = $contentAndField['fields'];
 		$content = $contentAndField['values'];
-
+        $allTag=AdminService::allTagAdmin();
         $isOrderSection = $section === 'orders';
-
+        $isGoodSection = $section === 'goods';
         echo self::view( 'Main/index.html', [
             'content' => self::view('Admin/main.html' , [
                 'content' => $content,
@@ -33,6 +33,8 @@ class AdminController extends BaseController
                 'isOrderSection' => $isOrderSection,
 				'fields' => $fields,
 				'errors' => $errors,
+                'allTag' => $allTag,
+                'isGoodSection' => $isGoodSection,
                 ]),
             'isAdmin' => true,
         ]);

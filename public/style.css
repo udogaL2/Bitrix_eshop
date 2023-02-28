@@ -316,14 +316,28 @@ input[type="checkbox"]:not(:checked) + div.admin-tag:before
 }
 
 input[type="checkbox"]:checked + a.good-price:after,
-input[type="checkbox"]:not(:checked) + a.good-price:after,
+input[type="checkbox"]:not(:checked) + a.good-price:after
+{
+	content:"";
+	position: absolute;
+	transition: all 0.4s ease;
+	left: 1px;
+	top: 14px;
+	width: 10px;
+	height: 5px;
+	border-left: 4px solid #63605d;
+	border-bottom: 4px solid #63605d;
+	transform: rotate(-45deg);
+	border-radius: 3px;
+}
+
 input[type="checkbox"]:checked + div.admin-tag:after,
 input[type="checkbox"]:not(:checked) + div.admin-tag:after
 {
 	content:"";
 	position: absolute;
 	transition: all 0.4s ease;
-	left: 1px;
+	left: 3px;
 	top: 14px;
 	width: 10px;
 	height: 5px;
@@ -357,6 +371,13 @@ input[type="checkbox"]:checked + div.admin-tag:after
 .good-price:hover, .admin-tag:hover{
 	cursor: pointer;
 	color: #ffffff;
+	transition: 0.5s;
+}
+
+.admin-tag:hover
+{
+	cursor: pointer;
+	color: #343434;
 	transition: 0.5s;
 }
 
@@ -1055,6 +1076,11 @@ th:hover{
 	margin:20px 20px;
 }
 
+ul li
+{
+	list-style: none;
+}
+
 .admin-page-a-add:hover{
 	color: #eaeaea;
 	background: #63605d;
@@ -1105,13 +1131,8 @@ th:hover{
 	font-weight: 600;
 }
 
-.admin-page-content-add label{
-	margin: 37px 20px;
-}
-
-.admin-page-content-edit label{
-	padding: 0 0 0 63px;
-	margin: 37px 0;
+.admin-add-tag{
+	margin: 17px 20px;
 }
 
 .admin-page-content-add-input{
@@ -1191,6 +1212,11 @@ align-items: center;
 	border-radius: 15px ;
 	box-shadow: 5px 5px 20px rgb(155, 155, 155);
 	transition: 0.7s;
+}
+
+.admin-page-content-edit label{
+	padding: 0 0 0 63px;
+	margin: 37px 0;
 }
 
 .subtitle-input{

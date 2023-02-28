@@ -1,9 +1,12 @@
 <?php /**
  * @var Tag[]|Good[]|array[] $content
  * @var bool $isOrderSection
+ * @var bool $isGoodSection
  * @var string $section
  * @var string[] $fields
  * @var string[] $errors
+ * @var array $errors
+ * @var array $allTag
  */
 
 use App\Src\Model\Good;
@@ -73,12 +76,18 @@ $i=1;
 	<?php endif; ?>
 
     <?php foreach($fields as $field): ?>
-		<label>
+		<label class="admin-add-tag">
 			<input type="text" class="admin-page-content-add-input" name="dataInput[]" placeholder="Введите <?= $field ?>" minlength="1" maxlength="30" >
 		</label>
 	<?php endforeach; ?>
-
-<!--			<a href="/admin" class="admin-page-content-add-a">Add</a>-->
+    <ul class="table-tag-add" style="visibility: <?= $isGoodSection ? 'visible' : 'hidden' ?>">
+    <?php foreach($allTag as $key => $value):?>
+            <label>
+                <input class="checkbox" type="checkbox" >
+                <div class="admin-tag"> <?= $value ?></div>
+            </label>
+    <?php endforeach;?>
+    </ul>
 			<input class="admin-page-content-add-a" type="submit" value="Add">
 		</div>
 	</form>

@@ -23,7 +23,7 @@ class AdminService
 
 		if ($section === 'goods')
 		{
-			return [ 'fields' => ['name', 'price', 'article', 'tags'],
+			return [ 'fields' => ['name', 'price', 'article'],
 					 'values' => GoodDAO::getAllGoods(),
 			];
 		}

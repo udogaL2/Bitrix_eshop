@@ -23,7 +23,7 @@ class AdminService
 
 		if ($section === 'goods')
 		{
-			return [ 'fields' => ['name', 'price', 'article', 'tags'],
+			return [ 'fields' => ['name', 'price', 'article'],
 					 'values' => GoodDAO::getAllGoods(),
 			];
 		}
@@ -52,7 +52,7 @@ class AdminService
 		return [];
 	}
 
-	public static function addNewDataBySection(string $section, array $dataInput): void
+	public static function addNewDataBySection(string $section, array $dataInput, array $tagsInput): void
 	{
 		foreach ($dataInput as $item)
 		{
@@ -74,9 +74,11 @@ class AdminService
 			$name = HtmlService::safe($dataInput[0]);
 			$price = HtmlService::safe($dataInput[1]);
 			$article = HtmlService::safe($dataInput[2]);
-			$tags = HtmlService::safe($dataInput[3]);
-			$tags = explode(',', $tags);
-
+			$tags = [];
+			foreach ($tagsInput as $key => $value)
+			{
+				$tags[] = $key;
+			}
 			$good = new Good($name, $price, $article);
 			$goodId = GoodDAO::createGood($good);
 			TagDAO::createLinks($goodId, $tags);
@@ -99,19 +101,15 @@ class AdminService
         //TagDAO::updateGood();
     }
 
-    public static function fieldValueGood(Good $good)
+    public static function fieldValueGood(Good $good): array
     {
-        $tag ='';
+        $tag = [];
         if(is_array($good -> getTags()))
         {
             foreach($good -> getTags() as $item)
             {
-                $tag="{$tag} {$item -> getName()},";
+                $tag[]=$item -> getName();
             }
-        }
-        else
-        {
-            $tag = $good -> getTags() -> getName();
         }
 
 
@@ -122,13 +120,51 @@ class AdminService
              'Цена товара' => $good -> getPrice(),
              'Короткое описание' => $good -> getShortDesc(),
              'Полное описание' => $good -> getFullDesc(),
-             'Теги товара' => $tag,
             ];
 
             return $field;
     }
 
-    public static function fieldValueOrder(Order $order)
+    public static function allTagAdmin(): array
+    {
+		$tag = [];
+        $allTag = TagDAO::getAllTags();
+        foreach($allTag as $item)
+        {
+            $tag[]=$item -> getName();
+        }
+
+        return $tag;
+    }
+
+    public static function isCheckedTag(string $tag, array $tagGood): string
+    {
+		foreach($tagGood as $item)
+		{
+			if (in_array($tag, $item, true))
+			{
+				return 'checked';
+			}
+		}
+
+		return '';
+    }
+
+    public static function tagGood(array $tag): array
+    {
+		$tagGood = [];
+        foreach ($tag as $item)
+        {
+            foreach($item as $key => $value)
+            {
+                $tagGood[] = $value -> getName();
+            }
+
+        }
+        return $tagGood;
+    }
+
+    public static function fieldValueOrder(Order $order): array
     {
         $field[]=
             [
@@ -142,7 +178,7 @@ class AdminService
         return $field;
     }
 
-    public static function fieldValueTag(Tag $tag)
+    public static function fieldValueTag(Tag $tag): array
     {
         $field[]=
             [

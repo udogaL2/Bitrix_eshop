@@ -10,6 +10,7 @@ use App\Src\Model\Order;
 use App\Src\Model\Tag;
 use App\Src\Service\AdminService;
 use App\Src\Service\InvalidInputException;
+use Cassandra\Varint;
 
 class AdminController extends BaseController
 {
@@ -22,9 +23,9 @@ class AdminController extends BaseController
 		$contentAndField = AdminService::getContentBySection($section);
 		$fields = $contentAndField['fields'];
 		$content = $contentAndField['values'];
-
+        $allTag=AdminService::allTagAdmin();
         $isOrderSection = $section === 'orders';
-
+        $isGoodSection = $section === 'goods';
         echo self::view( 'Main/index.html', [
             'content' => self::view('Admin/main.html' , [
                 'content' => $content,
@@ -32,6 +33,8 @@ class AdminController extends BaseController
                 'isOrderSection' => $isOrderSection,
 				'fields' => $fields,
 				'errors' => $errors,
+                'allTag' => $allTag,
+                'isGoodSection' => $isGoodSection,
                 ]),
             'isAdmin' => true,
         ]);
@@ -108,8 +111,13 @@ class AdminController extends BaseController
         else
         {
             $field=AdminService::fieldValueGood($updatedGood);
+            $allTag=AdminService::allTagAdmin();
+            $tagGood[]=$updatedGood -> getTags();
+            $tag[]=AdminService::tagGood($tagGood);
             $content = self::view('Admin/detailed_goods.html' , [
                 'content' => $field,
+                'allTag'=>$allTag,
+                'tagGood'=> $tag,
             ]);
         }
 
@@ -173,10 +181,11 @@ class AdminController extends BaseController
 		}
 
 		$dataInput = $_POST['dataInput'];
+		$tagsInput = $_POST['tagsInput'] ?? [];
 
 		try
 		{
-			AdminService::addNewDataBySection($section, $dataInput);
+			AdminService::addNewDataBySection($section, $dataInput, $tagsInput);
 		}
 		catch (InvalidInputException $e)
 		{

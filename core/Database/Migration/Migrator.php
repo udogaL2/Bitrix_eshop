@@ -52,7 +52,14 @@ class Migrator
 		foreach ($unfulfilledMigrations as $unfulfilledMigration)
 		{
 			$sqlRequest = file_get_contents(self::$pathToMigrationFolder . $unfulfilledMigration);
-			$requestResult = DBSession::requestDB($sqlRequest, isMultiQuery: substr_count($sqlRequest, ";") > 1);
+			try
+			{
+				$requestResult = DBSession::requestDB($sqlRequest, isMultiQuery: substr_count($sqlRequest, ";") > 1);
+			}
+			catch (Exception $exception)
+			{
+				$requestResult = false;
+			}
 
 			if (!$requestResult)
 			{

@@ -498,6 +498,7 @@ input[type="checkbox"]:checked + div.admin-tag:after
 	align-items: center;
 	flex-direction: row;
 	margin: 20px 0;
+
 }
 
 .pagination-item{

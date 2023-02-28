@@ -22,16 +22,9 @@ class OrderService
 		$cSurname = HtmlService::safe($cSurname);
 		$cPhone = filter_var($cPhone, FILTER_SANITIZE_NUMBER_INT);
 		$cEmail = filter_var($cEmail, FILTER_VALIDATE_EMAIL);
+		$cName = HtmlService::safe($cName);
+		$cSurname = HtmlService::safe($cSurname);
 
-        if (!preg_match('/[A-Z][a-z]{0,126}/', $cName))
-        {
-            throw new InvalidInputException('invalid name');
-        }
-
-        if (!preg_match('/[A-Z][a-z]{0,127}/', $cSurname))
-        {
-            throw new InvalidInputException('invalid surname');
-        }
         if (!$cPhone)
         {
             throw new InvalidInputException('invalid phone number');

@@ -16,18 +16,6 @@ use App\Src\Service\TagService;
  */
 ?>
 
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
-    <link href="/reset.css" rel="stylesheet">
-    <link href="/style.css" rel="stylesheet">
-<!--    <link href="/GoodsStyle.css" rel="stylesheet">-->
-    <title>EShop</title>
-</head>
 <body>
 <div class="content-index">
 <div class="index-container">
@@ -87,5 +75,4 @@ use App\Src\Service\TagService;
         </ul>
 </div>
 </body>
-</html>
 

@@ -8,13 +8,13 @@ class Router
 {
 	/** @var Route[] $routes */
 	private array $routes;
-	private string $config = Config::ROOT . '/config/router.php';
+	private string $config = Config::ROOT . '/Config/router.php';
 
 	public function __construct()
 	{
 		if (!file_exists($this->config))
 		{
-			throw new \Exception('no config file by path: ' . $this->config);
+			throw new \Exception('no Config file by path: ' . $this->config);
 		}
 		foreach (require $this->config as $route)
 		{

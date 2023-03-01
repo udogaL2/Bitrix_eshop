@@ -847,7 +847,7 @@ img.content-order-placed-icon{
 	height: 155px;
 	width: 155px;
 	margin: 0 0 5% 0;
-	background-image: url(/public/icons/checkmark.png);
+	background-image: url(/Public/icons/checkmark.png);
 	background-repeat: no-repeat;
 	background-size: cover;
 }
@@ -862,7 +862,7 @@ img.content-order-placed-icon{
 	height: 45px;
 	width: 45px;
 	margin: 20px 0 20px 0;
-	background-image: url(/public/icons/back.png);
+	background-image: url(/Public/icons/back.png);
 	background-repeat: no-repeat;
 	background-size: cover;
 }

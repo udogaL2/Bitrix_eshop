@@ -67,7 +67,7 @@ class GoodService
 
 			$goodCode = $codeType . "-" . $codeName;
 
-			if (!file_exists(Config::ROOT . "/public/static/" . $goodCode))
+			if (!file_exists(Config::ROOT . "/Public/static/" . $goodCode))
 			{
 				break;
 			}

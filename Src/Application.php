@@ -7,7 +7,7 @@ use App\Core\Database\Migration\Migrator;
 use App\Src\Controller\PathException;
 use \App\Core\Routing\Router;
 
-require_once __DIR__ . '/../config/Config.php';
+require_once __DIR__ . '/../Config/Config.php';
 //require_once __DIR__ . '/../Core/Database/Migration/Migrator.php';
 //require_once __DIR__ . '/../Core/Database/Service/DBSession.php';
 

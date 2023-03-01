@@ -1,9 +1,12 @@
 <?php /**
  * @var Tag[]|Good[]|array[] $content
  * @var bool $isOrderSection
+ * @var bool $isGoodSection
  * @var string $section
  * @var string[] $fields
  * @var string[] $errors
+ * @var array $errors
+ * @var array $allTag
  */
 
 use App\Src\Model\Good;
@@ -13,21 +16,7 @@ use App\Src\Model\Tag;
 $i=1;
 ?>
 
-<!doctype html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-	<link href="/reset.css" rel="stylesheet">
-	<link href="/style.css" rel="stylesheet">
-    <link href="/scripts.js" rel="stylesheet">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title></title>
-</head>
-
 <body>
-
 <div class="content-admin-page">
     <div class="wrapper">
         <a href="/admin?section=goods" class="admin-page-panel">Товары</a>
@@ -73,16 +62,22 @@ $i=1;
 	<?php endif; ?>
 
     <?php foreach($fields as $field): ?>
-		<label>
+		<label class="admin-add-tag">
 			<input type="text" class="admin-page-content-add-input" name="dataInput[]" placeholder="Введите <?= $field ?>" minlength="1" maxlength="30" >
 		</label>
 	<?php endforeach; ?>
-
-<!--			<a href="/admin" class="admin-page-content-add-a">Add</a>-->
+    <ul class="table-tag-add" style="visibility: <?= $isGoodSection ? 'visible' : 'hidden' ?>">
+    <?php foreach($allTag as $key => $value):?>
+            <label>
+                <input class="checkbox" name="tagsInput[<?=$key?>]" type="checkbox" >
+<!--				<input name="tagsInput[]" value="--><?php //= $key ?><!--" style="visibility: hidden">-->
+                <div class="admin-tag"> <?= $value ?></div>
+            </label>
+    <?php endforeach;?>
+    </ul>
 			<input class="admin-page-content-add-a" type="submit" value="Add">
 		</div>
 	</form>
 </div>
 </body>
-</html>
 

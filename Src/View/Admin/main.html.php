@@ -15,7 +15,6 @@ use App\Src\Model\Tag;
 
 $i=1;
 ?>
-
 <body>
 <div class="content-admin-page">
     <div class="wrapper">
@@ -31,7 +30,12 @@ $i=1;
                     <tr>
                         <th><?= $i++ ?></th>
                         <th><?= HtmlService::safe(HtmlService::cutGoodTitle($item->getName(), 30)) ?></th>
-                        <th><a class="admin-page-a-edit" href="/edit/<?=$section?>/<?=$item->getId()?>">Edit</a></th>
+                        <th class="button"><a class="admin-page-a-edit" href="/edit/<?=$section?>/<?=$item->getId()?>">Edit</a></th>
+                        <th class="button">
+                            <form>
+                                <input class="admin-page-content-del" type="submit" value="Delete">
+                            </form>
+                        </th>
                     </tr>
                 <?php endforeach; ?>
             <?php endif; ?>
@@ -41,19 +45,24 @@ $i=1;
                         <th><?= $i++ ?></th>
                         <th><?= HtmlService::safe(HtmlService::cutGoodTitle($item['goodName'], 30)) ?></th>
                         <th><?= HtmlService::safe($item['status']) ?></th>
-                        <th><a class="admin-page-a-edit" href="/edit/<?=$section?>/<?=$item['ID']?>" >Edit</a></th>
+                        <th class="button"><a class="admin-page-a-edit" href="/edit/<?=$section?>/<?=$item['ID']?>" >Edit</a></th>
+                        <th class="button">
+                            <form>
+                                <input class="admin-page-content-del" type="submit" value="Delete">
+                            </form>
+                        </th>
                     </tr>
                 <?php endforeach; ?>
             <?php endif; ?>
         </table>
     </div>
-	<a class="admin-page-a-add" style="visibility: <?= $isOrderSection ? 'hidden' : 'visible' ?>" id="add" href="#"> Add </a>
+    <a class="admin-page-a-add" style="visibility: <?= $isOrderSection ? 'hidden' : 'visible' ?>" id="add" href="#"> Add </a>
 </div>
 
 <div class="content-add">
 	<form action="/admin?section=<?=$section?>" method="post">
 		<div class="admin-page-content-add">
-			<div class="admin-page-content-add-title">Создание нового товара</div>
+			<div class="admin-page-content-add-title">Создание нового <?=$section?></div>
 
 	<?php if ($errors !== []):?>
 		<?php foreach ($errors as $error): ?>
@@ -80,4 +89,3 @@ $i=1;
 	</form>
 </div>
 </body>
-

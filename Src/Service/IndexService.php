@@ -105,11 +105,6 @@ class IndexService
 		$images = ImageDAO::getImageOfGoods($goodIds, true);
 		$tags = TagDAO::getTagsOfGoods($goodIds);
 
-		if (!$images || !$tags)
-		{
-			return null;
-		}
-
 		foreach ($goodIds as $goodId)
 		{
 			$listOfGoods[$goodId]->setImages($images[$goodId] ?? []);

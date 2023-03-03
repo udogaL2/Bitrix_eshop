@@ -30,11 +30,11 @@ class IndexController extends BaseController
 
 				if (mb_strlen($searchQuery) < 2)
 				{
-					throw new PathException("Array of id contains invalid characters");
+					throw new Exception("The string length is too short");
 				}
 				elseif (mb_strlen($searchQuery) > 128)
 				{
-					throw new PathException("Array of id contains invalid characters");
+					throw new Exception("The string length is too long");
 				}
 			}
 

@@ -72,7 +72,7 @@ $i=1;
 
     <?php foreach($fields as $field): ?>
 		<label class="admin-add-tag">
-			<input type="text" class="admin-page-content-add-input" name="dataInput[]" placeholder="Введите <?= $field ?>" minlength="1" maxlength="30" >
+			<input type="text" class="admin-page-content-add-input" name="dataInput[]" placeholder="Введите <?= $field ?>" minlength="1" >
 		</label>
 	<?php endforeach; ?>
     <ul class="table-tag-add" style="visibility: <?= $isGoodSection ? 'visible' : 'hidden' ?>">

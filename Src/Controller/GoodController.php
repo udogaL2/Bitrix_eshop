@@ -12,7 +12,7 @@ class GoodController extends BaseController
         AuthController::adminSessionAction();
 
         $service = new GoodService(new \DateInterval('P24M'));
-		// TODO(сделать запись/чтение количества товаров в кеш)
+		// TODO(переделать проверку на наличие товара в БД, при удалении того или иного товара, то есть при нарушении ai)
 		if ($id < 0 || $id > $service->getNumberOfGoods())
 		{
 			$this->notFoundAction();

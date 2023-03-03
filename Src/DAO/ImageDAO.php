@@ -42,7 +42,9 @@ class ImageDAO extends BaseLinkedDAO
 			}
 
 			DBSession::requestDB(
-				$request, $rowOfTypes, $values
+				$request,
+				$rowOfTypes,
+				$values
 			);
 
 			$lastImageId = self::getLastCreatedId();
@@ -111,6 +113,11 @@ class ImageDAO extends BaseLinkedDAO
 
 	private static function collectImagesById(array $preparedImagesIds): ?array
 	{
+		if (!$preparedImagesIds)
+		{
+			return null;
+		}
+
 		try
 		{
 			$images = [];

@@ -196,13 +196,9 @@ class GoodDAO extends BaseDAO
 				return null;
 			}
 
-			$images = $isWithImages ? ImageDAO::getImageOfGoods([$id])[$id] : [];
-			$tags = $isWithTags ? TagDAO::getTagsOfGoods([$id])[$id] : [];
+			$images = $isWithImages ? ImageDAO::getImageOfGoods([$id]) : [];
+			$tags = $isWithTags ? TagDAO::getTagsOfGoods([$id]) : [];
 
-			if ($images === null || $tags === null)
-			{
-				return null;
-			}
 
 			return new Good(
 				$goodResult['NAME'],
@@ -214,8 +210,8 @@ class GoodDAO extends BaseDAO
 				new \DateTime($goodResult['DATE_UPDATE']),
 				new \DateTime($goodResult['DATE_CREATE']),
 				$goodResult['IS_ACTIVE'],
-				(array)$images,
-				(array)$tags
+				$images ? $images[$id] : [],
+				$tags ? $tags[$id] : []
 			);
 		}
 		catch (Exception $e)

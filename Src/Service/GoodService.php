@@ -37,7 +37,7 @@ class GoodService
         return self::$numberOfGoodsCache;
     }
 
-	public function isGoodAvailableById(int $id): bool
+	public static function isGoodAvailableById(int $id): bool
 	{
 		return GoodDAO::isIdOfGoodAvailable($id);
 	}

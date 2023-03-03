@@ -8,8 +8,14 @@ use Exception;
 
 class IndexController extends BaseController
 {
-	public function viewGoodByPage(int $page = 1): void
+	public function viewGoodByPage($page = 1): void
 	{
+		if (!is_numeric($page))
+		{
+			$this->notFoundAction();
+			return;
+		}
+
 		AuthController::adminSessionAction();
 		try
 		{

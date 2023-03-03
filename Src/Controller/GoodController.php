@@ -9,10 +9,16 @@ class GoodController extends BaseController
 {
 	public function getDetailedGoodAction($id) : void
 	{
+		if (!is_numeric($id))
+		{
+			$this->notFoundAction();
+			return;
+		}
+
         AuthController::adminSessionAction();
 
         $service = new GoodService(new \DateInterval('P24M'));
-		// TODO(переделать проверку на наличие товара в БД, при удалении того или иного товара, то есть при нарушении ai)
+
 		if (!$service->isGoodAvailableById($id))
 		{
 			$this->notFoundAction();

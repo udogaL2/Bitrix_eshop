@@ -10,22 +10,35 @@ use App\Src\Model\Customer;
 use App\Src\Model\Good;
 use App\Src\Model\Image;
 use App\Src\Model\Tag;
+use App\Src\Service\GoodService;
 use App\Src\Service\InvalidInputException;
 use App\Src\Service\OrderService;
 
 class OrderController extends BaseController
 {
-	public function createOrderAction(int $id, array $errors = []): void
+	public function createOrderAction($id, array $errors = []): void
 	{
-        AuthController::adminSessionAction();
+		if (!is_numeric($id))
+		{
+			$this->notFoundAction();
+			return;
+		}
+
+		AuthController::adminSessionAction();
+
+		if (!GoodService::isGoodAvailableById($id))
+		{
+			header("Location: /error/404/");
+		}
+
 		$good = OrderService::createOrderById($id);
 
 		echo self::view('Main/index.html', [
 			'content' => self::view('Order/orderRegistration.html', [
 				'good' => $good,
-                'errors' => $errors,
+				'errors' => $errors,
 			]),
-            'isAdmin' => false,
+			'isAdmin' => false,
 		]);
 	}
 
@@ -36,16 +49,17 @@ class OrderController extends BaseController
 		$cPhone = $_POST['cPhone'];
 		$cEmail = $_POST['cEmail'];
 
-        try
-        {
-            $result = OrderService::registerOrderById($id, $cName, $cSurname, $cPhone, $cEmail);
-        }
-        catch (InvalidInputException $e)
-        {
-            ob_clean();
-            $this->createOrderAction($id, [$e->getMessage()]);
-            return;
-        }
+		try
+		{
+			$result = OrderService::registerOrderById($id, $cName, $cSurname, $cPhone, $cEmail);
+		}
+		catch (InvalidInputException $e)
+		{
+			ob_clean();
+			$this->createOrderAction($id, [$e->getMessage()]);
+
+			return;
+		}
 
 		if ($result)
 		{
@@ -62,29 +76,27 @@ class OrderController extends BaseController
 	//
 	function successOrderAction()
 	{
-        if (!preg_match('#/order/\d#', $_SERVER['HTTP_REFERER']))
-        {
-            header('Location: /');
-        }
+		if (!preg_match('#/order/\d#', $_SERVER['HTTP_REFERER']))
+		{
+			header('Location: /');
+		}
 		echo self::view('Main/index.html', [
 			'content' => self::view(
-				'Order/orderPlaced.html',
-				['content' => 'Заказ успешно оформлен']
+				'Order/orderPlaced.html', ['content' => 'Заказ успешно оформлен']
 			),
-            'isAdmin' => false,
+			'isAdmin' => false,
 		]);
 	}
 
 	function errorOrderAction()
 	{
-        if (!preg_match('#/order/\d#', $_SERVER['HTTP_REFERER']))
-        {
-            header('Location: /');
-        }
+		if (!preg_match('#/order/\d#', $_SERVER['HTTP_REFERER']))
+		{
+			header('Location: /');
+		}
 		echo self::view('Main/index.html', [
 			'content' => self::view(
-				'Order/orderPlaced.html',
-				['content' => 'Произошла ошибка при создании заказа, повторите попытку']
+				'Order/orderPlaced.html', ['content' => 'Произошла ошибка при создании заказа, повторите попытку']
 			),
 		]);
 	}

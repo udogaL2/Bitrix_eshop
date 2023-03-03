@@ -136,12 +136,11 @@ class AdminService
 		{
 			foreach ($good->getTags() as $item)
 			{
-				$tag[]=$item -> getName();
+				$tag[] = $item->getName();
 			}
 		}
 
-		$field[] =
-			[
+		$field[] = [
 			//             'Id товара' => $good -> getId(),
 			'Наименование товара' => $good->getName(),
 			'Цена товара' => $good->getPrice(),
@@ -149,24 +148,24 @@ class AdminService
 			'Полное описание' => $good->getFullDesc(),
 		];
 
-            return $field;
-    }
+		return $field;
+	}
 
-    public static function allTagAdmin(): array
-    {
+	public static function allTagAdmin(): array
+	{
 		$tag = [];
-        $allTag = TagDAO::getAllTags();
-        foreach($allTag as $item)
-        {
-            $tag[]=$item -> getName();
-        }
+		$allTag = TagDAO::getAllTags();
+		foreach ($allTag as $item)
+		{
+			$tag[] = $item->getName();
+		}
 
-        return $tag;
-    }
+		return $tag;
+	}
 
-    public static function isCheckedTag(string $tag, array $tagGood): string
-    {
-		foreach($tagGood as $item)
+	public static function isCheckedTag(string $tag, array $tagGood): string
+	{
+		foreach ($tagGood as $item)
 		{
 			if (in_array($tag, $item, true))
 			{
@@ -175,44 +174,44 @@ class AdminService
 		}
 
 		return '';
-    }
+	}
 
-    public static function tagGood(array $tag): array
-    {
+	public static function tagGood(array $tag): array
+	{
 		$tagGood = [];
-        foreach ($tag as $item)
-        {
-            foreach($item as $key => $value)
-            {
-                $tagGood[] = $value -> getName();
-            }
+		foreach ($tag as $item)
+		{
+			foreach ($item as $key => $value)
+			{
+				$tagGood[] = $value->getName();
+			}
 
-        }
-        return $tagGood;
-    }
+		}
 
-    public static function fieldValueOrder(Order $order): array
-    {
-        $field[]=
-            [
-//                'Id заказа' => $order -> getId(),
-                'Id товара' => $order -> getGoodId(),
-                'Имя покупателя' => $order -> getCustomer() ->getName(),
-                'Статус заказа' => $order -> getStatus(),
-                'Адрес заказа' => $order -> getAddress(),
-                'Стоимость заказа' => $order -> getPrice(),
-            ];
-        return $field;
-    }
+		return $tagGood;
+	}
 
-    public static function fieldValueTag(Tag $tag): array
-    {
-        $field[]=
-            [
-//                'Id тега' => $tag -> getId(),
-                'Название тега' => $tag -> getName(),
-            ];
+	public static function fieldValueOrder(Order $order): array
+	{
+		$field[] = [
+			//                'Id заказа' => $order -> getId(),
+			'Id товара' => $order->getGoodId(),
+			'Имя покупателя' => $order->getCustomer()->getName(),
+			'Статус заказа' => $order->getStatus(),
+			'Адрес заказа' => $order->getAddress(),
+			'Стоимость заказа' => $order->getPrice(),
+		];
 
-        return $field;
-    }
+		return $field;
+	}
+
+	public static function fieldValueTag(Tag $tag): array
+	{
+		$field[] = [
+			//                'Id тега' => $tag -> getId(),
+			'Название тега' => $tag->getName(),
+		];
+
+		return $field;
+	}
 }

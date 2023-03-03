@@ -92,7 +92,7 @@ class AdminController extends BaseController
 
 		if ($_SERVER['REQUEST_METHOD'] === 'POST')
 		{
-			$goodOld = GoodDAO::getCurrentGoodById($id);
+			$goodOld = GoodDAO::getCurrentGoodById($id, isNotActive: true);
 			if ($goodOld !== null)
 			{
 				// TODO:переделать работу с тегами
@@ -116,7 +116,7 @@ class AdminController extends BaseController
 			}
 		}
 
-		$updatedGood = GoodDAO::getCurrentGoodById($id);
+		$updatedGood = GoodDAO::getCurrentGoodById($id, isNotActive: true);
 
 		if ($updatedGood === null)
 		{

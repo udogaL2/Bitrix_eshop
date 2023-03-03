@@ -477,6 +477,7 @@ input[type="checkbox"]:checked + div.admin-tag:after {
 }
 
 .good-description {
+	word-wrap: break-word;
 	width: 328px;
 	margin: 1px;
 	height: 110px;

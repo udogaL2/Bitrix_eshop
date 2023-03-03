@@ -21,7 +21,7 @@ use App\Src\Service\HtmlService;
 			<div class="order-registration-description"><?= HtmlService::safe($good->getShortDesc()) ?></div>
 			<div class="order-registration-price"><?= HtmlService::safe($good->getPrice()) ?> RUB</div>
 		</div>
-    <form class="order-registration-form" action="/order/<?= $good->getId() ?>" method="POST">
+    <form class="order-registration-form" action="/order/<?= HtmlService::safe($good->getId()) ?>" method="POST">
 		<div class="div-content-order-registration-first-name">
 			<label>
 				<input type="text" class="content-order-registration-first-name" name="cName" placeholder="Введите имя" minlength="1" maxlength="15" required>

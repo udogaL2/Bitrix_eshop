@@ -27,7 +27,7 @@
                 <div ><div class="logo"></div></div>
             </a>
             <div class="div-search">
-                <img src="/icons/icon-search.png" class="icon-search">
+                <img src="/icons/icon-search.png" class="icon-search" alt="">
                 <label>
 					<form action="/" method="get" class="search-good">
                     	<input type="text" name="search_query" class="search" placeholder="Поиск по товарам" id="search-text">

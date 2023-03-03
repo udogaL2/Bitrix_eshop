@@ -36,9 +36,9 @@ use App\Src\Service\TagService;
     <div class="goods-container">
     <div class="goods">
         <?php foreach($goods as $good): ?>
-            <a class="goods-item-a" href="/product/<?=$good->getId()?>">
+            <a class="goods-item-a" href="/product/<?=HtmlService::safe($good->getId())?>">
                 <div class="goods-item">
-                    <img class="img-good" src="/<?= $good->getImages()[0]->getPath() ?>">
+                    <img class="img-good" src="/<?= $good->getImages() ? $good->getImages()[0]->getPath() : 'icons/logo.png'?>">
                     <div class="br"></div>
                     <div class="good-text-container">
                         <div class="title-price-container">

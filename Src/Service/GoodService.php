@@ -34,9 +34,13 @@ class GoodService
         {
             self::$numberOfGoodsCache = GoodDAO::getAvailableCount();
         }
-        // return self::$numberOfGoodsCache;
-		return GoodDAO::getAvailableCount();
+        return self::$numberOfGoodsCache;
     }
+
+	public function isGoodAvailableById(int $id): bool
+	{
+		return GoodDAO::isIdOfGoodAvailable($id);
+	}
 
     public function setTLL(DateInterval $TTL): void
     {

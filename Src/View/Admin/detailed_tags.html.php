@@ -1,5 +1,8 @@
 <?php
 /** @var \App\Src\Model\Tag $content */
+
+use App\Src\Service\HtmlService;
+
 ?>
 
 
@@ -10,9 +13,9 @@
     <form class='detail-form' action="" method="">
     <?php foreach($content as $item):?>
         <?php foreach ($item as $key => $value):?>
-            <div class="subtitle-input"><?= $key?></div>
+            <div class="subtitle-input"><?= HtmlService::safe($key) ?></div>
             <label>
-                <input type="text" class="admin-page-content-edit-input" value="<?=$value?>">
+                <input type="text" class="admin-page-content-edit-input" value="<?=HtmlService::safe($value)?>">
             </label>
         <?php endforeach;?>
     <?php endforeach;?>

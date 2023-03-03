@@ -13,7 +13,7 @@ class GoodController extends BaseController
 
         $service = new GoodService(new \DateInterval('P24M'));
 		// TODO(переделать проверку на наличие товара в БД, при удалении того или иного товара, то есть при нарушении ai)
-		if ($id < 0 || $id > $service->getNumberOfGoods())
+		if (!$service->isGoodAvailableById($id))
 		{
 			$this->notFoundAction();
 

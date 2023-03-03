@@ -19,15 +19,15 @@ class GoodDAO extends BaseDAO
 			DBSession::requestDB(
 				"insert into good (NAME, SHORT_DESC, FULL_DESC, PRICE, IS_ACTIVE, GOOD_CODE, DATE_CREATE, DATE_UPDATE)
 				VALUE (?, ?, ?, ?, ?, ?, ?, ?)", "sssdisss", [
-				 $good->getName(),
-				 $good->getShortDesc(),
-				 $good->getFullDesc(),
-				 $good->getPrice(),
-				 $good->isActive(),
-				 $good->getArticle(),
-				 $good->getTimeCreate()->format('Y-m-d H:i:s'),
-				 $good->getTimeUpdate()->format('Y-m-d H:i:s'),
-				]
+																   $good->getName(),
+																   $good->getShortDesc(),
+																   $good->getFullDesc(),
+																   $good->getPrice(),
+																   $good->isActive(),
+																   $good->getArticle(),
+																   $good->getTimeCreate()->format('Y-m-d H:i:s'),
+																   $good->getTimeUpdate()->format('Y-m-d H:i:s'),
+															   ]
 			);
 
 			$goodId = self::getLastCreatedId();
@@ -199,7 +199,6 @@ class GoodDAO extends BaseDAO
 			$images = $isWithImages ? ImageDAO::getImageOfGoods([$id]) : [];
 			$tags = $isWithTags ? TagDAO::getTagsOfGoods([$id]) : [];
 
-
 			return new Good(
 				$goodResult['NAME'],
 				$goodResult['PRICE'],
@@ -291,5 +290,14 @@ class GoodDAO extends BaseDAO
 		{
 			return null;
 		}
+	}
+
+	public static function isIdOfGoodAvailable(int $id): bool
+	{
+		$DBResponse = DBSession::requestDB(
+			"SELECT count(*) as c FROM good where ID = ? and IS_ACTIVE = true;", 'i', [$id]
+		);
+
+		return mysqli_fetch_assoc($DBResponse)['c'] == 1;
 	}
 }

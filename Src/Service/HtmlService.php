@@ -13,7 +13,7 @@ class HtmlService
 			return $title;
 		}
 
-		return mb_substr($title, 0, $length - 3) . '...';
+		return HtmlService::safe(mb_substr($title, 0, $length - 3) . '...');
 	}
 
 	public static function cutGoodDescription($title): string
@@ -23,7 +23,7 @@ class HtmlService
 			return $title;
 		}
 
-		return mb_substr($title, 0, 266) . '...';
+		return HtmlService::safe(mb_substr($title, 0, 266) . '...');
 	}
 
 	/** @var Tag[] $tags */
@@ -36,7 +36,7 @@ class HtmlService
 			$result .= $tags[$i]->getName() . ', ';
 		}
 
-		return rtrim($result, ', ');
+		return HtmlService::safe(rtrim($result, ', '));
 	}
 
 	public static function createSearchRequest(int $tagId = null, string $searchSubstr = ''): string

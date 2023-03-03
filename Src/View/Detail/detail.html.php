@@ -1,4 +1,6 @@
-<?php /** @var App\Src\Model\Good $good */?>
+<?php /** @var App\Src\Model\Good $good */
+
+use App\Src\Service\HtmlService; ?>
 
 
 <body>
@@ -7,7 +9,7 @@
         <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img src="/<?= $good->getImages()[0]->getPath() ?>" class="d-block w-100 detail-list-img" alt="...">
+                    <img src="/<?= $good->getImages() ? $good->getImages()[0]->getPath() : 'icons/logo.png' ?>" class="d-block w-100 detail-list-img" alt="...">
                 </div>
                 <?php foreach (array_slice($good->getImages(),1) as $item):?>
 
@@ -26,19 +28,19 @@
             </button>
         </div>
         <div class="detail-text">
-            <div class="detail-list-title"><?= $good->getName() ?></div>
-            <div class="detail-list-description"><?= $good->getFullDesc() ?></div>
+            <div class="detail-list-title"><?= HtmlService::safe($good->getName()) ?></div>
+            <div class="detail-list-description"><?= HtmlService::safe($good->getFullDesc()) ?></div>
             <div class="detail-list-producer"><?= 'producer' ?></div>
             <div class="detail-list-tag">
             <?php foreach ($good->getTags() as $tag): ?>
-                <div><?= $tag->getName() ?></div>
+                <div><?= HtmlService::safe($tag->getName()) ?></div>
             <?php endforeach; ?>
             </div>
         </div>
 	</div>
 	<div class="detail-price-buy">
-		<div class="detail-price"><?= $good->getPrice() ?> ₽</div>
-		<a href="/order/<?= $good->getId() ?>" class="detail-button-buy">Buy</a>
+		<div class="detail-price"><?= HtmlService::safe($good->getPrice()) ?> ₽</div>
+		<a href="/order/<?= HtmlService::safe($good->getId()) ?>" class="detail-button-buy">Buy</a>
 	</div>
 </div>
 

@@ -29,8 +29,8 @@ $i=1;
                 <?php foreach($content as $item): ?>
                     <tr>
                         <th><?= $i++ ?></th>
-                        <th><?= HtmlService::safe(HtmlService::cutGoodTitle($item->getName(), 30)) ?></th>
-                        <th class="button"><a class="admin-page-a-edit" href="/edit/<?=$section?>/<?=$item->getId()?>">Edit</a></th>
+                        <th><?= HtmlService::cutGoodTitle($item->getName(), 30) ?></th>
+                        <th class="button"><a class="admin-page-a-edit" href="/edit/<?=HtmlService::safe($section)?>/<?=HtmlService::safe($item->getId())?>">Edit</a></th>
                         <th class="button">
                             <form>
                                 <input class="admin-page-content-del" type="submit" value="Delete">
@@ -43,9 +43,9 @@ $i=1;
                 <?php foreach($content as $item): ?>
                     <tr>
                         <th><?= $i++ ?></th>
-                        <th><?= HtmlService::safe(HtmlService::cutGoodTitle($item['goodName'], 30)) ?></th>
+                        <th><?= HtmlService::cutGoodTitle($item['goodName'], 30) ?></th>
                         <th><?= HtmlService::safe($item['status']) ?></th>
-                        <th class="button"><a class="admin-page-a-edit" href="/edit/<?=$section?>/<?=$item['ID']?>" >Edit</a></th>
+                        <th class="button"><a class="admin-page-a-edit" href="/edit/<?=HtmlService::safe($section)?>/<?=HtmlService::safe($item['ID'])?>" >Edit</a></th>
                         <th class="button">
                             <form>
                                 <input class="admin-page-content-del" type="submit" value="Delete">
@@ -62,7 +62,7 @@ $i=1;
 <div class="content-add">
 	<form action="/admin?section=<?=$section?>" method="post">
 		<div class="admin-page-content-add">
-			<div class="admin-page-content-add-title">Создание нового <?=$section?></div>
+			<div class="admin-page-content-add-title">Создание нового <?=HtmlService::safe($section)?></div>
 
 	<?php if ($errors !== []):?>
 		<?php foreach ($errors as $error): ?>
@@ -78,9 +78,9 @@ $i=1;
     <ul class="table-tag-add" style="visibility: <?= $isGoodSection ? 'visible' : 'hidden' ?>">
     <?php foreach($allTag as $key => $value):?>
             <label>
-                <input class="checkbox" name="tagsInput[<?=$key?>]" type="checkbox" >
+                <input class="checkbox" name="tagsInput[<?=HtmlService::safe($key)?>]" type="checkbox" >
 <!--				<input name="tagsInput[]" value="--><?php //= $key ?><!--" style="visibility: hidden">-->
-                <div class="admin-tag"> <?= $value ?></div>
+                <div class="admin-tag"> <?= HtmlService::safe($value) ?></div>
             </label>
     <?php endforeach;?>
     </ul>

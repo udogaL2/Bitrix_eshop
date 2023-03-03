@@ -624,12 +624,15 @@ input[type="checkbox"]:checked + div.admin-tag:after {
 }
 
 .detail-list-description, .detail-list-producer {
+	word-wrap: break-word;
 	font-size: 15px;
+	color: #666666;
 }
 
 .detail-text {
 	display: flex;
 	flex-direction: column;
+	width: 100%;
 }
 
 .detail-list-tag {

@@ -37,7 +37,6 @@ use App\Src\Service\HtmlService; ?>
 		<div class="detail-text">
 			<div class="detail-list-title"><?= HtmlService::safe($good->getName()) ?></div>
 			<div class="detail-list-description"><?= HtmlService::safe($good->getFullDesc()) ?></div>
-			<div class="detail-list-producer"><?= 'producer' ?></div>
 			<div class="detail-list-tag">
 				<?php
 				foreach ($good->getTags() as $tag): ?>

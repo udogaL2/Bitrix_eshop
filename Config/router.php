@@ -67,6 +67,11 @@ return array (
 		 'method' => 'POST',
 		 'action' => [new \App\Src\Controller\AdminController(), 'addNewData'],
 	 ),
+	 array (
+		 'path' => '/admin/delete/:section/:id',
+		 'method' => 'POST',
+		 'action' => [new \App\Src\Controller\AdminController(), 'deleteData'],
+	 ),
     array (
         'path' => '/logout',
         'method' => 'GET',

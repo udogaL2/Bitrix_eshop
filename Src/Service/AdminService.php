@@ -12,7 +12,7 @@ use App\Src\Model\Tag;
 
 class AdminService
 {
-	public static function getContentBySection(string $section)
+	public static function getContentBySection(string $section): array
 	{
 		if ($section === 'tags')
 		{
@@ -100,12 +100,19 @@ class AdminService
 				$tags[] = $key;
 			}
 
-			if (!$tags)
+			if (!isset($tags))
 			{
 				throw new InvalidInputException('Tags were not selected');
 			}
 
-			$article = HtmlService::safe(GoodService::generateGoodCode(TagDAO::getTagByID($tags[0])->getName(), $name));
+			$tagById = TagDAO::getTagByID($tags[0]);
+
+			if (!isset($tagById))
+			{
+				throw new InvalidInputException('Invalid tags');
+			}
+
+			$article = HtmlService::safe(GoodService::generateGoodCode($tagById->getName(), $name));
 
 			$good = new Good($name, $price, $article, $shortDesc, $fullDesc);
 			$goodId = GoodDAO::createGood($good);
@@ -157,7 +164,7 @@ class AdminService
 		$allTag = TagDAO::getAllTags();
 		foreach ($allTag as $item)
 		{
-			$tag[] = $item->getName();
+			$tag[$item->getId()] = $item->getName();
 		}
 
 		return $tag;
@@ -213,5 +220,40 @@ class AdminService
 		];
 
 		return $field;
+	}
+
+	public static function deleteDataBySectionAndId(string $section, int $id): void
+	{
+		$section = HtmlService::safe($section);
+
+		if ($section === 'goods')
+		{
+			$answer = GoodDAO::updateUnit($id, ['is_active' => false]);
+			if (!$answer)
+			{
+				throw new \Exception('Something went wrong');
+			}
+		}
+
+		if ($section === 'orders')
+		{
+			$answer = OrderDAO::updateUnit($id, ['status' => 'deleted']);
+			if (!$answer)
+			{
+				throw new \Exception('Something went wrong');
+			}
+		}
+
+		if ($section === 'tags')
+		{
+			$answerLinks = TagDAO::deleteLinks(secondaryUnitIds: [$id]);
+			$answerUnit = TagDAO::deleteUnit($id);
+			if (!$answerLinks || !$answerUnit)
+			{
+				throw new \Exception('Something went wrong');
+			}
+		}
+
+		header("Location: /admin");
 	}
 }

@@ -9,6 +9,7 @@ use App\Src\Model\Good;
 use App\Src\Model\Order;
 use App\Src\Model\Tag;
 use App\Src\Service\AdminService;
+use App\Src\Service\HtmlService;
 use App\Src\Service\InvalidInputException;
 use Cassandra\Varint;
 
@@ -213,7 +214,23 @@ class AdminController extends BaseController
 		{
 			ob_clean();
 			$this->getMainAdminPageAction([$e->getMessage()]);
+			return;
+		}
+	}
 
+	public function deleteData(string $section, int $id): void
+	{
+		AuthController::notAdminSessionAction();
+		$section = $section ?? 'tags';
+
+		try
+		{
+			AdminService::deleteDataBySectionAndId($section, $id);
+		}
+		catch (\Exception $e)
+		{
+			ob_clean();
+			$this->getMainAdminPageAction([$e->getMessage()]);
 			return;
 		}
 	}

@@ -32,7 +32,7 @@ $i=1;
                         <th><?= HtmlService::cutGoodTitle($item->getName(), 30) ?></th>
                         <th class="button"><a class="admin-page-a-edit" href="/edit/<?=HtmlService::safe($section)?>/<?=HtmlService::safe($item->getId())?>">Edit</a></th>
                         <th class="button">
-                            <form>
+                            <form action="/admin/delete/<?= $section ?>/<?= HtmlService::safe($item->getId()) ?>" method="post">
                                 <input class="admin-page-content-del" type="submit" value="Delete">
                             </form>
                         </th>
@@ -47,7 +47,7 @@ $i=1;
                         <th><?= HtmlService::safe($item['status']) ?></th>
                         <th class="button"><a class="admin-page-a-edit" href="/edit/<?=HtmlService::safe($section)?>/<?=HtmlService::safe($item['ID'])?>" >Edit</a></th>
                         <th class="button">
-                            <form>
+                            <form action="/admin/delete/<?= $section ?>/<?= HtmlService::safe($item['ID']) ?>" method="post">
                                 <input class="admin-page-content-del" type="submit" value="Delete">
                             </form>
                         </th>
@@ -79,7 +79,6 @@ $i=1;
     <?php foreach($allTag as $key => $value):?>
             <label>
                 <input class="checkbox" name="tagsInput[<?=HtmlService::safe($key)?>]" type="checkbox" >
-<!--				<input name="tagsInput[]" value="--><?php //= $key ?><!--" style="visibility: hidden">-->
                 <div class="admin-tag"> <?= HtmlService::safe($value) ?></div>
             </label>
     <?php endforeach;?>

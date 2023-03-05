@@ -1,5 +1,8 @@
 <?php
 /** @var \App\Src\Model\Order $content */
+
+use App\Src\Service\HtmlService;
+
 ?>
 
 <body>

@@ -92,7 +92,7 @@ abstract class BaseLinkedDAO extends BaseDAO
 
 				$rowOfValue = isset($mainUnitId) ? 'i' : str_repeat('i', count($secondaryUnitIds));
 
-				$value = [$mainUnitId] ?? $secondaryUnitIds;
+				$value = $mainUnitId ? [$mainUnitId] : $secondaryUnitIds;
 			}
 
 			$linkTableName = static::$linkTableName;
